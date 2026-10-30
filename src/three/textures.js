@@ -1,4 +1,8 @@
 import * as THREE from 'three';
+import { EDITION } from '../config.js';
+import { formatNumber } from '../i18n.js';
+
+const FONT = EDITION === 'fa' ? '"Vazirmatn Variable", system-ui, sans-serif' : '"Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif';
 
 const cache = new Map();
 
@@ -32,10 +36,10 @@ export function clueTexture(n, state) {
     g.strokeStyle = st.ring;
     g.stroke();
     g.fillStyle = st.fg;
-    g.font = `900 ${s * 0.6}px "Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif`;
+    g.font = `900 ${s * 0.6}px ${FONT}`;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
-    g.fillText(String(n), s / 2, s / 2 + s * 0.04);
+    g.fillText(formatNumber(n), s / 2, s / 2 + s * 0.04);
   });
 }
 
@@ -55,6 +59,51 @@ export function starTexture() {
     g.lineWidth = 6;
     g.lineJoin = 'round';
     g.strokeStyle = '#e8a21a';
+    g.stroke();
+  });
+}
+
+/** Cartoon pointing hand; the fingertip sits exactly at the centre of the texture. */
+export function fingerTexture() {
+  return make('finger', 256, (g, s) => {
+    g.clearRect(0, 0, s, s);
+    const cx = s / 2;
+    const cy = s / 2;
+    // touch ripple
+    g.beginPath();
+    g.arc(cx, cy, s * 0.17, 0, Math.PI * 2);
+    g.fillStyle = 'rgba(255,255,255,0.55)';
+    g.fill();
+    // hand
+    g.lineJoin = 'round';
+    g.lineCap = 'round';
+    const skin = '#ffd0a6';
+    const edge = '#b5683a';
+    const draw = (fn) => {
+      g.beginPath();
+      fn();
+      g.fillStyle = skin;
+      g.fill();
+      g.lineWidth = 7;
+      g.strokeStyle = edge;
+      g.stroke();
+    };
+    // palm
+    draw(() => g.roundRect(cx - 38, cy + 34, 92, 78, 30));
+    // thumb
+    draw(() => g.roundRect(cx - 62, cy + 52, 40, 24, 12));
+    // finger
+    draw(() => g.roundRect(cx - 17, cy - 6, 34, 100, 17));
+  });
+}
+
+export function ringTexture(color = '#ff9f1a') {
+  return make('ring:' + color, 128, (g, s) => {
+    g.clearRect(0, 0, s, s);
+    g.beginPath();
+    g.arc(s / 2, s / 2, s * 0.43, 0, Math.PI * 2);
+    g.lineWidth = s * 0.09;
+    g.strokeStyle = color;
     g.stroke();
   });
 }

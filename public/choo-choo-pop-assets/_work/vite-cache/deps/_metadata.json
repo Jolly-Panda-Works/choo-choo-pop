@@ -1,0 +1,108 @@
+{
+  "hash": "aabcfb6b",
+  "configHash": "c40cf982",
+  "lockfileHash": "32fe2c25",
+  "browserHash": "db3e5e68",
+  "optimized": {
+    "@capacitor/app": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/@capacitor/app/dist/esm/index.js",
+      "file": "@capacitor_app.js",
+      "fileHash": "9d20ee46",
+      "needsInterop": false
+    },
+    "@capacitor/browser": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/@capacitor/browser/dist/esm/index.js",
+      "file": "@capacitor_browser.js",
+      "fileHash": "6bfd68ce",
+      "needsInterop": false
+    },
+    "@capacitor/core": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/@capacitor/core/dist/index.js",
+      "file": "@capacitor_core.js",
+      "fileHash": "f76f5bf8",
+      "needsInterop": false
+    },
+    "@react-three/fiber": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/@react-three/fiber/dist/react-three-fiber.esm.js",
+      "file": "@react-three_fiber.js",
+      "fileHash": "e0ed7303",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "444be7aa",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "58204b17",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "8c9af455",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "ca1c0434",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "32a2d4aa",
+      "needsInterop": true
+    },
+    "three": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "d403b55c",
+      "needsInterop": false
+    },
+    "three/examples/jsm/utils/BufferGeometryUtils.js": {
+      "src": "../../../../../../Web Game/choo-choo-pop/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
+      "file": "three_examples_jsm_utils_BufferGeometryUtils__js.js",
+      "fileHash": "bd9162bf",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "jsx-runtime-A-nMxgh2": {
+      "file": "jsx-runtime-A-nMxgh2.js",
+      "isDynamicEntry": false
+    },
+    "react-DShITR3P": {
+      "file": "react-DShITR3P.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-njemtlAm": {
+      "file": "react-dom-njemtlAm.js",
+      "isDynamicEntry": false
+    },
+    "rolldown-runtime-SbdDWaPq": {
+      "file": "rolldown-runtime-SbdDWaPq.js",
+      "isDynamicEntry": false
+    },
+    "scheduler-DpnzCpb8": {
+      "file": "scheduler-DpnzCpb8.js",
+      "isDynamicEntry": false
+    },
+    "three.module-aCHopcSl": {
+      "file": "three.module-aCHopcSl.js",
+      "isDynamicEntry": false
+    },
+    "web--xbECXJq": {
+      "file": "web--xbECXJq.js",
+      "isDynamicEntry": true
+    },
+    "web-BXcysOpa": {
+      "file": "web-BXcysOpa.js",
+      "isDynamicEntry": true
+    }
+  }
+}

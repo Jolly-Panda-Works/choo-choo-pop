@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSave, update } from '../store.js';
 import { useT } from '../i18n.js';
-import { sfx } from '../audio.js';
 import { START_HINTS } from '../config.js';
 
 function Toggle({ label, on, onChange }) {
@@ -31,26 +30,6 @@ export default function Settings({ onBack }) {
       <div className="panel">
         <Toggle label={t('sound')} on={save.sound} onChange={(v) => update({ sound: v })} />
         <Toggle label={t('vibration')} on={save.vibrate} onChange={(v) => update({ vibrate: v })} />
-        <div className="row">
-          <span>{t('language')}</span>
-          <div className="seg">
-            {[
-              ['en', 'English'],
-              ['fa', 'فارسی'],
-            ].map(([code, name]) => (
-              <button
-                key={code}
-                className={save.lang === code ? 'active' : ''}
-                onClick={() => {
-                  sfx.click();
-                  update({ lang: code });
-                }}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
-        </div>
         <button className="btn danger" onClick={() => setConfirm(true)}>
           {t('resetProgress')}
         </button>

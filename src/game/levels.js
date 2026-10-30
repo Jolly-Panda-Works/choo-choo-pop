@@ -1,7 +1,8 @@
 import { LEVEL_DATA } from './levelData.js';
 
 export const levelCount = LEVEL_DATA.length;
-export const DIFFICULTY_KEYS = ['easy', 'medium', 'hard', 'expert'];
+// 0 = guided tutorial (levels 1-5), then easy / medium / hard
+export const DIFFICULTY_KEYS = ['tutorial', 'easy', 'medium', 'hard'];
 
 const cache = new Map();
 
@@ -24,6 +25,8 @@ export function getLevel(n) {
     exit: { r: d.exit[0], c: d.exit[1], side: d.exit[2] },
     solution: d.solution,
     given: d.given,
+    preset: d.preset || null, // tutorial level 4 starts with a wrong rail on purpose
+    nodes: d.nodes,
     rowClues,
     colClues,
   };

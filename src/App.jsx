@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useSave } from './store.js';
 import { useT } from './i18n.js';
 import { levelCount } from './game/levels.js';
-import { checkForUpdate, openExternal } from './versionCheck.js';
-import { UPDATE_URL } from './config.js';
 import Home from './screens/Home.jsx';
 import LevelSelect from './screens/LevelSelect.jsx';
 import Game from './screens/Game.jsx';
@@ -24,13 +22,15 @@ export default function App() {
   const save = useSave();
   const t = useT();
   const [screen, setScreen] = useState({ name: 'home', level: 1 });
-  const [update, setUpdate] = useState(null);
   const screenRef = useRef(screen);
   screenRef.current = screen;
 
   useEffect(() => {
     document.documentElement.lang = t.lang;
     document.documentElement.dir = t.dir;
+    document.documentElement.classList.add('ed-' + t.lang);
+    document.title = t('title');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t.lang, t.dir]);
 
   // portrait only (the manifest already locks it; this covers other runtimes)
@@ -40,11 +40,6 @@ export default function App() {
     } catch (e) {
       /* not supported */
     }
-  }, []);
-
-  // optional online version check (silently skipped when offline)
-  useEffect(() => {
-    checkForUpdate().then(setUpdate);
   }, []);
 
   // Android back button
@@ -75,11 +70,6 @@ export default function App() {
     <div className="app">
       <Clouds />
       <div className="rotate-hint">↻ {t('portraitOnly')}</div>
-      {update && screen.name === 'home' && (
-        <button className="update-banner" onClick={() => openExternal(update.url || UPDATE_URL)}>
-          {t('updateAvail', { v: update.version })} · {t('update')}
-        </button>
-      )}
       {screen.name === 'home' && (
         <Home
           onPlay={() => go('game', nextUnlocked)}

@@ -9,7 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [en, fa] # en = Choo Choo Pop, fa = هو هو چی چی
     env:
+      EDITION: ${{ matrix.edition }}
       # Optional: add these 4 repo secrets to also get a signed release APK + AAB
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -33,28 +38,25 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Test levels (solvable + unique)
+      - name: Test levels (20 levels, solvable + unique + difficulty curve)
         run: npm run test:levels
 
-      - name: Build web
-        run: npm run build
+      - name: Build web (${{ matrix.edition }})
+        run: VITE_EDITION=$EDITION npm run build
 
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Set version from package.json
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
-          sed -i "s/versionName \"1.0\"/versionName \"$VERSION\"/" android/app/build.gradle
+      - name: Read version
+        run: echo "VERSION_NAME=$(node -p "require('./package.json').version")" >> "$GITHUB_ENV"
 
       - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
 
       - uses: actions/upload-artifact@v4
         with:
-          name: choo-choo-pop-debug-apk
+          name: choo-choo-pop-${{ matrix.edition }}-debug-apk
           path: android/app/build/outputs/apk/debug/*.apk
 
       - name: Build signed release (APK + AAB)
@@ -63,6 +65,7 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
           ./gradlew assembleRelease bundleRelease --no-daemon \
+            -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
             -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
@@ -71,7 +74,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: env.KEYSTORE_BASE64 != ''
         with:
-          name: choo-choo-pop-release
+          name: choo-choo-pop-${{ matrix.edition }}-release
           path: |
             android/app/build/outputs/apk/release/*.apk
             android/app/build/outputs/bundle/release/*.aab

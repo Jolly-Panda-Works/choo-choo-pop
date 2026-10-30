@@ -15,6 +15,8 @@ export function dirBetween(level, a, b) {
 }
 
 export const initialPath = (level) => [idxOf(level, level.entry.r, level.entry.c)];
+/** Where a level begins: usually just the entry tile, sometimes a pre-laid (wrong) rail for the tutorial. */
+export const startPath = (level) => (level.preset ? [...level.preset] : initialPath(level));
 export const exitIdx = (level) => idxOf(level, level.exit.r, level.exit.c);
 
 /**

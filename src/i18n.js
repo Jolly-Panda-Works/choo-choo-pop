@@ -1,5 +1,6 @@
-import { useSave } from './store.js';
+import { EDITION } from './config.js';
 
+// The English build only ships English, the Persian build only Persian (see EDITION).
 const dict = {
   en: {
     title: 'Choo Choo Pop',
@@ -8,10 +9,10 @@ const dict = {
     levels: 'Levels',
     settings: 'Settings',
     level: 'Level',
+    tutorial: 'Learn',
     easy: 'Easy',
     medium: 'Medium',
     hard: 'Hard',
-    expert: 'Expert',
     hint: 'Hint',
     undo: 'Undo',
     restart: 'Restart',
@@ -20,37 +21,39 @@ const dict = {
     back: 'Back',
     sound: 'Sound',
     vibration: 'Vibration',
-    language: 'Language',
-    resetProgress: 'Reset progress',
-    resetConfirm: 'Erase all progress?',
+    resetProgress: 'Start over',
+    resetConfirm: 'Erase all your stars and levels?',
     yes: 'Yes, erase',
-    cancel: 'Cancel',
+    cancel: 'No',
     won: 'All aboard!',
-    allDone: 'You finished every level. New tracks are coming soon!',
-    noHints: 'No hints left. You earn one every 3rd level.',
-    countsOff: 'Almost there. Check the numbers!',
-    updateAvail: 'New version {v} is available',
-    update: 'Update',
+    allDone: 'You finished all 20 levels! More tracks are coming soon!',
+    tutDone: 'You know how to play now. Real puzzles start next!',
+    noHints: 'No hints left. You get a new one every 2 levels!',
+    countsOff: 'Almost! Look at the numbers again.',
     version: 'Version',
-    tut1: 'Drag your finger from the green arrow to the red arrow to lay the rails.',
-    tut2: 'The numbers show how many rails each row and column needs.',
-    tut3: 'Slide back over your track to erase it. Green numbers mean a line is done.',
-    tutGiven: 'Gold star tiles must be part of your track.',
     stars: 'Stars',
-    offline: 'Plays fully offline',
-    portraitOnly: 'Please rotate your phone upright',
+    offline: 'Plays without internet',
+    portraitOnly: 'Please hold your phone upright',
+    tut1: 'Touch the green arrow and slide your finger to the red arrow!',
+    tut2: 'Rails can turn! Keep sliding until you reach the red arrow.',
+    tut3: 'Look at the numbers! They tell how many rails each row and column needs.',
+    tut3b: 'A green number means that line is full. Make every number green!',
+    tut4: 'Oops! This rail is in the wrong place. Slide your finger back over it to erase it.',
+    tut4b: 'Well done! Now follow the numbers to the red arrow.',
+    tutWrong: 'Not this way! Slide back to erase, then try again.',
+    tut5: 'Gold star tiles must be on your track. Go through the star!',
   },
   fa: {
-    title: 'چو چو پاپ',
+    title: 'هو هو چی چی',
     play: 'شروع بازی',
     continue: 'ادامه',
     levels: 'مرحله‌ها',
     settings: 'تنظیمات',
     level: 'مرحله',
+    tutorial: 'آموزش',
     easy: 'آسان',
     medium: 'متوسط',
     hard: 'سخت',
-    expert: 'حرفه‌ای',
     hint: 'راهنما',
     undo: 'برگشت',
     restart: 'از اول',
@@ -59,36 +62,43 @@ const dict = {
     back: 'بازگشت',
     sound: 'صدا',
     vibration: 'لرزش',
-    language: 'زبان',
-    resetProgress: 'پاک کردن پیشرفت',
-    resetConfirm: 'همهٔ پیشرفت پاک شود؟',
+    resetProgress: 'شروع دوباره',
+    resetConfirm: 'همهٔ ستاره‌ها و مرحله‌ها پاک شود؟',
     yes: 'بله، پاک کن',
-    cancel: 'انصراف',
+    cancel: 'نه',
     won: 'همه سوار شدند!',
-    allDone: 'همهٔ مرحله‌ها را تمام کردی. مرحله‌های جدید به‌زودی می‌آیند!',
-    noHints: 'راهنما تمام شد. با هر ۳ مرحله یک راهنما می‌گیری.',
-    countsOff: 'نزدیکی! عددها را بررسی کن.',
-    updateAvail: 'نسخهٔ جدید {v} آماده است',
-    update: 'به‌روزرسانی',
+    allDone: 'هر ۲۰ مرحله را تمام کردی! مرحله‌های جدید به‌زودی می‌آیند!',
+    tutDone: 'حالا بازی را بلدی. مرحله‌های اصلی شروع می‌شود!',
+    noHints: 'راهنما تمام شد. با هر ۲ مرحله یک راهنمای تازه می‌گیری!',
+    countsOff: 'نزدیک بود! دوباره به عددها نگاه کن.',
     version: 'نسخه',
-    tut1: 'انگشتت را از فلش سبز تا فلش قرمز بکش تا ریل بچینی.',
-    tut2: 'عددها نشان می‌دهند هر سطر و ستون چند ریل لازم دارد.',
-    tut3: 'برای پاک کردن، انگشتت را روی مسیر به عقب بکش. عدد سبز یعنی آن خط کامل است.',
-    tutGiven: 'خانه‌های ستاره‌دار حتماً باید جزو مسیر باشند.',
     stars: 'ستاره',
-    offline: 'کاملاً آفلاین',
+    offline: 'بدون اینترنت بازی می‌شود',
     portraitOnly: 'لطفاً گوشی را عمودی نگه دار',
+    tut1: 'انگشتت را روی فلش سبز بگذار و تا فلش قرمز بکِش!',
+    tut2: 'ریل می‌تواند بپیچد! بکِش تا به فلش قرمز برسی.',
+    tut3: 'به عددها نگاه کن! هر عدد می‌گوید آن ردیف یا ستون چند ریل می‌خواهد.',
+    tut3b: 'عدد سبز یعنی آن خط کامل شده. همهٔ عددها را سبز کن!',
+    tut4: 'اوه! این ریل جای اشتباهی است. انگشتت را روی آن به عقب بکِش تا پاک شود.',
+    tut4b: 'آفرین! حالا با کمک عددها تا فلش قرمز برو.',
+    tutWrong: 'از این طرف نه! به عقب بکِش تا پاک شود و دوباره امتحان کن.',
+    tut5: 'خانهٔ ستاره‌دار حتماً باید روی مسیرت باشد. از روی ستاره رد شو!',
   },
 };
 
+const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
+
 export function useT() {
-  const { lang } = useSave();
   const t = (key, vars) => {
-    let s = dict[lang]?.[key] ?? dict.en[key] ?? key;
+    let s = dict[EDITION][key] ?? dict.en[key] ?? key;
     if (vars) for (const k in vars) s = s.replace(`{${k}}`, vars[k]);
     return s;
   };
-  t.lang = lang;
-  t.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  t.lang = EDITION;
+  t.dir = EDITION === 'fa' ? 'rtl' : 'ltr';
+  /** Numbers shown to the child (Persian digits in the Persian edition). */
+  t.n = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
   return t;
 }
+
+export const formatNumber = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));

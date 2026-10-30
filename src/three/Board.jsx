@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { getPieceGeometry, buildRoute } from './trackGeometry.js';
-import { clueTexture, starTexture } from './textures.js';
+import { clueTexture, starTexture, fingerTexture, ringTexture } from './textures.js';
 import Train, { TRAIN_LENGTH } from './Train.jsx';
 import { SIDE_VEC, pathConnections, stepOnto, dirBetween } from '../game/logic.js';
 
@@ -21,11 +21,19 @@ function CameraRig({ rows, cols }) {
     const aspect = size.width / Math.max(size.height, 1);
     const tilt = (16 * Math.PI) / 180;
     const f = Math.tan((camera.fov / 2) * (Math.PI / 180)) * 2;
-    const worldW = cols + 2.7;
-    const worldH = rows + 2.7;
-    const d = Math.max(worldH / f, worldW / (f * aspect)) * 1.04;
-    camera.position.set(0, d * Math.cos(tilt), d * Math.sin(tilt));
-    camera.lookAt(0, 0, 0);
+    // Everything we draw: board + entry/exit stubs + clue bubbles (right side and top).
+    // It is lopsided, so aim the camera at the middle of that box instead of the board centre.
+    const minX = -cols / 2 - 0.95;
+    const maxX = cols / 2 + 1.35;
+    const minZ = -rows / 2 - 1.3;
+    const maxZ = rows / 2 + 0.95;
+    const cx = (minX + maxX) / 2;
+    const cz = (minZ + maxZ) / 2;
+    const worldW = maxX - minX + 0.3;
+    const worldH = maxZ - minZ + 0.3;
+    const d = Math.max(worldH / f, worldW / (f * aspect));
+    camera.position.set(cx, d * Math.cos(tilt), cz + d * Math.sin(tilt));
+    camera.lookAt(cx, 0, cz);
     camera.updateProjectionMatrix();
   }, [camera, size.width, size.height, rows, cols]);
   return null;
@@ -120,6 +128,61 @@ function Clue({ n, state, x, z }) {
   );
 }
 
+const noRay = () => null; // overlays must never swallow the player's touches
+
+/** Pulsing ring that draws the eye to a number or a star. */
+function Pulse({ x, z, size = 0.9, y = 0.14 }) {
+  const ref = useRef();
+  const tex = useMemo(() => ringTexture(), []);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const k = 1 + 0.14 * Math.sin(clock.elapsedTime * 5);
+    ref.current.scale.set(k, k, k);
+  });
+  return (
+    <mesh ref={ref} position={[x, y, z]} rotation={[-Math.PI / 2, 0, 0]} raycast={noRay}>
+      <planeGeometry args={[size, size]} />
+      <meshBasicMaterial map={tex} transparent depthWrite={false} />
+    </mesh>
+  );
+}
+
+/** Animated finger that slides along the given cells (loops). */
+function GhostFinger({ level, ghost }) {
+  const ref = useRef();
+  const tex = useMemo(() => fingerTexture(), []);
+  const { rows, cols } = level;
+  const pts = useMemo(
+    () => ghost.cells.map((cell) => [(cell % cols) - (cols - 1) / 2, Math.floor(cell / cols) - (rows - 1) / 2]),
+    [ghost, rows, cols],
+  );
+  useFrame(({ clock }) => {
+    const m = ref.current;
+    if (!m || pts.length === 0) return;
+    const speed = ghost.kind === 'next' ? 1.1 : 1.6; // cells per second
+    const hold = 0.55;
+    const total = Math.max(1, pts.length - 1) / speed;
+    const cycle = total + hold * 2;
+    const tt = clock.elapsedTime % cycle;
+    let p = 0;
+    if (tt > hold) p = Math.min(1, (tt - hold) / total) * (pts.length - 1);
+    const i = Math.min(pts.length - 2, Math.floor(p));
+    const f = pts.length > 1 ? p - i : 0;
+    const a = pts[Math.max(0, i)];
+    const b = pts[Math.min(pts.length - 1, Math.max(0, i) + 1)];
+    const e = f * f * (3 - 2 * f);
+    m.position.set(a[0] + (b[0] - a[0]) * e, 0.5, a[1] + (b[1] - a[1]) * e);
+    const pressed = tt > hold * 0.4 && tt < cycle - hold * 0.4;
+    m.scale.setScalar(pressed ? 0.92 : 1.12);
+  });
+  return (
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} raycast={noRay} renderOrder={10}>
+      <planeGeometry args={[1.25, 1.25]} />
+      <meshBasicMaterial map={tex} transparent depthWrite={false} depthTest={false} />
+    </mesh>
+  );
+}
+
 function lineState(count, clue) {
   if (count === clue) return 'ok';
   if (count > clue) return 'over';
@@ -203,7 +266,7 @@ function RunController({ phase, route, runRef, onDone }) {
   return null;
 }
 
-function Scene({ level, path, pathRef, evalResult, phase, onPath, onRunDone }) {
+function Scene({ level, path, pathRef, evalResult, phase, coach, onPath, onRunDone }) {
   const { rows, cols } = level;
   const ox = (cols - 1) / 2;
   const oz = (rows - 1) / 2;
@@ -271,6 +334,22 @@ function Scene({ level, path, pathRef, evalResult, phase, onPath, onRunDone }) {
       {level.rowClues.map((n, r) => (
         <Clue key={'r' + r} n={n} state={lineState(evalResult.counts.rows[r], n)} x={cols / 2 + 0.95} z={r - oz} />
       ))}
+
+      {coach?.clues && (
+        <>
+          {level.colClues.map((_, c) => (
+            <Pulse key={'pc' + c} x={c - ox} z={-rows / 2 - 0.95} />
+          ))}
+          {level.rowClues.map((_, r) => (
+            <Pulse key={'pr' + r} x={cols / 2 + 0.95} z={r - oz} />
+          ))}
+        </>
+      )}
+      {coach?.star &&
+        level.given.map((g) => (
+          <Pulse key={'ps' + g} x={(g % cols) - ox} z={Math.floor(g / cols) - oz} size={1.1} />
+        ))}
+      {coach?.ghost && <GhostFinger key={coach.ghost.kind + coach.ghost.cells.join('-')} level={level} ghost={coach.ghost} />}
 
       <InputPlane level={level} pathRef={pathRef} onPath={onPath} enabled={phase === 'play'} />
 

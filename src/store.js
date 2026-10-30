@@ -1,14 +1,13 @@
 import { useSyncExternalStore } from 'react';
-import { START_HINTS, TOTAL_LEVELS } from './config.js';
+import { START_HINTS, TOTAL_LEVELS, TUTORIAL_LEVELS } from './config.js';
 
-const KEY = 'choochoopop.save.v1';
+const KEY = 'choochoopop.save.v2';
 const defaults = {
   unlocked: 1,
   stars: {},
   hints: START_HINTS,
   sound: true,
   vibrate: true,
-  lang: 'en',
 };
 
 function load() {
@@ -57,7 +56,8 @@ export function completeLevel(level, stars) {
     return {
       stars: { ...s.stars, [level]: Math.max(prev, stars) },
       unlocked: Math.min(TOTAL_LEVELS, Math.max(s.unlocked, level + 1)),
-      hints: first && level % 3 === 0 ? s.hints + 1 : s.hints,
+      // a free hint for every second level finished for the first time (after the tutorial)
+      hints: first && level > TUTORIAL_LEVELS && level % 2 === 0 ? s.hints + 1 : s.hints,
     };
   });
   return first;

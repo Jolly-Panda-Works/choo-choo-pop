@@ -1,0 +1,35 @@
+feat: kids edition (age 7) with 3x3 tutorial, 20 levels, EN/FA builds and new branding
+
+Gameplay
+- Replace the 10 old levels with a 20-level Part 1. Levels 1-5 are a guided
+  3x3 tutorial (drag, turns, numbers, erase a wrong rail, star tile) with an
+  animated finger, pulsing clue/star rings and short coach texts. Level 4 starts
+  with a deliberately wrong rail so the child learns to slide back.
+- Make difficulty honest: levels 6-20 are accepted only when the solver's search
+  node count falls inside a per-slot band (new solveStats()), so the curve only
+  goes up; boards grow from 3x4 to a max of 6x6 with helper star tiles.
+  Labels are now tutorial / easy / medium / hard.
+- Hints are free and no-penalty in the tutorial; +1 hint per 2 finished levels.
+- Camera now centres on the real content box (board + gates + clues).
+
+Editions
+- Build-time edition (VITE_EDITION): "en" = Choo Choo Pop, "fa" = هو هو چی چی
+  (bundled Vazirmatn, Persian digits, RTL). Language switch removed.
+- Android: -PEDITION=en|fa selects app name (src/edition-*/res) and applicationId
+  (com.jollypanda.choochoopop[.fa]); package renamed from com.catchybit.*.
+- CI builds both editions in a matrix; version via -PVERSION_CODE/-PVERSION_NAME.
+
+Kids safety (age 7)
+- Remove online update check, GitHub links and @capacitor/browser; no ads,
+  analytics or external links.
+
+Branding
+- New panda-conductor logo: launcher/adaptive/round icons, splash screens,
+  Play icon (store/play-icon-512.png) and home-screen logo.
+
+Docs/tests
+- test:levels checks uniqueness, tutorial rules, size/label monotonicity.
+- docs/revenue_model.py: first-year IAP/revenue scenario model; README rewritten.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BtXeB7aZJ6U1spPxsydJ7M

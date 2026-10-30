@@ -4,22 +4,38 @@ import { Stars } from './LevelSelect.jsx';
 import { useSave, completeLevel, spendHint } from '../store.js';
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS } from '../game/levels.js';
-import { initialPath, evaluate, applyHint } from '../game/logic.js';
+import { startPath, evaluate, applyHint } from '../game/logic.js';
+import { isTutorial, coachFor, tutorialIdleMs } from '../game/tutorial.js';
 import { sfx } from '../audio.js';
+import { TUTORIAL_LEVELS } from '../config.js';
 
 export default function Game({ levelNo, onLevels, onNext }) {
   const level = useMemo(() => getLevel(levelNo), [levelNo]);
   const save = useSave();
   const t = useT();
-  const [path, setPath] = useState(() => initialPath(level));
+  const [path, setPath] = useState(() => startPath(level));
   const [phase, setPhase] = useState('play'); // play | run | won
   const [hintsUsed, setHintsUsed] = useState(0);
   const [toast, setToast] = useState('');
   const [stars, setStars] = useState(3);
   const pathRef = useRef(path);
+  const tutorial = isTutorial(level);
+  const [idle, setIdle] = useState(false);
   const toastTimer = useRef();
 
   const result = useMemo(() => evaluate(level, path), [level, path]);
+
+  // tutorial coach: after a moment without a move the finger shows what to do next
+  useEffect(() => {
+    if (!tutorial || phase !== 'play') return undefined;
+    setIdle(false);
+    const timer = setTimeout(() => setIdle(true), tutorialIdleMs(level));
+    return () => clearTimeout(timer);
+  }, [tutorial, phase, path, level]);
+  const coach = useMemo(
+    () => (tutorial && phase === 'play' ? coachFor(level, path, idle) : null),
+    [tutorial, phase, level, path, idle],
+  );
 
   const say = useCallback((msg) => {
     setToast(msg);
@@ -47,15 +63,16 @@ export default function Game({ levelNo, onLevels, onNext }) {
   // solved -> train runs
   useEffect(() => {
     if (phase === 'play' && result.solved) {
-      setStars(hintsUsed === 0 ? 3 : hintsUsed === 1 ? 2 : 1);
+      setStars(tutorial || hintsUsed === 0 ? 3 : hintsUsed === 1 ? 2 : 1);
       setPhase('run');
       sfx.whistle();
     }
-  }, [result.solved, phase, hintsUsed]);
+  }, [result.solved, phase, hintsUsed, tutorial]);
 
   // reached the exit but numbers do not match
   useEffect(() => {
-    if (phase === 'play' && result.reachedExit && !result.solved) {
+    // (the tutorial coach already explains what went wrong)
+    if (phase === 'play' && !tutorial && result.reachedExit && !result.solved) {
       sfx.error();
       say(t('countsOff'));
     }
@@ -76,23 +93,24 @@ export default function Game({ levelNo, onLevels, onNext }) {
   const restart = () => {
     if (phase !== 'play') return;
     sfx.click();
-    commit(initialPath(level));
+    commit(startPath(level));
   };
   const hint = () => {
     if (phase !== 'play') return;
-    if (save.hints <= 0) {
+    if (!tutorial && save.hints <= 0) {
       sfx.error();
       say(t('noHints'));
       return;
     }
     sfx.hint();
-    spendHint();
-    setHintsUsed((n) => n + 1);
+    if (!tutorial) {
+      // hints are free while learning
+      spendHint();
+      setHintsUsed((n) => n + 1);
+    }
     commit(applyHint(level, path));
   };
 
-  const tut =
-    level.id === 1 ? 'tut1' : level.id === 2 ? 'tut2' : level.id === 3 ? 'tut3' : level.given.length && level.id === 10 ? 'tutGiven' : null;
   const lastLevel = levelNo >= levelCount;
 
   return (
@@ -105,16 +123,25 @@ export default function Game({ levelNo, onLevels, onNext }) {
         </button>
         <div className="title-block">
           <h2>
-            {t('level')} {levelNo}
+            {t('level')} {t.n(levelNo)}
           </h2>
           <span className={'diff d' + level.difficulty}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
         </div>
-        <span className="chip hint-chip">💡 {save.hints}</span>
+        <span className="chip hint-chip">💡 {t.n(save.hints)}</span>
       </header>
 
       <div className="board-wrap">
-        <Board level={level} path={path} pathRef={pathRef} evalResult={result} phase={phase} onPath={onPath} onRunDone={onRunDone} />
-        {tut && phase === 'play' && path.length <= 2 && <div className="bubble">{t(tut)}</div>}
+        <Board
+          level={level}
+          path={path}
+          pathRef={pathRef}
+          evalResult={result}
+          phase={phase}
+          coach={coach}
+          onPath={onPath}
+          onRunDone={onRunDone}
+        />
+        {coach && <div className="bubble" key={coach.text}>{t(coach.text)}</div>}
         {toast && <div className="toast">{toast}</div>}
       </div>
 
@@ -145,6 +172,7 @@ export default function Game({ levelNo, onLevels, onNext }) {
             <h3>{t('won')}</h3>
             <Stars n={stars} size={46} />
             {lastLevel && <p className="small">{t('allDone')}</p>}
+            {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
             <div className="modal-actions col">
               {!lastLevel && (
                 <button className="btn big yellow" onClick={onNext}>
@@ -156,7 +184,7 @@ export default function Game({ levelNo, onLevels, onNext }) {
                 onClick={() => {
                   setPhase('play');
                   setHintsUsed(0);
-                  commit(initialPath(level));
+                  commit(startPath(level));
                 }}
               >
                 {t('replay')}

@@ -1,0 +1,13 @@
+import { chromium } from 'file:///C:/Users/Ania/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+import {fileURLToPath} from 'node:url';
+const browser = await chromium.launch({headless:true,channel:'msedge'});
+const page = await browser.newPage({viewport:{width:360,height:640},deviceScaleFactor:3});
+await page.goto('http://127.0.0.1:5178');
+await page.waitForTimeout(2000);
+console.log(await page.locator('body').innerText());
+await page.screenshot({path:fileURLToPath(new URL('./game-home.png',import.meta.url))});
+await page.getByRole('button',{name:'Play',exact:true}).click();
+await page.waitForTimeout(1500);
+console.log(await page.locator('body').innerText());
+await page.screenshot({path:fileURLToPath(new URL('./game-level1.png',import.meta.url))});
+await browser.close();

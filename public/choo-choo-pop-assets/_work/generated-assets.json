@@ -1,0 +1,382 @@
+[
+  {
+    "index": 0,
+    "file": "resources/icon.png",
+    "width": 1024,
+    "height": 1024,
+    "alpha": false,
+    "prompt": "Adapt the reference into a FULL-BLEED square app icon: same joyful panda train conductor waving one paw, blue and gold locomotive, sky blue background. Remove the outer rounded gold frame entirely and extend illustration naturally to all four SQUARE corners. No text, no rounded icon corners, no hand gripping the lever. Simplify details slightly for small icon readability.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-f0674999-88c2-4b7a-b588-1997f665a307.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\resources\\icon.png"
+  },
+  {
+    "index": 1,
+    "file": "resources/icon-foreground.png",
+    "width": 1024,
+    "height": 1024,
+    "alpha": true,
+    "prompt": "Adaptive Android icon FOREGROUND layer ONLY: same smiling panda conductor and blue/gold locomotive as reference, isolated cutout, no border, no sky, no smoke far outside silhouette. Entire illustration MUST fit inside the central 66% diameter circle of the square canvas, leaving generous transparent padding all around. Waving paw preserved, no paw on lever. No text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-964ba212-39e3-44e2-a19c-090da639bcfe.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\resources\\icon-foreground.png"
+  },
+  {
+    "index": 2,
+    "file": "art/ui/logo.png",
+    "width": 1024,
+    "height": 512,
+    "alpha": true,
+    "prompt": "A polished horizontal game title logo, exact text 'Choo Choo Pop' in huge playful rounded readable lettering with yellow gold faces, warm orange bevels and deep navy edging. Small smiling reference panda conductor peeking above a little blue/gold locomotive integrated on left. Title is dominant and readable at mobile scale. Wide 2:1 composition, transparent outside silhouette, no rounded app border, no extra text, no hand on lever.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-923ba45f-1926-4835-9b80-86a60644471b.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\logo.png"
+  },
+  {
+    "index": 3,
+    "file": "store/feature-graphic.png",
+    "width": 1024,
+    "height": 500,
+    "alpha": false,
+    "prompt": "Google Play feature graphic, wide 1024x500 composition. Choo Choo Pop rail puzzle game. Exact title 'Choo Choo Pop' large playful yellow/orange lettering on left, cheerful reference panda conductor driving blue/gold locomotive on right. Colorful winding toy railway in soft grassy hills under clear blue sky. Navy/gold accents, green/coral/pastel supporting colors. Cohesive cartoon brand matching reference, no fake UI, no phone, no badges, no extra text, no hand on lever.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-7433e510-2c4a-4054-81ec-ddd58a9f6e29.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\store\\feature-graphic.png"
+  },
+  {
+    "index": 4,
+    "file": "art/train/engine.png",
+    "width": 512,
+    "height": 512,
+    "alpha": true,
+    "prompt": "Create one usable 2D game sprite: a navy-blue and golden-yellow toy steam locomotive viewed in EXACT ORTHOGRAPHIC VERTICAL TOP-DOWN PLAN VIEW. Camera directly above looking straight down 90 degrees at the roof. This is a map token/roof plan, NOT an isometric illustration. Longitudinal axis is EXACTLY HORIZONTAL, front faces RIGHT. Left-right axis horizontal and perfectly symmetric across horizontal centerline. From left to right: little rear coupler, rounded rectangular navy cab ROOF with golden trim, shorter blue boiler TOP with two gold bands, small circular golden dome, circular gold-rimmed chimney opening seen as PERFECT CIRCLE, small front gold bumper. Only roofs and tops visible; wheels may peek equally from both sides as short dark rectangular tabs, NO circular side wheel faces, NO windows on side walls, NO cab side walls, NO panda face or side-facing headlamp. Polished friendly cartoon game art with rounded blue/gold forms and clean navy edging, cream tiny highlights, matching Choo Choo Pop brand. Isolated transparent background, centered512x512 square with generous clear space. Entire vehicle has horizontal footprint approx440px long and180px wide, no tracks, no smoke, no words, no frame.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-916ca9ac-8734-45ec-867e-aaac2c3216fb.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\train\\engine.png"
+  },
+  {
+    "index": 5,
+    "file": "art/train/wagon-blue.png",
+    "width": 512,
+    "height": 512,
+    "alpha": true,
+    "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: navy blue with bright sky-blue panels ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-c1b2e860-12f6-4a3f-a5e3-b85d8a61a3ec.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\train\\wagon-blue.png"
+  },
+  {
+    "index": 6,
+    "file": "art/train/wagon-yellow.png",
+    "width": 512,
+    "height": 512,
+    "alpha": true,
+    "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: sunny yellow with navy accents ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-9e0d01ce-e702-48fb-b100-f6c182e17077.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\train\\wagon-yellow.png"
+  },
+  {
+    "index": 7,
+    "file": "art/train/wagon-green.png",
+    "width": 512,
+    "height": 512,
+    "alpha": true,
+    "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: grassy green with navy accents ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-f786e2f7-c210-4cc0-944b-b27fe45918af.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\train\\wagon-green.png"
+  },
+  {
+    "index": 8,
+    "file": "art/train/smoke.png",
+    "width": 128,
+    "height": 128,
+    "alpha": true,
+    "prompt": "One soft fluffy rounded cream-white steam puff particle, gentle warm shading like reference smoke, center opaque fading softly to transparent wispy edges, small round silhouette, no hard outlines, no locomotive, no face, no floor shadow, single centered sprite.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-70a4bc5e-f4df-475f-95f4-8e5252372432.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\train\\smoke.png"
+  },
+  {
+    "index": 9,
+    "file": "art/track/straight.png",
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "prompt": "One modular straight toy railway tile sprite in STRICT TOP DOWN orthographic view: two parallel silver metal rails run horizontally from exact left edge to exact right edge, at y=38% and y=62%, laid over evenly spaced rounded brown wooden sleepers. Outer sleeper width 42% of canvas height. Clean functional game asset, square transparent canvas, no grass, no ground, no perspective, no border, no text, no train.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-1acc0d2d-699c-4a6b-9672-f7ed4e0a34c3.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\track\\straight.png"
+  },
+  {
+    "index": 10,
+    "file": "art/track/curve.png",
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "prompt": "One modular quarter-circle railway tile sprite STRICT TOP DOWN orthographic view. Track centerline connects LEFT edge midpoint to TOP edge midpoint with a smooth 90 degree turn, two continuous parallel silver rails spaced 24% of tile width, rounded brown wooden sleepers perpendicular to curve, same gauge as straight track. Arc center at TOP LEFT corner, centerline radius half tile width. Track ends cut flush at left and top canvas edges. Square transparent canvas, no ground, no text, no train, no perspective.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-9fc147ee-4698-487c-b9f2-deb5a84f87b6.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\track\\curve.png"
+  },
+  {
+    "index": 11,
+    "file": "art/track/stub.png",
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "prompt": "Single short entry/exit railway connector sprite in STRICT TOP DOWN view: two parallel silver rails horizontally from exact left canvas edge to center of square canvas, at y38% and62%, over three rounded brown sleepers. Same gauge as modular straight rail, transparent right half, no buffer stop, no ground, no text, no train, no perspective.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-b5fbddd1-fbbc-4e90-a116-019b9dcbddb2.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\track\\stub.png"
+  },
+  {
+    "index": 12,
+    "file": "art/tiles/grass-a.png",
+    "width": 256,
+    "height": 256,
+    "alpha": false,
+    "prompt": "Seamless perfectly tileable flat TOP-DOWN grass texture for a cheerful mobile train puzzle. Main color #8EE07A, very subtle sparse soft rounded lighter/darker grass tufts. Uniform lighting, no shadows at edges, edge-to-edge continuous texture, no tile border, no soil, no flowers, no perspective, no text. Calm low-detail texture so rails remain readable.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-33e88ef2-add7-4d7a-811a-46ac78d104da.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\tiles\\grass-a.png"
+  },
+  {
+    "index": 13,
+    "file": "art/tiles/grass-b.png",
+    "width": 256,
+    "height": 256,
+    "alpha": false,
+    "prompt": "Seamless perfectly tileable flat TOP-DOWN grass texture alternate B for cheerful mobile train puzzle. Main color #7FD46C slightly darker grassy green, subtle sparse soft rounded lighter/darker grass tufts. Uniform lighting, no shadows at edges, edge-to-edge continuous texture, no tile border, no soil, no flowers, no perspective, no text. Calm low detail.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-85707cfb-6ec2-49f1-b777-4235951e8a20.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\tiles\\grass-b.png"
+  },
+  {
+    "index": 14,
+    "file": "art/tiles/ground-laid.png",
+    "width": 256,
+    "height": 256,
+    "alpha": false,
+    "prompt": "Seamless perfectly tileable TOP-DOWN warm pale sandy soil texture for underneath toy railway, color #F7E1A8 with a few tiny rounded light brown grain speckles. Very subtle and low contrast, flat uniform lighting, no rails, no sleepers, no perspective, no border, no grass, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-0d1d49c2-cbd2-4d52-a56d-92381878c325.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\tiles\\ground-laid.png"
+  },
+  {
+    "index": 15,
+    "file": "art/tiles/star.png",
+    "width": 128,
+    "height": 128,
+    "alpha": true,
+    "prompt": "One centered golden five-point star collectible marker, happy polished rounded cartoon style matching reference locomotive gold, thick soft navy-gold edge, warm orange lower shading, small cream highlight. Symmetrical clear silhouette, no face, no sparkles outside star, no text, transparent cutout.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-b7f79f94-6114-4f9c-88dd-43944d97c373.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\tiles\\star.png"
+  },
+  {
+    "index": 16,
+    "file": "art/gates/entry.png",
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "prompt": "One railway entrance tunnel game sprite in EXACT VERTICAL TOP-DOWN ORTHOGRAPHIC PLAN VIEW,90degree overhead camera, roof plan like the supplied top-down train reference. A compact rounded rectangular green ROOF with a warm golden border and navy edging, a LARGE clear lime-green arrow pointing RIGHT on a contrasting cream circular plaque lying FLAT on the roof. Little parallel golden roof ribs. Small cream platform strips along TOP and BOTTOM edges. This is a horizontal tunnel/station through which a train travels LEFT-to-RIGHT. Perfectly symmetrical across horizontal centerline, rectangular footprint approx180x150 in a256x256 transparent square. We see ONLY THE ROOF from directly above: NO arch front elevation, NO visible doorway, NO side walls, NO facade, NO horizon, NO isometric perspective. Polished rounded cartoon finish and blue/gold accents matching reference train. No words, no train, no panda, no track extending out, no ground plane, no shadow outside sprite.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-e4d6aba8-455c-455e-9f77-ceeec2aead32.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\gates\\entry.png"
+  },
+  {
+    "index": 17,
+    "file": "art/gates/exit.png",
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "prompt": "One railway destination station game sprite in EXACT VERTICAL TOP-DOWN ORTHOGRAPHIC PLAN VIEW,90degree overhead camera, roof plan like the supplied top-down train reference. A compact rounded rectangular coral red ROOF with a warm golden border and navy edging, a LARGE clear red arrow pointing RIGHT on a contrasting cream circular plaque lying FLAT on the roof. Little parallel golden roof ribs. Small cream platform strips along TOP and BOTTOM edges. This is a horizontal tunnel/station through which a train travels LEFT-to-RIGHT. Perfectly symmetrical across horizontal centerline, rectangular footprint approx180x150 in a256x256 transparent square. We see ONLY THE ROOF from directly above: NO arch front elevation, NO visible doorway, NO side walls, NO facade, NO horizon, NO isometric perspective. Polished rounded cartoon finish and blue/gold accents matching reference train. No words, no train, no panda, no track extending out, no ground plane, no shadow outside sprite.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-a20815da-8aa4-4b02-900a-3789d764e4cc.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\gates\\exit.png"
+  },
+  {
+    "index": 18,
+    "file": "art/bg/sky.png",
+    "width": 1080,
+    "height": 2400,
+    "alpha": false,
+    "prompt": "Portrait 1080x2400 mobile game sky background. Bright cheerful sky-blue gradient #8FD6FF, deeper clear blue at top, pale near bottom, a few soft cream-white rounded clouds confined to top20% and far side edges, large clean open center for UI and game board. Same soft playful cartoon atmosphere as reference, no panda, no locomotive, no hills, no text, no border, no sun face.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-03947755-dd40-476a-9c75-459ac8aabcf9.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\bg\\sky.png"
+  },
+  {
+    "index": 19,
+    "file": "art/bg/hills.png",
+    "width": 1080,
+    "height": 600,
+    "alpha": true,
+    "prompt": "Wide horizontal foreground strip of soft overlapping rolling green hills, rounded cheerful cartoon shapes, fresh grassy greens #8EE07A and #7FD46C, pale mint distant hill shapes, minimal tiny tufts, bottom edge filled green, top edge transparent silhouette, no sky, no train, no buildings, no text. Designed along bottom of portrait train puzzle screen, wide 1.8:1 composition.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-7a8915dd-db38-42d0-978a-adf246db33ac.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\bg\\hills.png"
+  },
+  {
+    "index": 20,
+    "file": "art/bg/cloud-1.png",
+    "width": 384,
+    "height": 256,
+    "alpha": true,
+    "prompt": "Single small fluffy cartoon cloud sprite, three broad rounded cream-white lobes, gentle lavender/cream underside shading, like reference train smoke but horizontal cloud silhouette, soft clean edges, transparent cutout, no shadow outside, no face, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-23901814-4a81-496f-8b0e-a5e95f84ed50.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\bg\\cloud-1.png"
+  },
+  {
+    "index": 21,
+    "file": "art/bg/cloud-2.png",
+    "width": 384,
+    "height": 256,
+    "alpha": true,
+    "prompt": "Single medium fluffy cartoon cloud sprite, five rounded cream-white lobes with tall central dome and two low side lobes, gentle pale lavender underside, horizontal silhouette, soft clean edges matching reference, transparent cutout, no face, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-caa961ce-932b-4c92-b579-96f5862ae0fc.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\bg\\cloud-2.png"
+  },
+  {
+    "index": 22,
+    "file": "art/bg/cloud-3.png",
+    "width": 384,
+    "height": 256,
+    "alpha": true,
+    "prompt": "Single elongated fluffy cartoon cloud sprite, low wide asymmetric grouping of six cream-white round lobes, gentle pale lavender underside shading, soft clean edges matching reference sky, transparent cutout, no face, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-05a9a982-294d-4471-af6c-adf5eeaa827e.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\bg\\cloud-3.png"
+  },
+  {
+    "index": 23,
+    "file": "art/deco/tree.png",
+    "width": 384,
+    "height": 512,
+    "alpha": true,
+    "prompt": "Single small decorative cartoon tree sprite for cheerful railway puzzle border, rounded lush grass-green crown with three bulbous clusters, short warm brown trunk, soft golden highlights, simple polished reference-matching shading, entire tree visible, isolated transparent cutout, no ground platform, no sky, no face, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-4b032e3f-4717-474e-802a-b39af9b4dd46.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\deco\\tree.png"
+  },
+  {
+    "index": 24,
+    "file": "art/deco/flower.png",
+    "width": 128,
+    "height": 128,
+    "alpha": true,
+    "prompt": "One cheerful rounded coral-pink daisy flower with five thick rounded petals, yellow circular center, short green stem and two small leaves. Polished soft cartoon shading, clean readable mobile game sprite, isolated transparent cutout, no face, no text, no ground.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-cd891f02-0e56-431d-97bc-f39b016f3fa4.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\deco\\flower.png"
+  },
+  {
+    "index": 25,
+    "file": "art/deco/bush.png",
+    "width": 256,
+    "height": 192,
+    "alpha": true,
+    "prompt": "One small rounded grassy-green cartoon bush sprite, three overlapping round leafy clumps, soft light-green highlights, a few simple tiny leaf marks, polished mobile game art matching reference palette, isolated transparent cutout, no ground slab, no flower, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-c35d4b2a-feee-4a21-9dae-a017c63d62b4.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\deco\\bush.png"
+  },
+  {
+    "index": 26,
+    "file": "art/ui/star-on.png",
+    "width": 128,
+    "height": 128,
+    "alpha": true,
+    "prompt": "Single earned rating star UI icon: plump rounded five-point golden yellow star, warm orange beveled edge and soft navy outline, glossy cream highlight, reference locomotive gold style, clean symmetrical silhouette centered with padding, no face, no text, transparent.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-6dd38f6b-9144-4f01-8f29-ab2e58e5f782.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\star-on.png"
+  },
+  {
+    "index": 27,
+    "file": "art/ui/star-off.png",
+    "width": 128,
+    "height": 128,
+    "alpha": true,
+    "prompt": "Single unearned rating star UI icon: plump rounded five-point star, muted pale blue-gray fill, slightly darker slate-blue beveled edge and soft navy outline, small subtle highlight. Clear symmetrical silhouette centered with padding, no face, no text, transparent.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-ab7cb752-7362-4050-8b37-ee033f933ca1.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\star-off.png"
+  },
+  {
+    "index": 28,
+    "file": "art/ui/lock.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game LOCK icon: round friendly golden padlock, blue-gray rounded shackle, simple dark keyhole, thick rounded navy outline, bold clear silhouette readable at96px, polished cartoon style matching reference, centered transparent cutout, no button backing, no words.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-81c4b98b-65e4-4995-b5e8-7cbe444f4b33.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\lock.png"
+  },
+  {
+    "index": 29,
+    "file": "art/ui/bulb.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game HINT icon: bright yellow light bulb, rounded navy base, simple cream highlight, three short gold light rays, thick rounded navy outline, bold readable96px icon, polished cartoon style matching reference, centered transparent cutout, no button backing, no words.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-2b07e3a0-0a08-4f9f-857f-0f422c53a423.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\bulb.png"
+  },
+  {
+    "index": 30,
+    "file": "art/ui/undo.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game UNDO icon: one thick curved blue arrow bending back toward LEFT, obvious left-pointing arrowhead, broad rounded edges, navy outline, soft light-blue highlight, minimal clean shape readable96px, transparent cutout, no button backing, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-5fb01f5b-86c1-4410-839f-70bc44d5e55c.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\undo.png"
+  },
+  {
+    "index": 31,
+    "file": "art/ui/restart.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game RESTART icon: one bold almost complete circular clockwise blue arrow, clear single arrowhead near top-right and small gap, thick rounded stroke, navy outline, sky-blue highlight, clean readable96px silhouette, transparent cutout, no button backing, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-7cee13ac-b995-4d78-98c0-592dc94fd060.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\restart.png"
+  },
+  {
+    "index": 32,
+    "file": "art/ui/back.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game BACK icon: broad simple LEFT pointing blue arrow with short horizontal shaft, rounded corners, thick navy outline, light sky-blue highlight and soft cartoon bevel, clear96px silhouette, centered transparent cutout, no button backing, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-0d876136-dea7-4f1f-bed0-7448261a9685.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\back.png"
+  },
+  {
+    "index": 33,
+    "file": "art/ui/settings.png",
+    "width": 96,
+    "height": 96,
+    "alpha": true,
+    "prompt": "Single mobile game SETTINGS icon: one rounded blue gear with six chunky rounded teeth, circular cream center hole, thick navy outline, sky-blue bevel highlight, symmetrical clean readable96px icon, centered transparent cutout, no button backing, no text.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-8a73f1e5-bed2-45b6-9e20-aa3257e44095.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\settings.png"
+  },
+  {
+    "index": 34,
+    "file": "art/ui/button-yellow.png",
+    "width": 384,
+    "height": 128,
+    "alpha": true,
+    "prompt": "Single blank horizontal yellow UI button designed as9-slice source: wide rounded rectangle, flat uniform golden-yellow center #FFD43B, thin warm orange rim, darker orange bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-83d3bacb-53c3-40df-9cd4-289eafd50a99.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\button-yellow.png"
+  },
+  {
+    "index": 35,
+    "file": "art/ui/button-blue.png",
+    "width": 384,
+    "height": 128,
+    "alpha": true,
+    "prompt": "Single blank horizontal sky-blue UI button designed as9-slice source: wide rounded rectangle, flat uniform sky-blue center #4DABF7, thin navy rim, darker blue bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-f8d4877d-c2e6-4b8b-b60b-cb1e6684706b.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\button-blue.png"
+  },
+  {
+    "index": 36,
+    "file": "art/ui/button-coral.png",
+    "width": 384,
+    "height": 128,
+    "alpha": true,
+    "prompt": "Single blank horizontal coral UI button designed as9-slice source: wide rounded rectangle, flat uniform coral center #FF6B6B, thin warm dark-coral rim, darker red bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-8635e915-971f-47aa-810e-aaefa84cd92a.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\art\\ui\\button-coral.png"
+  },
+  {
+    "index": 37,
+    "file": "resources/splash.png",
+    "width": 2732,
+    "height": 2732,
+    "alpha": false,
+    "prompt": "Create square mobile game SPLASH SCREEN for Choo Choo Pop. Use the supplied approved transparent title logo EXACTLY as the central logo: same panda conductor, blue/gold locomotive and readable 'Choo Choo Pop' lettering. Place complete logo centered both horizontally and vertically occupying about45% of canvas width with huge even empty space around it. Background must be UNIFORM FLAT SOLID sky blue #8FD6FF, no gradient, no clouds outside logo, no scenery, no vignette, no rounded frame, no loading indicators, no extra text, no hand on lever. Target2732x2732 square. The mark is small centered suitable for splash screen safe zones.",
+    "src": "C:\\Users\\Ania\\.codex\\generated_images\\01a187e9-10cb-7461-a5e7-6cb4409cf40c\\exec-4671a7ce-f5c3-4b0c-940f-8c9a1c8fea1c.png",
+    "dst": "F:\\Jolly Panda Studio\\- Socials Media Items\\Images\\choo-choo-pop-assets\\resources\\splash.png"
+  }
+]

@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Choo Choo Pop</string>
-    <string name="title_activity_main">Choo Choo Pop</string>
-    <string name="package_name">com.catchybit.choochoopop</string>
-    <string name="custom_url_scheme">com.catchybit.choochoopop</string>
+    <!-- app_name / title_activity_main come from src/edition-en or src/edition-fa -->
+    <string name="package_name">com.jollypanda.choochoopop</string>
+    <string name="custom_url_scheme">com.jollypanda.choochoopop</string>
 </resources>

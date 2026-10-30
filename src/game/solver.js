@@ -1,10 +1,12 @@
 import { DR, DC } from './logic.js';
 
 /**
- * Counts distinct valid tracks (stops counting at `limit`).
+ * Counts distinct valid tracks (stops counting at `limit`) and how many search
+ * nodes that took - the node count is our difficulty yardstick when building levels
+ * (more nodes = more dead ends a player could wander into).
  * level: { rows, cols, entry:{r,c}, exit:{r,c}, rowClues, colClues, given:[idx] }
  */
-export function countSolutions(level, limit = 2) {
+export function solveStats(level, limit = 2) {
   const { rows, cols, rowClues, colClues } = level;
   const N = rows * cols;
   const start = level.entry.r * cols + level.entry.c;
@@ -17,6 +19,7 @@ export function countSolutions(level, limit = 2) {
   const givenSet = new Set(level.given);
   let givenLeft = givenSet.size;
   let found = 0;
+  let nodes = 0;
 
   const mark = (i, v) => {
     const r = Math.floor(i / cols);
@@ -41,13 +44,13 @@ export function countSolutions(level, limit = 2) {
     return true;
   };
 
+  // can the head still get to the exit AND every star tile that is not on the track yet?
   const reach = (from) => {
     const seen = new Uint8Array(N);
     const st = [from];
     seen[from] = 1;
     while (st.length) {
       const cur = st.pop();
-      if (cur === goal) return true;
       const r = Math.floor(cur / cols);
       const c = cur % cols;
       for (let d = 0; d < 4; d++) {
@@ -61,10 +64,13 @@ export function countSolutions(level, limit = 2) {
         }
       }
     }
-    return false;
+    if (!seen[goal] && from !== goal) return false;
+    for (const g of givenSet) if (!visited[g] && !seen[g]) return false;
+    return true;
   };
 
   const dfs = (cur) => {
+    nodes++;
     if (found >= limit) return;
     if (cur === goal) {
       if (givenLeft !== 0) return;
@@ -91,5 +97,7 @@ export function countSolutions(level, limit = 2) {
   mark(start, true);
   if (feasible()) dfs(start);
   mark(start, false);
-  return found;
+  return { found, nodes };
 }
+
+export const countSolutions = (level, limit = 2) => solveStats(level, limit).found;

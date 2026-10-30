@@ -1,0 +1,419 @@
+{
+  "game": "Choo Choo Pop",
+  "date": "2026-10-30",
+  "notes": [
+    "PNG sprites replace the GLB requests as explicitly selected by user.",
+    "Engine, wagons, entry and exit are strict top-down.",
+    "Artwork only; source application was not modified.",
+    "Audio not included; this request covers image assets.",
+    "Generated tile art still requires visual alignment checks when integrated with the game board.",
+    "Button nine-slice inset suggestion: 48px on each side at delivered 384x128 size."
+  ],
+  "assets": [
+    {
+      "file": "resources/icon.png",
+      "width": 1024,
+      "height": 1024,
+      "transparent": false,
+      "bytes": 306686,
+      "tool": "imagegen",
+      "prompt": "Adapt the reference into a FULL-BLEED square app icon: same joyful panda train conductor waving one paw, blue and gold locomotive, sky blue background. Remove the outer rounded gold frame entirely and extend illustration naturally to all four SQUARE corners. No text, no rounded icon corners, no hand gripping the lever. Simplify details slightly for small icon readability."
+    },
+    {
+      "file": "resources/icon-foreground.png",
+      "width": 1024,
+      "height": 1024,
+      "transparent": true,
+      "bytes": 90883,
+      "tool": "imagegen",
+      "prompt": "Adaptive Android icon FOREGROUND layer ONLY: same smiling panda conductor and blue/gold locomotive as reference, isolated cutout, no border, no sky, no smoke far outside silhouette. Entire illustration MUST fit inside the central 66% diameter circle of the square canvas, leaving generous transparent padding all around. Waving paw preserved, no paw on lever. No text."
+    },
+    {
+      "file": "art/ui/logo.png",
+      "width": 1024,
+      "height": 512,
+      "transparent": true,
+      "bytes": 180996,
+      "tool": "imagegen",
+      "prompt": "A polished horizontal game title logo, exact text 'Choo Choo Pop' in huge playful rounded readable lettering with yellow gold faces, warm orange bevels and deep navy edging. Small smiling reference panda conductor peeking above a little blue/gold locomotive integrated on left. Title is dominant and readable at mobile scale. Wide 2:1 composition, transparent outside silhouette, no rounded app border, no extra text, no hand on lever."
+    },
+    {
+      "file": "store/feature-graphic.png",
+      "width": 1024,
+      "height": 500,
+      "transparent": false,
+      "bytes": 203152,
+      "tool": "imagegen",
+      "prompt": "Google Play feature graphic, wide 1024x500 composition. Choo Choo Pop rail puzzle game. Exact title 'Choo Choo Pop' large playful yellow/orange lettering on left, cheerful reference panda conductor driving blue/gold locomotive on right. Colorful winding toy railway in soft grassy hills under clear blue sky. Navy/gold accents, green/coral/pastel supporting colors. Cohesive cartoon brand matching reference, no fake UI, no phone, no badges, no extra text, no hand on lever."
+    },
+    {
+      "file": "art/train/engine.png",
+      "width": 512,
+      "height": 512,
+      "transparent": true,
+      "bytes": 33567,
+      "tool": "imagegen",
+      "prompt": "Create one usable 2D game sprite: a navy-blue and golden-yellow toy steam locomotive viewed in EXACT ORTHOGRAPHIC VERTICAL TOP-DOWN PLAN VIEW. Camera directly above looking straight down 90 degrees at the roof. This is a map token/roof plan, NOT an isometric illustration. Longitudinal axis is EXACTLY HORIZONTAL, front faces RIGHT. Left-right axis horizontal and perfectly symmetric across horizontal centerline. From left to right: little rear coupler, rounded rectangular navy cab ROOF with golden trim, shorter blue boiler TOP with two gold bands, small circular golden dome, circular gold-rimmed chimney opening seen as PERFECT CIRCLE, small front gold bumper. Only roofs and tops visible; wheels may peek equally from both sides as short dark rectangular tabs, NO circular side wheel faces, NO windows on side walls, NO cab side walls, NO panda face or side-facing headlamp. Polished friendly cartoon game art with rounded blue/gold forms and clean navy edging, cream tiny highlights, matching Choo Choo Pop brand. Isolated transparent background, centered512x512 square with generous clear space. Entire vehicle has horizontal footprint approx440px long and180px wide, no tracks, no smoke, no words, no frame."
+    },
+    {
+      "file": "art/train/wagon-blue.png",
+      "width": 512,
+      "height": 512,
+      "transparent": true,
+      "bytes": 30163,
+      "tool": "imagegen",
+      "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: navy blue with bright sky-blue panels ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only."
+    },
+    {
+      "file": "art/train/wagon-yellow.png",
+      "width": 512,
+      "height": 512,
+      "transparent": true,
+      "bytes": 31706,
+      "tool": "imagegen",
+      "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: sunny yellow with navy accents ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only."
+    },
+    {
+      "file": "art/train/wagon-green.png",
+      "width": 512,
+      "height": 512,
+      "transparent": true,
+      "bytes": 28323,
+      "tool": "imagegen",
+      "prompt": "Create one passenger WAGON sprite matching the reference TOP DOWN locomotive. Exact same overhead camera and rendering. Replace locomotive with ONE simple rounded rectangular wagon: grassy green with navy accents ROOF with gold rim, two slim golden cross bands, one small rectangular gold roof ventilation hatch, little gold coupler extending from midpoint of LEFT and RIGHT ends. Long axis EXACTLY HORIZONTAL. Perfectly symmetric top-down roof plan across horizontal centerline. Camera DIRECTLY ABOVE, looking straight DOWN90degrees: ONLY ROOF and tops visible. No side walls, no windows visible, no circular side wheel faces, no engine parts, no chimney, no panda, no words. Small dark wheel tabs may peek equally from both long sides. Transparent background and generous padding, entire wagon centered in square512x512. Same footprint proportions as engine (about440x180), no ground, no shadow outside silhouette. One asset only."
+    },
+    {
+      "file": "art/train/smoke.png",
+      "width": 128,
+      "height": 128,
+      "transparent": true,
+      "bytes": 5787,
+      "tool": "imagegen",
+      "prompt": "One soft fluffy rounded cream-white steam puff particle, gentle warm shading like reference smoke, center opaque fading softly to transparent wispy edges, small round silhouette, no hard outlines, no locomotive, no face, no floor shadow, single centered sprite."
+    },
+    {
+      "file": "art/track/straight.png",
+      "width": 256,
+      "height": 256,
+      "transparent": true,
+      "bytes": 14987,
+      "tool": "imagegen",
+      "prompt": "One modular straight toy railway tile sprite in STRICT TOP DOWN orthographic view: two parallel silver metal rails run horizontally from exact left edge to exact right edge, at y=38% and y=62%, laid over evenly spaced rounded brown wooden sleepers. Outer sleeper width 42% of canvas height. Clean functional game asset, square transparent canvas, no grass, no ground, no perspective, no border, no text, no train."
+    },
+    {
+      "file": "art/track/curve.png",
+      "width": 256,
+      "height": 256,
+      "transparent": true,
+      "bytes": 19354,
+      "tool": "imagegen",
+      "prompt": "One modular quarter-circle railway tile sprite STRICT TOP DOWN orthographic view. Track centerline connects LEFT edge midpoint to TOP edge midpoint with a smooth 90 degree turn, two continuous parallel silver rails spaced 24% of tile width, rounded brown wooden sleepers perpendicular to curve, same gauge as straight track. Arc center at TOP LEFT corner, centerline radius half tile width. Track ends cut flush at left and top canvas edges. Square transparent canvas, no ground, no text, no train, no perspective."
+    },
+    {
+      "file": "art/track/stub.png",
+      "width": 256,
+      "height": 256,
+      "transparent": true,
+      "bytes": 9131,
+      "tool": "imagegen",
+      "prompt": "Single short entry/exit railway connector sprite in STRICT TOP DOWN view: two parallel silver rails horizontally from exact left canvas edge to center of square canvas, at y38% and62%, over three rounded brown sleepers. Same gauge as modular straight rail, transparent right half, no buffer stop, no ground, no text, no train, no perspective."
+    },
+    {
+      "file": "art/tiles/grass-a.png",
+      "width": 256,
+      "height": 256,
+      "transparent": false,
+      "bytes": 42966,
+      "tool": "imagegen",
+      "prompt": "Seamless perfectly tileable flat TOP-DOWN grass texture for a cheerful mobile train puzzle. Main color #8EE07A, very subtle sparse soft rounded lighter/darker grass tufts. Uniform lighting, no shadows at edges, edge-to-edge continuous texture, no tile border, no soil, no flowers, no perspective, no text. Calm low-detail texture so rails remain readable."
+    },
+    {
+      "file": "art/tiles/grass-b.png",
+      "width": 256,
+      "height": 256,
+      "transparent": false,
+      "bytes": 42320,
+      "tool": "imagegen",
+      "prompt": "Seamless perfectly tileable flat TOP-DOWN grass texture alternate B for cheerful mobile train puzzle. Main color #7FD46C slightly darker grassy green, subtle sparse soft rounded lighter/darker grass tufts. Uniform lighting, no shadows at edges, edge-to-edge continuous texture, no tile border, no soil, no flowers, no perspective, no text. Calm low detail."
+    },
+    {
+      "file": "art/tiles/ground-laid.png",
+      "width": 256,
+      "height": 256,
+      "transparent": false,
+      "bytes": 44145,
+      "tool": "imagegen",
+      "prompt": "Seamless perfectly tileable TOP-DOWN warm pale sandy soil texture for underneath toy railway, color #F7E1A8 with a few tiny rounded light brown grain speckles. Very subtle and low contrast, flat uniform lighting, no rails, no sleepers, no perspective, no border, no grass, no text."
+    },
+    {
+      "file": "art/tiles/star.png",
+      "width": 128,
+      "height": 128,
+      "transparent": true,
+      "bytes": 8534,
+      "tool": "imagegen",
+      "prompt": "One centered golden five-point star collectible marker, happy polished rounded cartoon style matching reference locomotive gold, thick soft navy-gold edge, warm orange lower shading, small cream highlight. Symmetrical clear silhouette, no face, no sparkles outside star, no text, transparent cutout."
+    },
+    {
+      "file": "art/gates/entry.png",
+      "width": 256,
+      "height": 256,
+      "transparent": true,
+      "bytes": 13654,
+      "tool": "imagegen",
+      "prompt": "One railway entrance tunnel game sprite in EXACT VERTICAL TOP-DOWN ORTHOGRAPHIC PLAN VIEW,90degree overhead camera, roof plan like the supplied top-down train reference. A compact rounded rectangular green ROOF with a warm golden border and navy edging, a LARGE clear lime-green arrow pointing RIGHT on a contrasting cream circular plaque lying FLAT on the roof. Little parallel golden roof ribs. Small cream platform strips along TOP and BOTTOM edges. This is a horizontal tunnel/station through which a train travels LEFT-to-RIGHT. Perfectly symmetrical across horizontal centerline, rectangular footprint approx180x150 in a256x256 transparent square. We see ONLY THE ROOF from directly above: NO arch front elevation, NO visible doorway, NO side walls, NO facade, NO horizon, NO isometric perspective. Polished rounded cartoon finish and blue/gold accents matching reference train. No words, no train, no panda, no track extending out, no ground plane, no shadow outside sprite."
+    },
+    {
+      "file": "art/gates/exit.png",
+      "width": 256,
+      "height": 256,
+      "transparent": true,
+      "bytes": 12389,
+      "tool": "imagegen",
+      "prompt": "One railway destination station game sprite in EXACT VERTICAL TOP-DOWN ORTHOGRAPHIC PLAN VIEW,90degree overhead camera, roof plan like the supplied top-down train reference. A compact rounded rectangular coral red ROOF with a warm golden border and navy edging, a LARGE clear red arrow pointing RIGHT on a contrasting cream circular plaque lying FLAT on the roof. Little parallel golden roof ribs. Small cream platform strips along TOP and BOTTOM edges. This is a horizontal tunnel/station through which a train travels LEFT-to-RIGHT. Perfectly symmetrical across horizontal centerline, rectangular footprint approx180x150 in a256x256 transparent square. We see ONLY THE ROOF from directly above: NO arch front elevation, NO visible doorway, NO side walls, NO facade, NO horizon, NO isometric perspective. Polished rounded cartoon finish and blue/gold accents matching reference train. No words, no train, no panda, no track extending out, no ground plane, no shadow outside sprite."
+    },
+    {
+      "file": "art/bg/sky.png",
+      "width": 1080,
+      "height": 2400,
+      "transparent": false,
+      "bytes": 477851,
+      "tool": "imagegen",
+      "prompt": "Portrait 1080x2400 mobile game sky background. Bright cheerful sky-blue gradient #8FD6FF, deeper clear blue at top, pale near bottom, a few soft cream-white rounded clouds confined to top20% and far side edges, large clean open center for UI and game board. Same soft playful cartoon atmosphere as reference, no panda, no locomotive, no hills, no text, no border, no sun face."
+    },
+    {
+      "file": "art/bg/hills.png",
+      "width": 1080,
+      "height": 600,
+      "transparent": true,
+      "bytes": 64697,
+      "tool": "imagegen",
+      "prompt": "Wide horizontal foreground strip of soft overlapping rolling green hills, rounded cheerful cartoon shapes, fresh grassy greens #8EE07A and #7FD46C, pale mint distant hill shapes, minimal tiny tufts, bottom edge filled green, top edge transparent silhouette, no sky, no train, no buildings, no text. Designed along bottom of portrait train puzzle screen, wide 1.8:1 composition."
+    },
+    {
+      "file": "art/bg/cloud-1.png",
+      "width": 384,
+      "height": 256,
+      "transparent": true,
+      "bytes": 24175,
+      "tool": "imagegen",
+      "prompt": "Single small fluffy cartoon cloud sprite, three broad rounded cream-white lobes, gentle lavender/cream underside shading, like reference train smoke but horizontal cloud silhouette, soft clean edges, transparent cutout, no shadow outside, no face, no text."
+    },
+    {
+      "file": "art/bg/cloud-2.png",
+      "width": 384,
+      "height": 256,
+      "transparent": true,
+      "bytes": 23943,
+      "tool": "imagegen",
+      "prompt": "Single medium fluffy cartoon cloud sprite, five rounded cream-white lobes with tall central dome and two low side lobes, gentle pale lavender underside, horizontal silhouette, soft clean edges matching reference, transparent cutout, no face, no text."
+    },
+    {
+      "file": "art/bg/cloud-3.png",
+      "width": 384,
+      "height": 256,
+      "transparent": true,
+      "bytes": 20641,
+      "tool": "imagegen",
+      "prompt": "Single elongated fluffy cartoon cloud sprite, low wide asymmetric grouping of six cream-white round lobes, gentle pale lavender underside shading, soft clean edges matching reference sky, transparent cutout, no face, no text."
+    },
+    {
+      "file": "art/deco/tree.png",
+      "width": 384,
+      "height": 512,
+      "transparent": true,
+      "bytes": 43304,
+      "tool": "imagegen",
+      "prompt": "Single small decorative cartoon tree sprite for cheerful railway puzzle border, rounded lush grass-green crown with three bulbous clusters, short warm brown trunk, soft golden highlights, simple polished reference-matching shading, entire tree visible, isolated transparent cutout, no ground platform, no sky, no face, no text."
+    },
+    {
+      "file": "art/deco/flower.png",
+      "width": 128,
+      "height": 128,
+      "transparent": true,
+      "bytes": 7995,
+      "tool": "imagegen",
+      "prompt": "One cheerful rounded coral-pink daisy flower with five thick rounded petals, yellow circular center, short green stem and two small leaves. Polished soft cartoon shading, clean readable mobile game sprite, isolated transparent cutout, no face, no text, no ground."
+    },
+    {
+      "file": "art/deco/bush.png",
+      "width": 256,
+      "height": 192,
+      "transparent": true,
+      "bytes": 16215,
+      "tool": "imagegen",
+      "prompt": "One small rounded grassy-green cartoon bush sprite, three overlapping round leafy clumps, soft light-green highlights, a few simple tiny leaf marks, polished mobile game art matching reference palette, isolated transparent cutout, no ground slab, no flower, no text."
+    },
+    {
+      "file": "art/ui/star-on.png",
+      "width": 128,
+      "height": 128,
+      "transparent": true,
+      "bytes": 7817,
+      "tool": "imagegen",
+      "prompt": "Single earned rating star UI icon: plump rounded five-point golden yellow star, warm orange beveled edge and soft navy outline, glossy cream highlight, reference locomotive gold style, clean symmetrical silhouette centered with padding, no face, no text, transparent."
+    },
+    {
+      "file": "art/ui/star-off.png",
+      "width": 128,
+      "height": 128,
+      "transparent": true,
+      "bytes": 6426,
+      "tool": "imagegen",
+      "prompt": "Single unearned rating star UI icon: plump rounded five-point star, muted pale blue-gray fill, slightly darker slate-blue beveled edge and soft navy outline, small subtle highlight. Clear symmetrical silhouette centered with padding, no face, no text, transparent."
+    },
+    {
+      "file": "art/ui/lock.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 5663,
+      "tool": "imagegen",
+      "prompt": "Single mobile game LOCK icon: round friendly golden padlock, blue-gray rounded shackle, simple dark keyhole, thick rounded navy outline, bold clear silhouette readable at96px, polished cartoon style matching reference, centered transparent cutout, no button backing, no words."
+    },
+    {
+      "file": "art/ui/bulb.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 4674,
+      "tool": "imagegen",
+      "prompt": "Single mobile game HINT icon: bright yellow light bulb, rounded navy base, simple cream highlight, three short gold light rays, thick rounded navy outline, bold readable96px icon, polished cartoon style matching reference, centered transparent cutout, no button backing, no words."
+    },
+    {
+      "file": "art/ui/undo.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 4776,
+      "tool": "imagegen",
+      "prompt": "Single mobile game UNDO icon: one thick curved blue arrow bending back toward LEFT, obvious left-pointing arrowhead, broad rounded edges, navy outline, soft light-blue highlight, minimal clean shape readable96px, transparent cutout, no button backing, no text."
+    },
+    {
+      "file": "art/ui/restart.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 5386,
+      "tool": "imagegen",
+      "prompt": "Single mobile game RESTART icon: one bold almost complete circular clockwise blue arrow, clear single arrowhead near top-right and small gap, thick rounded stroke, navy outline, sky-blue highlight, clean readable96px silhouette, transparent cutout, no button backing, no text."
+    },
+    {
+      "file": "art/ui/back.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 3567,
+      "tool": "imagegen",
+      "prompt": "Single mobile game BACK icon: broad simple LEFT pointing blue arrow with short horizontal shaft, rounded corners, thick navy outline, light sky-blue highlight and soft cartoon bevel, clear96px silhouette, centered transparent cutout, no button backing, no text."
+    },
+    {
+      "file": "art/ui/settings.png",
+      "width": 96,
+      "height": 96,
+      "transparent": true,
+      "bytes": 5541,
+      "tool": "imagegen",
+      "prompt": "Single mobile game SETTINGS icon: one rounded blue gear with six chunky rounded teeth, circular cream center hole, thick navy outline, sky-blue bevel highlight, symmetrical clean readable96px icon, centered transparent cutout, no button backing, no text."
+    },
+    {
+      "file": "art/ui/button-yellow.png",
+      "width": 384,
+      "height": 128,
+      "transparent": true,
+      "bytes": 18276,
+      "tool": "imagegen",
+      "prompt": "Single blank horizontal yellow UI button designed as9-slice source: wide rounded rectangle, flat uniform golden-yellow center #FFD43B, thin warm orange rim, darker orange bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px."
+    },
+    {
+      "file": "art/ui/button-blue.png",
+      "width": 384,
+      "height": 128,
+      "transparent": true,
+      "bytes": 14396,
+      "tool": "imagegen",
+      "prompt": "Single blank horizontal sky-blue UI button designed as9-slice source: wide rounded rectangle, flat uniform sky-blue center #4DABF7, thin navy rim, darker blue bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px."
+    },
+    {
+      "file": "art/ui/button-coral.png",
+      "width": 384,
+      "height": 128,
+      "transparent": true,
+      "bytes": 16805,
+      "tool": "imagegen",
+      "prompt": "Single blank horizontal coral UI button designed as9-slice source: wide rounded rectangle, flat uniform coral center #FF6B6B, thin warm dark-coral rim, darker red bottom bevel exactly8pixels thick, subtle top highlight, uniform scalable center, no texture inside, no text, no symbols, no floating shadow outside, transparent outside corners. Width three times height, radius24px."
+    },
+    {
+      "file": "resources/splash.png",
+      "width": 2732,
+      "height": 2732,
+      "transparent": false,
+      "bytes": 1380019,
+      "tool": "imagegen",
+      "prompt": "Create square mobile game SPLASH SCREEN for Choo Choo Pop. Use the supplied approved transparent title logo EXACTLY as the central logo: same panda conductor, blue/gold locomotive and readable 'Choo Choo Pop' lettering. Place complete logo centered both horizontally and vertically occupying about45% of canvas width with huge even empty space around it. Background must be UNIFORM FLAT SOLID sky blue #8FD6FF, no gradient, no clouds outside logo, no scenery, no vignette, no rounded frame, no loading indicators, no extra text, no hand on lever. Target2732x2732 square. The mark is small centered suitable for splash screen safe zones."
+    },
+    {
+      "file": "resources/icon-background.png",
+      "width": 1024,
+      "height": 1024,
+      "transparent": false,
+      "bytes": 1133,
+      "tool": "solid-color canvas",
+      "prompt": "Flat sky blue #8FD6FF"
+    },
+    {
+      "file": "store/screenshot-1.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 165873,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    },
+    {
+      "file": "store/screenshot-2.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 161008,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    },
+    {
+      "file": "store/screenshot-3.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 160905,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    },
+    {
+      "file": "store/screenshot-4.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 164146,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    },
+    {
+      "file": "store/screenshot-5.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 165200,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    },
+    {
+      "file": "store/screenshot-6.png",
+      "width": 1080,
+      "height": 1920,
+      "transparent": false,
+      "bytes": 166421,
+      "tool": "Playwright screenshot + HTML typography",
+      "note": "Authentic current game build; new art has not been integrated. Persian promotional headlines."
+    }
+  ]
+}

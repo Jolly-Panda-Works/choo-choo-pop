@@ -1,22 +1,51 @@
-// Dev tool: builds src/game/levelData.js with uniquely-solvable levels.
+// Dev tool: builds src/game/levelData.js (Part 1 = 20 levels, every one uniquely solvable).
 // Usage: node scripts/build-levels.mjs
+//
+// Levels 1-5  : hand-made 3x3 tutorial (see src/game/tutorial.js for the coaching text)
+// Levels 6-20 : generated. Difficulty is measured, not guessed: we count how many search
+//               nodes the solver needs (more nodes = more dead ends a child can walk into)
+//               and each slot only accepts a puzzle inside its own band, so the curve
+//               can only go up.
 import { writeFileSync } from 'node:fs';
 import { mulberry32, shuffle } from '../src/game/rng.js';
 import { generateCandidate } from '../src/game/generator.js';
-import { countSolutions } from '../src/game/solver.js';
+import { solveStats } from '../src/game/solver.js';
 
-// [rows, cols, fillRatio, maxGiven, difficulty]
+// difficulty: 0 tutorial, 1 easy, 2 medium, 3 hard
+// sides: 0 N, 1 E, 2 S, 3 W   entry/exit = [row, col, side]   cells are row*3+col
+const TUTORIAL = [
+  // 1. just drag from the green arrow to the red arrow (straight line)
+  { rows: 3, cols: 3, entry: [1, 0, 3], exit: [1, 2, 1], solution: [3, 4, 5], given: [] },
+  // 2. rails can turn
+  { rows: 3, cols: 3, entry: [0, 0, 3], exit: [2, 2, 2], solution: [0, 1, 2, 5, 8], given: [] },
+  // 3. the numbers decide the way (a short cut would break the numbers)
+  { rows: 3, cols: 3, entry: [0, 0, 3], exit: [2, 0, 3], solution: [0, 1, 2, 5, 8, 7, 6], given: [] },
+  // 4. mistakes are fine: the level starts with a wrong rail that the child erases
+  { rows: 3, cols: 3, entry: [0, 0, 3], exit: [0, 2, 1], solution: [0, 3, 4, 5, 2], given: [], preset: [0, 1] },
+  // 5. star tile: without the star there would be two answers
+  { rows: 3, cols: 3, entry: [0, 1, 0], exit: [2, 1, 2], solution: [1, 2, 5, 4, 3, 6, 7], given: [2] },
+];
+
+// [rows, cols, fillRatio, givens (helper stars), minNodes, maxNodes, difficulty]
 const PLAN = [
-  [4, 4, 0.6, 0, 0],
-  [4, 5, 0.62, 1, 0],
-  [5, 5, 0.6, 1, 0],
-  [5, 5, 0.68, 1, 1],
-  [5, 6, 0.66, 2, 1],
-  [6, 6, 0.64, 2, 1],
-  [6, 6, 0.7, 2, 2],
-  [6, 7, 0.66, 3, 2],
-  [7, 7, 0.64, 3, 2],
-  [7, 7, 0.7, 4, 3],
+  // easy
+  [3, 4, 0.6, 0, 1, 25, 1],
+  [4, 4, 0.55, 0, 18, 35, 1],
+  [4, 4, 0.6, 0, 36, 60, 1],
+  [4, 4, 0.6, 1, 50, 90, 1],
+  [4, 5, 0.6, 1, 60, 110, 1],
+  // medium
+  [4, 5, 0.62, 1, 110, 180, 2],
+  [5, 5, 0.58, 1, 140, 250, 2],
+  [5, 5, 0.6, 2, 250, 400, 2],
+  [5, 5, 0.62, 2, 400, 600, 2],
+  [5, 5, 0.64, 2, 600, 900, 2],
+  // hard (still kid-sized: biggest board is 6x6 and it carries gold stars as anchors)
+  [5, 6, 0.6, 2, 400, 800, 3],
+  [5, 6, 0.62, 2, 800, 1400, 3],
+  [5, 6, 0.64, 3, 1400, 2200, 3],
+  [6, 6, 0.6, 3, 1300, 2500, 3],
+  [6, 6, 0.62, 3, 2500, 5000, 3],
 ];
 
 function hydrate(c, given) {
@@ -38,26 +67,29 @@ function hydrate(c, given) {
 }
 
 const out = [];
-PLAN.forEach(([rows, cols, ratio, maxGiven, diff], idx) => {
-  const rng = mulberry32(1000 + idx * 97);
-  for (let tries = 0; tries < 4000; tries++) {
+
+TUTORIAL.forEach((t, i) => {
+  const st = solveStats(hydrate(t, t.given), 2);
+  if (st.found !== 1) throw new Error(`tutorial level ${i + 1} has ${st.found} solutions`);
+  out.push({ ...t, difficulty: 0, nodes: st.nodes });
+  console.log(`level ${i + 1}: tutorial 3x3 len=${t.solution.length} stars=${t.given.length} nodes=${st.nodes}`);
+});
+
+PLAN.forEach(([rows, cols, ratio, nGiven, lo, hi, diff], idx) => {
+  const slot = TUTORIAL.length + idx + 1;
+  const rng = mulberry32(5000 + slot * 131);
+  for (let tries = 0; tries < 60000; tries++) {
     const cand = generateCandidate(rows, cols, ratio, rng);
     const inner = shuffle(cand.solution.slice(1, -1), rng);
-    let ok = null;
-    for (let g = 0; g <= Math.min(maxGiven, inner.length); g++) {
-      const given = inner.slice(0, g);
-      if (countSolutions(hydrate(cand, given), 2) === 1) {
-        ok = given;
-        break;
-      }
-    }
-    if (ok) {
-      out.push({ ...cand, given: ok, difficulty: diff });
-      console.log(`level ${idx + 1}: ${rows}x${cols} len=${cand.solution.length} given=${ok.length} (try ${tries})`);
+    const given = inner.slice(0, nGiven);
+    const st = solveStats(hydrate(cand, given), 2);
+    if (st.found === 1 && st.nodes >= lo && st.nodes <= hi) {
+      out.push({ ...cand, given, difficulty: diff, nodes: st.nodes });
+      console.log(`level ${slot}: ${rows}x${cols} len=${cand.solution.length} stars=${given.length} nodes=${st.nodes} (try ${tries})`);
       return;
     }
   }
-  throw new Error('no unique level found for slot ' + (idx + 1));
+  throw new Error('no level found for slot ' + slot);
 });
 
 writeFileSync(

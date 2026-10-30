@@ -1,14 +1,27 @@
 apply plugin: 'com.android.application'
 
+// Two editions are built from the same project:
+//   ./gradlew assembleRelease -PEDITION=en   -> "Choo Choo Pop"   (com.jollypanda.choochoopop)
+//   ./gradlew assembleRelease -PEDITION=fa   -> "هو هو چی چی"      (com.jollypanda.choochoopop.fa)
+// The web bundle must be built for the same edition first (npm run cap:sync:en / cap:sync:fa).
+def edition = (project.findProperty('EDITION') ?: 'en').toString()
+if (!['en', 'fa'].contains(edition)) {
+    throw new GradleException("EDITION must be 'en' or 'fa' (got '${edition}')")
+}
+
 android {
-    namespace = "com.catchybit.choochoopop"
+    namespace = "com.jollypanda.choochoopop"
     compileSdk = rootProject.ext.compileSdkVersion
+    sourceSets {
+        // edition-specific app name lives in src/edition-<en|fa>/res/values/app_name.xml
+        main.res.srcDirs += "src/edition-${edition}/res"
+    }
     defaultConfig {
-        applicationId "com.catchybit.choochoopop"
+        applicationId "com.jollypanda.choochoopop" + (edition == 'fa' ? '.fa' : '')
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode (project.findProperty('VERSION_CODE') ?: '1').toInteger()
+        versionName (project.findProperty('VERSION_NAME') ?: '1.1.0').toString()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

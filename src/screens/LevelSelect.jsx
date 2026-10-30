@@ -29,7 +29,7 @@ export default function LevelSelect({ onBack, onPick }) {
         </button>
         <h2>{t('levels')}</h2>
         <span className="chip">
-          ★ {totalStars(save)}/{levelCount * 3}
+          ★ {t.n(totalStars(save))}/{t.n(levelCount * 3)}
         </span>
       </header>
       <div className="level-grid">
@@ -54,7 +54,7 @@ export default function LevelSelect({ onBack, onPick }) {
                 </svg>
               ) : (
                 <>
-                  <b>{n}</b>
+                  <b>{t.n(n)}</b>
                   <Stars n={save.stars[n] || 0} size={15} />
                 </>
               )}
