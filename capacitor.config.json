@@ -1,0 +1,9 @@
+{
+  "appId": "com.catchybit.choochoopop",
+  "appName": "Choo Choo Pop",
+  "webDir": "dist",
+  "backgroundColor": "#8fd6ff",
+  "android": {
+    "allowMixedContent": false
+  }
+}
