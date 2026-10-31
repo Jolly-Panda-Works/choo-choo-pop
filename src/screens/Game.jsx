@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BoardCanvas from '../board/BoardCanvas.jsx';
 import { loadSprites } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
+import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
-import { Stars, Heart, Coin, Bulb, BackIcon } from '../ui/icons.jsx';
+import { Stars, Heart, Coin, Bulb, BackButton } from '../ui/icons.jsx';
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter } from '../store.js';
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
@@ -166,9 +167,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
   return (
     <main className="screen game">
       <header className="topbar">
-        <button className="icon-btn" onClick={onMap} aria-label={t('back')}>
-          <BackIcon />
-        </button>
+        <BackButton onClick={onMap} label={t('back')} />
         <div className="title-block">
           <h2>
             {t('station')} {t.n(inStage)}
@@ -204,7 +203,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
         />
         {coach && (
           <div className="bubble panda-bubble" key={coach.text}>
-            <Panda pose={coach.ghost?.kind === 'back' ? 'lever' : 'point'} skin={save.pandaSkin} size={58} />
+            <Panda pose={coach.ghost?.kind === 'back' ? 'lever' : 'point'} skin={save.pandaSkin} size={92} />
             <span>{t(coach.text)}</span>
           </div>
         )}
@@ -263,7 +262,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
         <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')}>
-          <Stars n={stars} size={50} className="big win-stars" />
+          <Stars n={stars} size={58} className="big win-stars" pop />
           <p className="reward-line big">
             {reward.coins > 0 ? (
               <>
@@ -313,7 +312,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
 
       {/* ---- the station check failed three times ---- */}
       {phase === 'lost' && (
-        <Modal pose="salute" title={t('lostTitle')}>
+        <Modal pose="salute" title={t('lostTitle')} titleClass={ua('lose-popup-failed-text-failed-text-enter')}>
           <p className="goal">{t('lostText')}</p>
           <div className="modal-actions col">
             <button className="btn big yellow" onClick={retry}>

@@ -3,13 +3,17 @@ import { ART } from '../board/sprites.js';
 import { recolorToCanvas } from '../board/recolor.js';
 import { PANDA_SKINS, skinById } from '../game/skins.js';
 
-// Panda poses: wave, lever, whistle, ticket, point, drive, salute, cheer  (art/panda/*.webp)
+// Panda poses (art/panda/<pose>.webp): wave, lever, whistle, ticket, point, drive, salute, cheer.
+// Since v3 these are the finished FULL-BODY stickers from Panda_Train_Conductor_Sticker_Sheet.psd (transparent background):
+// they are shown whole - no round crop, no card, no zoom. `size` is the HEIGHT in px; the width follows the pose.
 const urls = new Map();
 const pending = new Map();
 
+const plainUrl = (pose) => `${ART}panda/${pose}.webp`;
+
 function skinUrl(pose, skinId) {
   const skin = skinById(PANDA_SKINS, skinId);
-  const plain = `${ART}panda/${pose}.webp`;
+  const plain = plainUrl(pose);
   if (skin.hue == null) return Promise.resolve(plain);
   const key = pose + ':' + skin.id;
   if (urls.has(key)) return Promise.resolve(urls.get(key));
@@ -18,7 +22,8 @@ function skinUrl(pose, skinId) {
     const im = new Image();
     im.onload = () => {
       try {
-        const url = recolorToCanvas(im, skin.hue).toDataURL('image/jpeg', 0.88);
+        // PNG, not JPEG: the sticker has a transparent background
+        const url = recolorToCanvas(im, skin.hue).toDataURL('image/png');
         urls.set(key, url);
         resolve(url);
       } catch (e) {
@@ -33,9 +38,10 @@ function skinUrl(pose, skinId) {
 }
 
 export function usePandaSrc(pose, skinId) {
-  const [src, setSrc] = useState(`${ART}panda/${pose}.webp`);
+  const [src, setSrc] = useState(plainUrl(pose));
   useEffect(() => {
     let live = true;
+    setSrc(plainUrl(pose));
     skinUrl(pose, skinId).then((u) => live && setSrc(u));
     return () => {
       live = false;
@@ -45,22 +51,11 @@ export function usePandaSrc(pose, skinId) {
 }
 
 /**
- * The panda conductor.
- *  variant "avatar": round head-and-shoulders portrait (speech bubbles, popups)
- *  variant "card":   the full pose on its dark character card (story)
+ * The panda conductor (full body).
+ *  variant "avatar": small, next to speech bubbles / on top of popups / on the map
+ *  variant "card":   big, story slides
  */
 export default function Panda({ pose = 'wave', skin = 'classic', size = 96, variant = 'avatar', className = '' }) {
   const src = usePandaSrc(pose, skin);
-  if (variant === 'card') {
-    return (
-      <div className={'panda-card ' + className} style={{ width: size, height: size * (4 / 3) }}>
-        <img src={src} alt="" draggable="false" />
-      </div>
-    );
-  }
-  return (
-    <div className={'panda-avatar ' + className} style={{ width: size, height: size }}>
-      <img src={src} alt="" draggable="false" />
-    </div>
-  );
+  return <img className={`panda panda-${variant} ${className}`} src={src} alt="" draggable="false" style={{ height: size, width: 'auto' }} />;
 }

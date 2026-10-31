@@ -1,0 +1,7859 @@
+{
+ "clips": {
+  "background-fade-in-fade-in": {
+   "file": "BackgroundFadeIn/FadeIn.anim",
+   "name": "FadeIn",
+   "duration": 0.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-background-fade-in-fade-in",
+     "channels": [
+      "a"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_Color.b",
+    "m_Color.g",
+    "m_Color.r"
+   ],
+   "spriteCurves": []
+  },
+  "booster-shop-popup-balloons-blue-balloon-idle": {
+   "file": "BoosterShopPopupBalloons/BlueBalloonIdle.anim",
+   "name": "BlueBalloonIdle",
+   "duration": 6.9833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-booster-shop-popup-balloons-blue-balloon-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "booster-shop-popup-balloons-pink-balloon-idle": {
+   "file": "BoosterShopPopupBalloons/PinkBalloonIdle.anim",
+   "name": "PinkBalloonIdle",
+   "duration": 12.55,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-booster-shop-popup-balloons-pink-balloon-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "booster-shop-popup-balloons-purple-balloon-idle": {
+   "file": "BoosterShopPopupBalloons/PurpleBalloonIdle.anim",
+   "name": "PurpleBalloonIdle",
+   "duration": 7.4667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-booster-shop-popup-balloons-purple-balloon-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter": {
+   "file": "Buttons/Bubbles/Enter.anim",
+   "name": "Enter",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter1": {
+   "file": "Buttons/Bubbles/Enter1.anim",
+   "name": "Enter1",
+   "duration": 0.6667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-enter1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter2": {
+   "file": "Buttons/Bubbles/Enter2.anim",
+   "name": "Enter2",
+   "duration": 0.75,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-enter2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter3": {
+   "file": "Buttons/Bubbles/Enter3.anim",
+   "name": "Enter3",
+   "duration": 0.8333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-enter3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter4": {
+   "file": "Buttons/Bubbles/Enter4.anim",
+   "name": "Enter4",
+   "duration": 0.9167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-enter4",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-enter5": {
+   "file": "Buttons/Bubbles/Enter5.anim",
+   "name": "Enter5",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-enter5",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit": {
+   "file": "Buttons/Bubbles/Exit.anim",
+   "name": "Exit",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit1": {
+   "file": "Buttons/Bubbles/Exit1.anim",
+   "name": "Exit1",
+   "duration": 0.9167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-exit1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit2": {
+   "file": "Buttons/Bubbles/Exit2.anim",
+   "name": "Exit2",
+   "duration": 0.75,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-exit2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit3": {
+   "file": "Buttons/Bubbles/Exit3.anim",
+   "name": "Exit3",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-exit3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit4": {
+   "file": "Buttons/Bubbles/Exit4.anim",
+   "name": "Exit4",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-exit4",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-exit5": {
+   "file": "Buttons/Bubbles/Exit5.anim",
+   "name": "Exit5",
+   "duration": 1.0833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-exit5",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-bubbles-pressed": {
+   "file": "Buttons/Bubbles/Pressed.anim",
+   "name": "Pressed",
+   "duration": 0.7333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-bubbles-pressed",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-locked-level-button-locked-level-pressed": {
+   "file": "Buttons/LockedLevelButton/LockedLevelPressed.anim",
+   "name": "LockedLevelPressed",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-rectangles-enter-rectangle1": {
+   "file": "Buttons/Rectangles/EnterRectangle1.anim",
+   "name": "EnterRectangle1",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-rectangles-enter-rectangle1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-rectangles-enter-rectangle2": {
+   "file": "Buttons/Rectangles/EnterRectangle2.anim",
+   "name": "EnterRectangle2",
+   "duration": 0.75,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-rectangles-enter-rectangle2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "buttons-rectangles-pressed": {
+   "file": "Buttons/Rectangles/Pressed.anim",
+   "name": "Pressed",
+   "duration": 0.75,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-buttons-rectangles-pressed",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-animal-face-animations-bear-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/Bear/Enter1.anim",
+   "name": "Enter1",
+   "duration": 4.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 0.333333343,
+       "guid": "1c83a026e16b7470588799307f893efa"
+      },
+      {
+       "t": 0.466666669,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 4.0,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bear-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/Bear/Enter2.anim",
+   "name": "Enter2",
+   "duration": 0.35,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 0.333333343,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bear-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/Bear/Enter3.anim",
+   "name": "Enter3",
+   "duration": 5.5,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 0.550000012,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 0.649999976,
+       "guid": "1c83a026e16b7470588799307f893efa"
+      },
+      {
+       "t": 0.816666663,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 0.983333349,
+       "guid": "1c83a026e16b7470588799307f893efa"
+      },
+      {
+       "t": 1.13333333,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 5.48333311,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bear-face-bear-idle": {
+   "file": "GameScene/AnimalFaceAnimations/Bear/FaceBearIdle.anim",
+   "name": "FaceBearIdle",
+   "duration": 5.1167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 2.6833334,
+       "guid": "1c83a026e16b7470588799307f893efa"
+      },
+      {
+       "t": 3.01666665,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 3.36666656,
+       "guid": "1c83a026e16b7470588799307f893efa"
+      },
+      {
+       "t": 3.73333335,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      },
+      {
+       "t": 5.0999999,
+       "guid": "d8ff8a5568b4547dbbddc62b3a926f9b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bird-yellow-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/BirdYellow/Enter1.anim",
+   "name": "Enter1",
+   "duration": 1.0333,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 1.01666665,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bird-yellow-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/BirdYellow/Enter2.anim",
+   "name": "Enter2",
+   "duration": 6.05,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 2.7166667,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 2.86666656,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 3.01666665,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 3.16666675,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 6.0333333,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bird-yellow-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/BirdYellow/Enter3.anim",
+   "name": "Enter3",
+   "duration": 15.6167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 9.53333378,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 9.6833334,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 9.83333302,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 9.98333359,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 15.6000004,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bird-yellow-face-bird-yellow-idle": {
+   "file": "GameScene/AnimalFaceAnimations/BirdYellow/FaceBirdYellowIdle.anim",
+   "name": "FaceBirdYellowIdle",
+   "duration": 8.0333,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 3.6500001,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 3.76666665,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 3.88333344,
+       "guid": "21c26a2c72f2843a5a4f3daeead1b4d3"
+      },
+      {
+       "t": 4.0,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      },
+      {
+       "t": 8.01666641,
+       "guid": "bc8d3cd0827b64923a2c79d98abc1316"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-blue-cat-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/BlueCat/Enter1.anim",
+   "name": "Enter1",
+   "duration": 4.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 0.316666663,
+       "guid": "10f24f1e8d13e4e0894415711d10551f"
+      },
+      {
+       "t": 0.833333313,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 3.98333335,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-blue-cat-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/BlueCat/Enter2.anim",
+   "name": "Enter2",
+   "duration": 6.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 6.0,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-blue-cat-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/BlueCat/Enter3.anim",
+   "name": "Enter3",
+   "duration": 5.0333,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "22b684e00a9604afc9adcc521dd55276"
+      },
+      {
+       "t": 1.0333333,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 5.01666689,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-blue-cat-face-blue-cat-idle": {
+   "file": "GameScene/AnimalFaceAnimations/BlueCat/FaceBlueCatIdle.anim",
+   "name": "FaceBlueCatIdle",
+   "duration": 7.0167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 1.5,
+       "guid": "10f24f1e8d13e4e0894415711d10551f"
+      },
+      {
+       "t": 1.70000005,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 1.88333333,
+       "guid": "10f24f1e8d13e4e0894415711d10551f"
+      },
+      {
+       "t": 2.0666666,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      },
+      {
+       "t": 7.0,
+       "guid": "67386189ec1ae4e238a99ba1fb9acab1"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-cat-tiger-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/CatTiger/Enter1.anim",
+   "name": "Enter1",
+   "duration": 2.0167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 2.0,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-cat-tiger-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/CatTiger/Enter2.anim",
+   "name": "Enter2",
+   "duration": 5.5167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 2.01666665,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 2.13333344,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 2.26666665,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 2.38333344,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 5.5,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-cat-tiger-face-cat-tiger-idle": {
+   "file": "GameScene/AnimalFaceAnimations/CatTiger/FaceCatTigerIdle.anim",
+   "name": "FaceCatTigerIdle",
+   "duration": 4.4833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 0.516666651,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 0.633333325,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 0.766666651,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 0.883333325,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 1.88333333,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 2.01666665,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      },
+      {
+       "t": 4.3499999,
+       "guid": "1dfc8813ae82e4eab9db606722791ae6"
+      },
+      {
+       "t": 4.4666667,
+       "guid": "189e4319d22214ed2be2974317dbed47"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-fox-face-fox-idle": {
+   "file": "GameScene/AnimalFaceAnimations/Fox/FaceFoxIdle.anim",
+   "name": "FaceFoxIdle",
+   "duration": 4.7,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c7892b95320cd4514abccad38877660e"
+      },
+      {
+       "t": 1.5,
+       "guid": "bcc46d5b5e6984b0ca254d99203c5362"
+      },
+      {
+       "t": 2.08333325,
+       "guid": "c7892b95320cd4514abccad38877660e"
+      },
+      {
+       "t": 4.0,
+       "guid": "bcc46d5b5e6984b0ca254d99203c5362"
+      },
+      {
+       "t": 4.23333311,
+       "guid": "c7892b95320cd4514abccad38877660e"
+      },
+      {
+       "t": 4.44999981,
+       "guid": "bcc46d5b5e6984b0ca254d99203c5362"
+      },
+      {
+       "t": 4.6833334,
+       "guid": "c7892b95320cd4514abccad38877660e"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-frog-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/Frog/Enter1.anim",
+   "name": "Enter1",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 0.400000006,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 0.566666663,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 0.75,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 0.916666687,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 2.0,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 5.98333311,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-frog-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/Frog/Enter2.anim",
+   "name": "Enter2",
+   "duration": 3.5833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 0.983333349,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 1.14999998,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 1.63333333,
+       "guid": "7af3648cd4f9548fb827141d720feb63"
+      },
+      {
+       "t": 2.08333325,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 2.63333344,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 2.79999995,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 2.98333335,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 3.1500001,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 3.5666666,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-frog-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/Frog/Enter3.anim",
+   "name": "Enter3",
+   "duration": 10.4667,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 10.4499998,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-frog-face-frog-idle": {
+   "file": "GameScene/AnimalFaceAnimations/Frog/FaceFrogIdle.anim",
+   "name": "FaceFrogIdle",
+   "duration": 6.9167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 1.10000002,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 1.26666665,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 2.0,
+       "guid": "7af3648cd4f9548fb827141d720feb63"
+      },
+      {
+       "t": 2.1833334,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 3.5333333,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 3.7166667,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 3.9333334,
+       "guid": "118fbeb735afd407ea6a16601f120bbe"
+      },
+      {
+       "t": 4.11666679,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      },
+      {
+       "t": 6.05000019,
+       "guid": "7af3648cd4f9548fb827141d720feb63"
+      },
+      {
+       "t": 6.9000001,
+       "guid": "7725d33408cf34566a4df1848735b9e2"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-koala-bear-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/KoalaBear/Enter1.anim",
+   "name": "Enter1",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-animal-face-animations-koala-bear-face-koala-idle": {
+   "file": "GameScene/AnimalFaceAnimations/KoalaBear/FaceKoalaIdle.anim",
+   "name": "FaceKoalaIdle",
+   "duration": 5.9167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "e9d9e7f9428214feb8721865d4ec7f35"
+      },
+      {
+       "t": 1.70000005,
+       "guid": "73ad388fe2bda4822b9e71bf4548ffa4"
+      },
+      {
+       "t": 1.93333364,
+       "guid": "e9d9e7f9428214feb8721865d4ec7f35"
+      },
+      {
+       "t": 5.66666651,
+       "guid": "73ad388fe2bda4822b9e71bf4548ffa4"
+      },
+      {
+       "t": 5.9000001,
+       "guid": "e9d9e7f9428214feb8721865d4ec7f35"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/Enter1.anim",
+   "name": "Enter1",
+   "duration": 3.0333,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 3.01666665,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/Enter2.anim",
+   "name": "Enter2",
+   "duration": 1.3833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 0.300000012,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 0.383333325,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 0.449999988,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 0.533333361,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 0.733333349,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 0.816666663,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 1.36666667,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/Enter3.anim",
+   "name": "Enter3",
+   "duration": 5.0167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 3.48333335,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 4.01666689,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 5.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-enter4": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/Enter4.anim",
+   "name": "Enter4",
+   "duration": 7.5167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 0.25,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 0.400000006,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 7.5,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-face-owl-idle": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/FaceOwlIdle.anim",
+   "name": "FaceOwlIdle",
+   "duration": 5.3167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 1.85000002,
+       "guid": "bb91ee7318c8949b1b3f1203819976c9"
+      },
+      {
+       "t": 1.95000005,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      },
+      {
+       "t": 5.30000019,
+       "guid": "b53d92579526a4021a11754e0c1809ce"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-panda-bear-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/PandaBear/Enter1.anim",
+   "name": "Enter1",
+   "duration": 5.0,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      },
+      {
+       "t": 4.98333311,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-panda-bear-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/PandaBear/Enter2.anim",
+   "name": "Enter2",
+   "duration": 9.9667,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      },
+      {
+       "t": 9.94999981,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-panda-bear-face-panda-idle": {
+   "file": "GameScene/AnimalFaceAnimations/PandaBear/FacePandaIdle.anim",
+   "name": "FacePandaIdle",
+   "duration": 13.0,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      },
+      {
+       "t": 2.51666665,
+       "guid": "329a7e8c4224e4a49971a785a3301719"
+      },
+      {
+       "t": 4.48333311,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      },
+      {
+       "t": 12.9833336,
+       "guid": "a19dd19fdfb4749478979c6dcd1991c8"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pig-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/Pig/Enter1.anim",
+   "name": "Enter1",
+   "duration": 3.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      },
+      {
+       "t": 3.0,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pig-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/Pig/Enter2.anim",
+   "name": "Enter2",
+   "duration": 5.0333,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      },
+      {
+       "t": 5.01666689,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pig-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/Pig/Enter3.anim",
+   "name": "Enter3",
+   "duration": 6.2833,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      },
+      {
+       "t": 6.26666689,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pig-face-pig-idle": {
+   "file": "GameScene/AnimalFaceAnimations/Pig/FacePigIdle.anim",
+   "name": "FacePigIdle",
+   "duration": 6.9833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      },
+      {
+       "t": 0.916666687,
+       "guid": "b250d6c3d342641539b437c19e2b0f84"
+      },
+      {
+       "t": 1.10000002,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      },
+      {
+       "t": 6.9666667,
+       "guid": "2764d647733284b088fbe11cd094e62e"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pink-rabbit-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/PinkRabbit/Enter1.anim",
+   "name": "Enter1",
+   "duration": 3.15,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      },
+      {
+       "t": 3.13333344,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pink-rabbit-face-pink-rabbit-idle": {
+   "file": "GameScene/AnimalFaceAnimations/PinkRabbit/FacePinkRabbitIdle.anim",
+   "name": "FacePinkRabbitIdle",
+   "duration": 12.1,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      },
+      {
+       "t": 0.949999988,
+       "guid": "15e26f8d29f6a4f1d9e2f64323a34f23"
+      },
+      {
+       "t": 1.14999998,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      },
+      {
+       "t": 5.7166667,
+       "guid": "15e26f8d29f6a4f1d9e2f64323a34f23"
+      },
+      {
+       "t": 5.91666651,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      },
+      {
+       "t": 6.11666679,
+       "guid": "15e26f8d29f6a4f1d9e2f64323a34f23"
+      },
+      {
+       "t": 6.3166666,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      },
+      {
+       "t": 12.083333,
+       "guid": "3dab75200016b42658870112dfb3900b"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-enter1": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/Enter1.anim",
+   "name": "Enter1",
+   "duration": 2.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.116666667,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.233333334,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 2.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-enter2": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/Enter2.anim",
+   "name": "Enter2",
+   "duration": 3.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 3.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-enter3": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/Enter3.anim",
+   "name": "Enter3",
+   "duration": 1.8167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.5,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.633333325,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 1.79999995,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-enter4": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/Enter4.anim",
+   "name": "Enter4",
+   "duration": 4.0167,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.116666667,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.216666669,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.649999976,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.75,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 4.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-enter5": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/Enter5.anim",
+   "name": "Enter5",
+   "duration": 3.5,
+   "loop": false,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 2.75,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 2.8499999,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 3.48333335,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-face-white-rabbit-idle": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/FaceWhiteRabbitIdle.anim",
+   "name": "FaceWhiteRabbitIdle",
+   "duration": 4.2,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.266666681,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.449999988,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 0.616666675,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 0.783333302,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 2.1833334,
+       "guid": "3805c9effc60e40caa137e04a92d32b4"
+      },
+      {
+       "t": 2.36666656,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      },
+      {
+       "t": 4.1833334,
+       "guid": "c3f959cd881174d58ada108e62ecf9b5"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-press-animal-pressed": {
+   "file": "GameScene/AnimalPress/AnimalPressed.anim",
+   "name": "AnimalPressed",
+   "duration": 0.5333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-animal-press-animal-pressed",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-color-cat-color-cat-move-idle": {
+   "file": "GameScene/ColorCat/ColorCatMoveIdle.anim",
+   "name": "ColorCatMoveIdle",
+   "duration": 1.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-color-cat-color-cat-move-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-moves-text-moves-text-idle": {
+   "file": "GameScene/MovesText/MovesTextIdle.anim",
+   "name": "MovesTextIdle",
+   "duration": 1.4167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-moves-text-moves-text-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_Color.b",
+    "m_Color.g"
+   ],
+   "spriteCurves": []
+  },
+  "game-scene-ring-ring-idle": {
+   "file": "GameScene/Ring/RingIdle.anim",
+   "name": "RingIdle",
+   "duration": 1.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-ring-ring-idle",
+     "channels": [
+      "a",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-score-info-speech-landscape-layout-score-info-speech": {
+   "file": "GameScene/ScoreInfoSpeech-LandscapeLayout/ScoreInfoSpeech.anim",
+   "name": "ScoreInfoSpeech",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-score-info-speech-landscape-layout-score-info-speech",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "game-scene-stars-star-idle1": {
+   "file": "GameScene/Stars/StarIdle1.anim",
+   "name": "StarIdle1",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-stars-star-idle1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.5,
+       "guid": "c823134940bf34225a4c5ce4b12fe62d"
+      },
+      {
+       "t": 0.783333361,
+       "guid": "3561ab231ac304a6c8ab49ab7fa10f15"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-stars-star-idle2": {
+   "file": "GameScene/Stars/StarIdle2.anim",
+   "name": "StarIdle2",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-stars-star-idle2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c823134940bf34225a4c5ce4b12fe62d"
+      },
+      {
+       "t": 1.08333337,
+       "guid": "c823134940bf34225a4c5ce4b12fe62d"
+      },
+      {
+       "t": 1.36666667,
+       "guid": "3561ab231ac304a6c8ab49ab7fa10f15"
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-stars-star-idle3": {
+   "file": "GameScene/Stars/StarIdle3.anim",
+   "name": "StarIdle3",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-game-scene-stars-star-idle3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "c823134940bf34225a4c5ce4b12fe62d"
+      },
+      {
+       "t": 1.5,
+       "guid": "c823134940bf34225a4c5ce4b12fe62d"
+      },
+      {
+       "t": 1.7833333,
+       "guid": "3561ab231ac304a6c8ab49ab7fa10f15"
+      }
+     ]
+    }
+   ]
+  },
+  "home-scene-animals-bird-idle": {
+   "file": "HomeScene/Animals/BirdIdle.anim",
+   "name": "BirdIdle",
+   "duration": 2.4667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-animals-bird-idle",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-animals-cat-idle": {
+   "file": "HomeScene/Animals/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 6.2,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-animals-cat-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-animals-panda-idle": {
+   "file": "HomeScene/Animals/PandaIdle.anim",
+   "name": "PandaIdle",
+   "duration": 4.3,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-animals-panda-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-balloons-blue-balloon-blue-balloon-idle": {
+   "file": "HomeScene/Balloons/BlueBalloon/BlueBalloonIdle.anim",
+   "name": "BlueBalloonIdle",
+   "duration": 110.75,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-balloons-blue-balloon-blue-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-balloons-pink-balloon-pink-balloon-idle": {
+   "file": "HomeScene/Balloons/PinkBalloon/PinkBalloonIdle.anim",
+   "name": "PinkBalloonIdle",
+   "duration": 247.6,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-balloons-pink-balloon-pink-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-balloons-purple-balloon-purple-balloon-idle": {
+   "file": "HomeScene/Balloons/PurpleBalloon/PurpleBalloonIdle.anim",
+   "name": "PurpleBalloonIdle",
+   "duration": 79.95,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-balloons-purple-balloon-purple-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-balloons-white-balloon-white-balloon-idle": {
+   "file": "HomeScene/Balloons/WhiteBalloon/WhiteBalloonIdle.anim",
+   "name": "WhiteBalloonIdle",
+   "duration": 7.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-balloons-white-balloon-white-balloon-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-trees-tree-rose-idle": {
+   "file": "HomeScene/Trees/TreeRoseIdle.anim",
+   "name": "TreeRoseIdle",
+   "duration": 8.9667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-trees-tree-rose-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-trees-tree-yellow-idle": {
+   "file": "HomeScene/Trees/TreeYellowIdle.anim",
+   "name": "TreeYellowIdle",
+   "duration": 7.9333,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-trees-tree-yellow-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-bird-bird-idle": {
+   "file": "HomeScenePortrait/Animals/Bird/BirdIdle.anim",
+   "name": "BirdIdle",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-bird-bird-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-bird-hair": {
+   "file": "HomeScenePortrait/Animals/Bird/Hair.anim",
+   "name": "Hair",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-bird-hair",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-bird-wing-left-idle": {
+   "file": "HomeScenePortrait/Animals/Bird/WingLeftIdle.anim",
+   "name": "WingLeftIdle",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-bird-wing-left-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-bird-wing-rightdle": {
+   "file": "HomeScenePortrait/Animals/Bird/WingRightdle.anim",
+   "name": "WingRightdle",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-bird-wing-rightdle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-cat-cat-idle": {
+   "file": "HomeScenePortrait/Animals/Cat/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 4.3,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-cat-cat-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-animals-panda-panda-idle": {
+   "file": "HomeScenePortrait/Animals/Panda/PandaIdle.anim",
+   "name": "PandaIdle",
+   "duration": 3.5167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-animals-panda-panda-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-balloons-blue-balloon-blue-idle": {
+   "file": "HomeScenePortrait/Balloons/BlueBalloon/BlueIdle.anim",
+   "name": "BlueIdle",
+   "duration": 60.0167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-balloons-blue-balloon-blue-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-balloons-pink-balloon-pink-idle": {
+   "file": "HomeScenePortrait/Balloons/PinkBalloon/PinkIdle.anim",
+   "name": "PinkIdle",
+   "duration": 71.3833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-balloons-pink-balloon-pink-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-balloons-purple-balloon-purple-idle": {
+   "file": "HomeScenePortrait/Balloons/PurpleBalloon/PurpleIdle.anim",
+   "name": "PurpleIdle",
+   "duration": 61.1667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-balloons-purple-balloon-purple-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-trees-tree-rose-tree-rose-idle": {
+   "file": "HomeScenePortrait/Trees/TreeRose/TreeRoseIdle.anim",
+   "name": "TreeRoseIdle",
+   "duration": 12.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-trees-tree-rose-tree-rose-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "home-scene-portrait-trees-tree-yellow-tree-yellow-idle": {
+   "file": "HomeScenePortrait/Trees/TreeYellow/TreeYellowIdle.anim",
+   "name": "TreeYellowIdle",
+   "duration": 10.4,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-home-scene-portrait-trees-tree-yellow-tree-yellow-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "idle-press-bubble-button-enter": {
+   "file": "Idle&Press/BubbleButton/Enter.anim",
+   "name": "Enter",
+   "duration": 0.9667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-idle-press-bubble-button-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "idle-press-bubble-button-idle": {
+   "file": "Idle&Press/BubbleButton/Idle.anim",
+   "name": "Idle",
+   "duration": 1.5167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-idle-press-bubble-button-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "idle-press-bubble-button-move-soft": {
+   "file": "Idle&Press/BubbleButton/MoveSoft.anim",
+   "name": "MoveSoft",
+   "duration": 2.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-idle-press-bubble-button-move-soft",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "idle-press-soft-button-soft-enter": {
+   "file": "Idle&Press/SoftButton/SoftEnter.anim",
+   "name": "SoftEnter",
+   "duration": 0.3167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-idle-press-soft-button-soft-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "idle-press-soft-button-soft-idle": {
+   "file": "Idle&Press/SoftButton/SoftIdle.anim",
+   "name": "SoftIdle",
+   "duration": 1.3833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-idle-press-soft-button-soft-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-bear-enter": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/BearEnter.anim",
+   "name": "BearEnter",
+   "duration": 2.2333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-bear-enter",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-bear-idle": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/BearIdle.anim",
+   "name": "BearIdle",
+   "duration": 4.0167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-bear-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-cat-enter": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/CatEnter.anim",
+   "name": "CatEnter",
+   "duration": 2.2667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-cat-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-cat-idle": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-cat-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-rabbit-enter": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/RabbitEnter.anim",
+   "name": "RabbitEnter",
+   "duration": 3.1167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-rabbit-enter",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-ask-friends-button-animals-rabbit-idle": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/RabbitIdle.anim",
+   "name": "RabbitIdle",
+   "duration": 4.0167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-ask-friends-button-animals-rabbit-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-cat-rose-lollipop-cat-lollipop-eyes-idle": {
+   "file": "ItemsIdle/CatRoseLollipop/CatLollipopEyesIdle.anim",
+   "name": "CatLollipopEyesIdle",
+   "duration": 2.8833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "7281f7b6cfe48482f9f626b80a6b4a82"
+      },
+      {
+       "t": 0.300000012,
+       "guid": "4e8b9b98e5ad746b8bb30d20897c2ed2"
+      },
+      {
+       "t": 0.433333337,
+       "guid": "7281f7b6cfe48482f9f626b80a6b4a82"
+      },
+      {
+       "t": 0.566666663,
+       "guid": "4e8b9b98e5ad746b8bb30d20897c2ed2"
+      },
+      {
+       "t": 0.683333337,
+       "guid": "7281f7b6cfe48482f9f626b80a6b4a82"
+      },
+      {
+       "t": 2.0666666,
+       "guid": "4e8b9b98e5ad746b8bb30d20897c2ed2"
+      },
+      {
+       "t": 2.2166667,
+       "guid": "7281f7b6cfe48482f9f626b80a6b4a82"
+      },
+      {
+       "t": 2.86666656,
+       "guid": "7281f7b6cfe48482f9f626b80a6b4a82"
+      }
+     ]
+    }
+   ]
+  },
+  "items-idle-cat-rose-lollipop-cat-lollipop-shake-idle": {
+   "file": "ItemsIdle/CatRoseLollipop/CatLollipopShakeIdle.anim",
+   "name": "CatLollipopShakeIdle",
+   "duration": 2.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-cat-rose-lollipop-cat-lollipop-shake-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-mail-amount-mail-amount-pulse-idle": {
+   "file": "ItemsIdle/MailAmount/MailAmountPulseIdle.anim",
+   "name": "MailAmountPulseIdle",
+   "duration": 1.5333,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-mail-amount-mail-amount-pulse-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-pulse-pulse-idle": {
+   "file": "ItemsIdle/Pulse/PulseIdle.anim",
+   "name": "PulseIdle",
+   "duration": 2.4333,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-pulse-pulse-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_SizeDelta.x",
+    "m_SizeDelta.y"
+   ],
+   "spriteCurves": []
+  },
+  "items-idle-pulse2-pulse2-idle": {
+   "file": "ItemsIdle/Pulse2/Pulse2Idle.anim",
+   "name": "Pulse2Idle",
+   "duration": 2.1,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-pulse2-pulse2-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-pulse3-pulse3-idle": {
+   "file": "ItemsIdle/Pulse3/Pulse3Idle.anim",
+   "name": "Pulse3Idle",
+   "duration": 2.0167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-pulse3-pulse3-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-pulse-quick-pulse-quic-idle": {
+   "file": "ItemsIdle/PulseQuick/PulseQuicIdle.anim",
+   "name": "PulseQuicIdle",
+   "duration": 1.35,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-pulse-quick-pulse-quic-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-rabbit-lollipop-rabbit-lollipop-idle": {
+   "file": "ItemsIdle/RabbitLollipop/RabbitLollipopIdle.anim",
+   "name": "RabbitLollipopIdle",
+   "duration": 5.0833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-rabbit-lollipop-rabbit-lollipop-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-skull-eye-glow-idle": {
+   "file": "ItemsIdle/Skull/EyeGlowIdle.anim",
+   "name": "EyeGlowIdle",
+   "duration": 2.0667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-skull-eye-glow-idle",
+     "channels": [
+      "a",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle1": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle1.anim",
+   "name": "EnterSparkle1",
+   "duration": 0.4333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle2": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle2.anim",
+   "name": "EnterSparkle2",
+   "duration": 0.8667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle3": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle3.anim",
+   "name": "EnterSparkle3",
+   "duration": 1.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle4": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle4.anim",
+   "name": "EnterSparkle4",
+   "duration": 2.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle4",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle5": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle5.anim",
+   "name": "EnterSparkle5",
+   "duration": 4.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle5",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle6": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle6.anim",
+   "name": "EnterSparkle6",
+   "duration": 4.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle6",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle7": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle7.anim",
+   "name": "EnterSparkle7",
+   "duration": 5.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle7",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle8": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle8.anim",
+   "name": "EnterSparkle8",
+   "duration": 6.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle8",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-enter-sparkle9": {
+   "file": "ItemsIdle/Sparkles/EnterSparkle9.anim",
+   "name": "EnterSparkle9",
+   "duration": 7.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-enter-sparkle9",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "items-idle-sparkles-idle-sparkle1": {
+   "file": "ItemsIdle/Sparkles/IdleSparkle1.anim",
+   "name": "IdleSparkle1",
+   "duration": 2.3833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-items-idle-sparkles-idle-sparkle1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-arrows-pressed-arrow": {
+   "file": "LevelScene/Arrows/PressedArrow.anim",
+   "name": "PressedArrow",
+   "duration": 0.6667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-arrows-pressed-arrow",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-avatar-avatar-idle": {
+   "file": "LevelScene/Avatar/AvatarIdle.anim",
+   "name": "AvatarIdle",
+   "duration": 1.6,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-avatar-avatar-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-cat-sign-cat-sign-idle": {
+   "file": "LevelScene/CatSign/CatSignIdle.anim",
+   "name": "CatSignIdle",
+   "duration": 5.9833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-cat-sign-cat-sign-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-menu-level-animation1": {
+   "file": "LevelScene/Menu/LevelAnimation1.anim",
+   "name": "LevelAnimation1",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-menu-level-animation1",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-menu-level-animation2": {
+   "file": "LevelScene/Menu/LevelAnimation2.anim",
+   "name": "LevelAnimation2",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-menu-level-animation2",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-menu-level-animation3": {
+   "file": "LevelScene/Menu/LevelAnimation3.anim",
+   "name": "LevelAnimation3",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-menu-level-animation3",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-menu-level-animation4": {
+   "file": "LevelScene/Menu/LevelAnimation4.anim",
+   "name": "LevelAnimation4",
+   "duration": 0.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-menu-level-animation4",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-shine-shine-idle": {
+   "file": "LevelScene/Shine/ShineIdle.anim",
+   "name": "ShineIdle",
+   "duration": 2.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-shine-shine-idle",
+     "channels": [
+      "a",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-angel-green-angel-green-angel-move-idle": {
+   "file": "LevelScenePortrait/Angel/GreenAngel/GreenAngelMoveIdle.anim",
+   "name": "GreenAngelMoveIdle",
+   "duration": 1.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-angel-green-angel-green-angel-move-idle",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-angel-pink-angel-pink-angel-move-idle": {
+   "file": "LevelScenePortrait/Angel/PinkAngel/PinkAngelMoveIdle.anim",
+   "name": "PinkAngelMoveIdle",
+   "duration": 1.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-angel-pink-angel-pink-angel-move-idle",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-angel-wings-wing-left-idle": {
+   "file": "LevelScenePortrait/Angel/Wings/WingLeftIdle.anim",
+   "name": "WingLeftIdle",
+   "duration": 1.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-angel-wings-wing-left-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-angel-wings-wing-right-idle": {
+   "file": "LevelScenePortrait/Angel/Wings/WingRightIdle.anim",
+   "name": "WingRightIdle",
+   "duration": 1.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-angel-wings-wing-right-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-angel-yellow-angel-yellow-angel-move-idle": {
+   "file": "LevelScenePortrait/Angel/YellowAngel/YellowAngelMoveIdle.anim",
+   "name": "YellowAngelMoveIdle",
+   "duration": 1.6667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-angel-yellow-angel-yellow-angel-move-idle",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-blue-balloon-idle": {
+   "file": "LevelScenePortrait/Balloons/BlueBalloonIdle.anim",
+   "name": "BlueBalloonIdle",
+   "duration": 29.7833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-blue-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-pink-balloon-idle": {
+   "file": "LevelScenePortrait/Balloons/PinkBalloonIdle.anim",
+   "name": "PinkBalloonIdle",
+   "duration": 40.5667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-pink-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-purple-balloon-idle": {
+   "file": "LevelScenePortrait/Balloons/PurpleBalloonIdle.anim",
+   "name": "PurpleBalloonIdle",
+   "duration": 43.05,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-purple-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-white-balloon01-idle": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon01Idle.anim",
+   "name": "WhiteBalloon01Idle",
+   "duration": 97.8667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-white-balloon01-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-white-balloon02-idle": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon02Idle.anim",
+   "name": "WhiteBalloon02Idle",
+   "duration": 40.5167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-white-balloon02-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-white-balloon03-idle": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon03Idle.anim",
+   "name": "WhiteBalloon03Idle",
+   "duration": 9.7333,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-white-balloon03-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-balloons-white-balloon04-idle": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon04Idle.anim",
+   "name": "WhiteBalloon04Idle",
+   "duration": 54.2167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-balloons-white-balloon04-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-cat-balloon-cat-balloon-move-idle": {
+   "file": "LevelScenePortrait/CatBalloon/CatBalloonMoveIdle.anim",
+   "name": "CatBalloonMoveIdle",
+   "duration": 23.1833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-cat-balloon-cat-balloon-move-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-cat-bubbles-bubble-enter1": {
+   "file": "LevelScenePortrait/CatBubbles/BubbleEnter1.anim",
+   "name": "BubbleEnter1",
+   "duration": 0.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-cat-bubbles-bubble-enter1",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-cat-bubbles-bubble-enter2": {
+   "file": "LevelScenePortrait/CatBubbles/BubbleEnter2.anim",
+   "name": "BubbleEnter2",
+   "duration": 2.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-cat-bubbles-bubble-enter2",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-cat-bubbles-cat-bubble-idle1": {
+   "file": "LevelScenePortrait/CatBubbles/CatBubbleIdle1.anim",
+   "name": "CatBubbleIdle1",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-cat-bubbles-cat-bubble-idle1",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-cat-bubbles-cat-bubble-idle2": {
+   "file": "LevelScenePortrait/CatBubbles/CatBubbleIdle2.anim",
+   "name": "CatBubbleIdle2",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-cat-bubbles-cat-bubble-idle2",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-clouds-cloud2-idle": {
+   "file": "LevelScenePortrait/Clouds/Cloud2Idle.anim",
+   "name": "Cloud2Idle",
+   "duration": 15.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-clouds-cloud2-idle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-clouds-cloud-i1dle": {
+   "file": "LevelScenePortrait/Clouds/CloudI1dle.anim",
+   "name": "CloudI1dle",
+   "duration": 8.8667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-clouds-cloud-i1dle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-clouds-clous1-enter": {
+   "file": "LevelScenePortrait/Clouds/Clous1Enter.anim",
+   "name": "Clous1Enter",
+   "duration": 10.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-clouds-clous1-enter",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-shine-shine-idle": {
+   "file": "LevelScenePortrait/Shine/ShineIdle.anim",
+   "name": "ShineIdle",
+   "duration": 2.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-shine-shine-idle",
+     "channels": [
+      "a",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_Color.b"
+   ],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-water-shine-water-shine-idle": {
+   "file": "LevelScenePortrait/WaterShine/WaterShineIdle.anim",
+   "name": "WaterShineIdle",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-water-shine-water-shine-idle",
+     "channels": [
+      "a",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-scene-portrait-water-shine-water-shine-move-idle": {
+   "file": "LevelScenePortrait/WaterShine/WaterShineMoveIdle.anim",
+   "name": "WaterShineMoveIdle",
+   "duration": 1.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-scene-portrait-water-shine-water-shine-move-idle",
+     "channels": [
+      "a",
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-bear-enter": {
+   "file": "LevelUp/Animals/BearEnter.anim",
+   "name": "BearEnter",
+   "duration": 2.5167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-bear-enter",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-bear-idle": {
+   "file": "LevelUp/Animals/BearIdle.anim",
+   "name": "BearIdle",
+   "duration": 2.7167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-bear-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-bird-enter": {
+   "file": "LevelUp/Animals/BirdEnter.anim",
+   "name": "BirdEnter",
+   "duration": 1.5667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-bird-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-bird-idle": {
+   "file": "LevelUp/Animals/BirdIdle.anim",
+   "name": "BirdIdle",
+   "duration": 2.1833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-bird-idle",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-cat-enter": {
+   "file": "LevelUp/Animals/CatEnter.anim",
+   "name": "CatEnter",
+   "duration": 1.3,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-cat-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-cat-idle": {
+   "file": "LevelUp/Animals/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 2.3667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-cat-idle",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-panda-bear-enter": {
+   "file": "LevelUp/Animals/PandaBearEnter.anim",
+   "name": "PandaBearEnter",
+   "duration": 1.4667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-panda-bear-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-panda-bear-idle": {
+   "file": "LevelUp/Animals/PandaBearIdle.anim",
+   "name": "PandaBearIdle",
+   "duration": 3.2167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-panda-bear-idle",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-rabbit-enter": {
+   "file": "LevelUp/Animals/RabbitEnter.anim",
+   "name": "RabbitEnter",
+   "duration": 1.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-rabbit-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "level-up-animals-rabbit-idle": {
+   "file": "LevelUp/Animals/RabbitIdle.anim",
+   "name": "RabbitIdle",
+   "duration": 2.3333,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-level-up-animals-rabbit-idle",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "locks-default-lock-enter1": {
+   "file": "Locks/Default/LockEnter1.anim",
+   "name": "LockEnter1",
+   "duration": 0.1667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-locks-default-lock-enter1",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "locks-default-lock-enter2": {
+   "file": "Locks/Default/LockEnter2.anim",
+   "name": "LockEnter2",
+   "duration": 3.5833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-locks-default-lock-enter2",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "locks-default-lock-enter3": {
+   "file": "Locks/Default/LockEnter3.anim",
+   "name": "LockEnter3",
+   "duration": 1.7167,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-locks-default-lock-enter3",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "locks-default-lock-idle": {
+   "file": "Locks/Default/LockIdle.anim",
+   "name": "LockIdle",
+   "duration": 4.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-locks-default-lock-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "locks-popup-lock-popup-idle": {
+   "file": "Locks/Popup/LockPopupIdle.anim",
+   "name": "LockPopupIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-locks-popup-lock-popup-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-failed-text-failed-text-enter": {
+   "file": "LosePopup/FailedText/FailedTextEnter.anim",
+   "name": "FailedTextEnter",
+   "duration": 0.3,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-failed-text-failed-text-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-failed-text-failed-text-idle": {
+   "file": "LosePopup/FailedText/FailedTextIdle.anim",
+   "name": "FailedTextIdle",
+   "duration": 2.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-failed-text-failed-text-idle",
+     "channels": [
+      "a",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_Color.b",
+    "m_Color.g",
+    "m_Color.r"
+   ],
+   "spriteCurves": []
+  },
+  "lose-popup-hang-rabbit-ear-left-idle": {
+   "file": "LosePopup/HangRabbit/EarLeftIdle.anim",
+   "name": "EarLeftIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-hang-rabbit-ear-left-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-hang-rabbit-ear-right-idle": {
+   "file": "LosePopup/HangRabbit/EarRightIdle.anim",
+   "name": "EarRightIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-hang-rabbit-ear-right-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-hang-rabbit-enter-rabbit": {
+   "file": "LosePopup/HangRabbit/EnterRabbit.anim",
+   "name": "EnterRabbit",
+   "duration": 1.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-hang-rabbit-enter-rabbit",
+     "channels": [
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-hang-rabbit-hang-rabbit-idle": {
+   "file": "LosePopup/HangRabbit/HangRabbitIdle.anim",
+   "name": "HangRabbitIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-hang-rabbit-hang-rabbit-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-target-box-background-enter": {
+   "file": "LosePopup/TargetBox/BackgroundEnter.anim",
+   "name": "BackgroundEnter",
+   "duration": 0.1667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-target-box-background-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-target-box-item-animation": {
+   "file": "LosePopup/TargetBox/ItemAnimation.anim",
+   "name": "ItemAnimation",
+   "duration": 0.8833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-target-box-item-animation",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-target-box-item-enter1": {
+   "file": "LosePopup/TargetBox/ItemEnter1.anim",
+   "name": "ItemEnter1",
+   "duration": 0.0333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-target-box-item-enter1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-target-box-item-enter2": {
+   "file": "LosePopup/TargetBox/ItemEnter2.anim",
+   "name": "ItemEnter2",
+   "duration": 0.1333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-target-box-item-enter2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "lose-popup-target-box-item-enter3": {
+   "file": "LosePopup/TargetBox/ItemEnter3.anim",
+   "name": "ItemEnter3",
+   "duration": 0.25,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-lose-popup-target-box-item-enter3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-bubbles-bubble-idle1": {
+   "file": "PausePopup/Bubbles/BubbleIdle1.anim",
+   "name": "BubbleIdle1",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-bubbles-bubble-idle1",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-bubbles-bubble-idle2": {
+   "file": "PausePopup/Bubbles/BubbleIdle2.anim",
+   "name": "BubbleIdle2",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-bubbles-bubble-idle2",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-bubbles-enter1": {
+   "file": "PausePopup/Bubbles/Enter1.anim",
+   "name": "Enter1",
+   "duration": 0.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-bubbles-enter1",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-bubbles-enter2": {
+   "file": "PausePopup/Bubbles/Enter2.anim",
+   "name": "Enter2",
+   "duration": 2.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-bubbles-enter2",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-cat-cat-idle": {
+   "file": "PausePopup/Cat/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 3.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-cat-cat-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-cat-clock-idle": {
+   "file": "PausePopup/Cat/ClockIdle.anim",
+   "name": "ClockIdle",
+   "duration": 1.3167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-cat-clock-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-cat-cloud-idle": {
+   "file": "PausePopup/Cat/CloudIdle.anim",
+   "name": "CloudIdle",
+   "duration": 3.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-cat-cloud-idle",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "pause-popup-cat-tail-idle": {
+   "file": "PausePopup/Cat/TailIdle.anim",
+   "name": "TailIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-pause-popup-cat-tail-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-default-popup-close": {
+   "file": "Popups/Default/PopupClose.anim",
+   "name": "PopupClose",
+   "duration": 0.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-default-popup-close",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-default-popup-open": {
+   "file": "Popups/Default/PopupOpen.anim",
+   "name": "PopupOpen",
+   "duration": 0.5667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-default-popup-open",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-full-screen-fullscreen-popup-close": {
+   "file": "Popups/FullScreen/FullscreenPopupClose.anim",
+   "name": "FullscreenPopupClose",
+   "duration": 0.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-full-screen-fullscreen-popup-close",
+     "channels": [
+      "a"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-full-screen-fullscreen-popup-open": {
+   "file": "Popups/FullScreen/FullscreenPopupOpen.anim",
+   "name": "FullscreenPopupOpen",
+   "duration": 0.05,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-full-screen-fullscreen-popup-open",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-cat-key-login-popup-cat-ket-idle": {
+   "file": "PopupsTopImages/CatKeyLoginPopup/CatKetIdle.anim",
+   "name": "CatKetIdle",
+   "duration": 3.5,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "89b559b71387a40f491bc2e7b8ea8cca"
+      },
+      {
+       "t": 0.266666681,
+       "guid": "9429db2893c4a4621b91050306907b56"
+      },
+      {
+       "t": 0.400000006,
+       "guid": "89b559b71387a40f491bc2e7b8ea8cca"
+      },
+      {
+       "t": 0.533333361,
+       "guid": "9429db2893c4a4621b91050306907b56"
+      },
+      {
+       "t": 0.683333337,
+       "guid": "89b559b71387a40f491bc2e7b8ea8cca"
+      },
+      {
+       "t": 1.81666672,
+       "guid": "9429db2893c4a4621b91050306907b56"
+      },
+      {
+       "t": 1.9666667,
+       "guid": "89b559b71387a40f491bc2e7b8ea8cca"
+      },
+      {
+       "t": 3.48333335,
+       "guid": "89b559b71387a40f491bc2e7b8ea8cca"
+      }
+     ]
+    }
+   ]
+  },
+  "popups-top-images-cat-key-login-popup-cat-key-move-idle": {
+   "file": "PopupsTopImages/CatKeyLoginPopup/CatKeyMoveIdle.anim",
+   "name": "CatKeyMoveIdle",
+   "duration": 3.4833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-cat-key-login-popup-cat-key-move-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-cat-popups-top-cat-body-idle": {
+   "file": "PopupsTopImages/CatPopupsTop/CatBodyIdle.anim",
+   "name": "CatBodyIdle",
+   "duration": 2.9167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-cat-popups-top-cat-body-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-cat-popups-top-cat-eyes-idle": {
+   "file": "PopupsTopImages/CatPopupsTop/CatEyesIdle.anim",
+   "name": "CatEyesIdle",
+   "duration": 3.0833,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "97e79daa518794e3eb099ce9ef3cd65a"
+      },
+      {
+       "t": 0.416666657,
+       "guid": "2974bcff7545a4684991378edb54f60a"
+      },
+      {
+       "t": 0.550000012,
+       "guid": "97e79daa518794e3eb099ce9ef3cd65a"
+      },
+      {
+       "t": 0.683333337,
+       "guid": "2974bcff7545a4684991378edb54f60a"
+      },
+      {
+       "t": 0.816666663,
+       "guid": "97e79daa518794e3eb099ce9ef3cd65a"
+      },
+      {
+       "t": 2.1500001,
+       "guid": "2974bcff7545a4684991378edb54f60a"
+      },
+      {
+       "t": 2.29999995,
+       "guid": "97e79daa518794e3eb099ce9ef3cd65a"
+      },
+      {
+       "t": 3.0666666,
+       "guid": "97e79daa518794e3eb099ce9ef3cd65a"
+      }
+     ]
+    }
+   ]
+  },
+  "popups-top-images-invite-friends-popup-top-animals-dbear-idle": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/DBearIdle.anim",
+   "name": "DBearIdle",
+   "duration": 3.7833,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-invite-friends-popup-top-animals-dbear-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-invite-friends-popup-top-animals-dcat-idle": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/DCatIdle.anim",
+   "name": "DCatIdle",
+   "duration": 3.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-invite-friends-popup-top-animals-dcat-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    },
+    {
+     "path": "Cat",
+     "keyframes": "ua-popups-top-images-invite-friends-popup-top-animals-dcat-idle--cat",
+     "channels": [
+      "px",
+      "py"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-invite-friends-popup-top-animals-drabbit-idle": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/DRabbitIdle.anim",
+   "name": "DRabbitIdle",
+   "duration": 3.15,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-invite-friends-popup-top-animals-drabbit-idle",
+     "channels": [
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-missions-popup-top-mountains-mountains-idle": {
+   "file": "PopupsTopImages/MissionsPopupTopMountains/MountainsIdle.anim",
+   "name": "MountainsIdle",
+   "duration": 3.9,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-missions-popup-top-mountains-mountains-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-missions-portrait-popup-cat-gasballoon-cat-balloon-idle": {
+   "file": "PopupsTopImages/MissionsPortraitPopupCatGasballoon/CatBalloonIdle.anim",
+   "name": "CatBalloonIdle",
+   "duration": 11.7,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-missions-portrait-popup-cat-gasballoon-cat-balloon-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-ear-left-idle": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/EarLeftIdle.anim",
+   "name": "EarLeftIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-rabbit-ears-pink-popups-top-ear-left-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-ear-right-idle": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/EarRightIdle.anim",
+   "name": "EarRightIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-rabbit-ears-pink-popups-top-ear-right-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-eyes-idle": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/EyesIdle.anim",
+   "name": "EyesIdle",
+   "duration": 4.9,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0166666675,
+       "guid": "8d4261b1b564a4057b270ac6e348ec09"
+      },
+      {
+       "t": 0.433333337,
+       "guid": "7c71770cd5b6f466ca9a10fe837cfc22"
+      },
+      {
+       "t": 0.633333325,
+       "guid": "8d4261b1b564a4057b270ac6e348ec09"
+      },
+      {
+       "t": 0.783333361,
+       "guid": "7c71770cd5b6f466ca9a10fe837cfc22"
+      },
+      {
+       "t": 0.966666639,
+       "guid": "8d4261b1b564a4057b270ac6e348ec09"
+      },
+      {
+       "t": 2.36666656,
+       "guid": "7c71770cd5b6f466ca9a10fe837cfc22"
+      },
+      {
+       "t": 2.51666665,
+       "guid": "8d4261b1b564a4057b270ac6e348ec09"
+      },
+      {
+       "t": 4.88333321,
+       "guid": "8d4261b1b564a4057b270ac6e348ec09"
+      }
+     ]
+    }
+   ]
+  },
+  "popups-top-images-rabbit-spin-wheel-top-eyes-idle": {
+   "file": "PopupsTopImages/RabbitSpinWheelTop/EyesIdle.anim",
+   "name": "EyesIdle",
+   "duration": 7.05,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      },
+      {
+       "t": 0.5,
+       "guid": "83762c34398a540d6820e6a8366e9a44"
+      },
+      {
+       "t": 0.649999976,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      },
+      {
+       "t": 0.833333313,
+       "guid": "83762c34398a540d6820e6a8366e9a44"
+      },
+      {
+       "t": 1.0333333,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      },
+      {
+       "t": 2.41666675,
+       "guid": "83762c34398a540d6820e6a8366e9a44"
+      },
+      {
+       "t": 2.5666666,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      },
+      {
+       "t": 4.26666689,
+       "guid": "83762c34398a540d6820e6a8366e9a44"
+      },
+      {
+       "t": 5.86666679,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      },
+      {
+       "t": 7.0333333,
+       "guid": "683ebdfa4e7de48f3bcbd847009e1c5d"
+      }
+     ]
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-bunny-body-idle": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/BunnyBodyIdle.anim",
+   "name": "BunnyBodyIdle",
+   "duration": 2.9167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-rabbit-white-popups-top-bunny-body-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-rabbit-white-popups-top-bunny-eyes-idle": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/BunnyEyesIdle.anim",
+   "name": "BunnyEyesIdle",
+   "duration": 3.5167,
+   "loop": true,
+   "paths": [],
+   "unsupported": [],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "04a214fead44840aa802eb785ffed545"
+      },
+      {
+       "t": 0.416666657,
+       "guid": "f2ce2dd3eb0b14b1497ed2a37cf14fa9"
+      },
+      {
+       "t": 0.533333361,
+       "guid": "04a214fead44840aa802eb785ffed545"
+      },
+      {
+       "t": 0.649999976,
+       "guid": "f2ce2dd3eb0b14b1497ed2a37cf14fa9"
+      },
+      {
+       "t": 0.766666651,
+       "guid": "04a214fead44840aa802eb785ffed545"
+      },
+      {
+       "t": 1.98333335,
+       "guid": "f2ce2dd3eb0b14b1497ed2a37cf14fa9"
+      },
+      {
+       "t": 2.0999999,
+       "guid": "04a214fead44840aa802eb785ffed545"
+      },
+      {
+       "t": 3.5,
+       "guid": "04a214fead44840aa802eb785ffed545"
+      }
+     ]
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-ear-left-idle": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/EarLeftIdle.anim",
+   "name": "EarLeftIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-rabbit-white-popups-top-ear-left-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "popups-top-images-rabbit-white-popups-top-ear-right-idle": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/EarRightIdle.anim",
+   "name": "EarRightIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-popups-top-images-rabbit-white-popups-top-ear-right-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "progress-bars-missions-puppy-progress-bar-puppy-color-progress-bar-idle": {
+   "file": "ProgressBars/Missions/PuppyProgressBar/PuppyColorProgressBarIdle.anim",
+   "name": "PuppyColorProgressBarIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-missions-puppy-progress-bar-puppy-color-progress-bar-idle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_SizeDelta.x"
+   ],
+   "spriteCurves": [
+    {
+     "path": "",
+     "attribute": "m_Sprite",
+     "frames": [
+      {
+       "t": 0.0,
+       "guid": "965861bf1eeb34354a3544803640a38b"
+      },
+      {
+       "t": 4.0,
+       "guid": "b5703503bfdfc4db8be7d615345d957d"
+      }
+     ]
+    }
+   ]
+  },
+  "progress-bars-missions-puppy-progress-bar-puppy-progress-bar-idle": {
+   "file": "ProgressBars/Missions/PuppyProgressBar/PuppyProgressBarIdle.anim",
+   "name": "PuppyProgressBarIdle",
+   "duration": 6.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-missions-puppy-progress-bar-puppy-progress-bar-idle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_SizeDelta.x"
+   ],
+   "spriteCurves": []
+  },
+  "progress-bars-missions-top-progress-bar-diamond-idle": {
+   "file": "ProgressBars/Missions/TopProgressBar/DiamondIdle.anim",
+   "name": "DiamondIdle",
+   "duration": 5.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-missions-top-progress-bar-diamond-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "progress-bars-missions-top-progress-bar-top-progress-bar-idle": {
+   "file": "ProgressBars/Missions/TopProgressBar/TopProgressBarIdle.anim",
+   "name": "TopProgressBarIdle",
+   "duration": 5.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-missions-top-progress-bar-top-progress-bar-idle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "progress-bars-progress-bar-game-landscape-progress-bargame-landscape-idle": {
+   "file": "ProgressBars/ProgressBarGameLandscape/ProgressBargameLandscapeIdle.anim",
+   "name": "ProgressBargameLandscapeIdle",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [],
+   "unsupported": [
+    "m_FillAmount",
+    "m_FillClockwise"
+   ],
+   "spriteCurves": []
+  },
+  "progress-bars-progress-bar-game-portrait-progress-bar-game-portrait-idle": {
+   "file": "ProgressBars/ProgressBarGamePortrait/ProgressBarGamePortraitIdle.anim",
+   "name": "ProgressBarGamePortraitIdle",
+   "duration": 5.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-progress-bar-game-portrait-progress-bar-game-portrait-idle",
+     "channels": [
+      "px",
+      "py"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "progress-bars-ranking-top-progress-bar-idle": {
+   "file": "ProgressBars/Ranking/TopProgressBarIdle.anim",
+   "name": "TopProgressBarIdle",
+   "duration": 5.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-progress-bars-ranking-top-progress-bar-idle",
+     "channels": [
+      "px"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "radial-radial-left-idle": {
+   "file": "Radial/RadialLeftIdle.anim",
+   "name": "RadialLeftIdle",
+   "duration": 27.95,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-radial-radial-left-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "radial-radial-right-idle": {
+   "file": "Radial/RadialRightIdle.anim",
+   "name": "RadialRightIdle",
+   "duration": 16.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-radial-radial-right-idle",
+     "channels": [
+      "rz"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter1": {
+   "file": "SpinWheel/Bubbles/BubbleEnter1.anim",
+   "name": "BubbleEnter1",
+   "duration": 1.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter2": {
+   "file": "SpinWheel/Bubbles/BubbleEnter2.anim",
+   "name": "BubbleEnter2",
+   "duration": 0.1667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter3": {
+   "file": "SpinWheel/Bubbles/BubbleEnter3.anim",
+   "name": "BubbleEnter3",
+   "duration": 0.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter4": {
+   "file": "SpinWheel/Bubbles/BubbleEnter4.anim",
+   "name": "BubbleEnter4",
+   "duration": 0.5,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter4",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter5": {
+   "file": "SpinWheel/Bubbles/BubbleEnter5.anim",
+   "name": "BubbleEnter5",
+   "duration": 0.6667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter5",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter6": {
+   "file": "SpinWheel/Bubbles/BubbleEnter6.anim",
+   "name": "BubbleEnter6",
+   "duration": 0.8333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter6",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter7": {
+   "file": "SpinWheel/Bubbles/BubbleEnter7.anim",
+   "name": "BubbleEnter7",
+   "duration": 1.0,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter7",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-enter8": {
+   "file": "SpinWheel/Bubbles/BubbleEnter8.anim",
+   "name": "BubbleEnter8",
+   "duration": 1.1667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-enter8",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-bubbles-bubble-idle1": {
+   "file": "SpinWheel/Bubbles/BubbleIdle1.anim",
+   "name": "BubbleIdle1",
+   "duration": 1.3335,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-bubbles-bubble-idle1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-prize-center-arrow-prize-center-arrow-idle": {
+   "file": "SpinWheel/PrizeCenterArrow/PrizeCenterArrowIdle.anim",
+   "name": "PrizeCenterArrowIdle",
+   "duration": 2.5,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-prize-center-arrow-prize-center-arrow-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-wheel-enter-landscape-spin-wheel-landscape-enter": {
+   "file": "SpinWheel/WheelEnter/Landscape/SpinWheelLandscapeEnter.anim",
+   "name": "SpinWheelLandscapeEnter",
+   "duration": 0.8,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-wheel-enter-landscape-spin-wheel-landscape-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "spin-wheel-wheel-enter-portrait-spin-wheel-portrait-enter": {
+   "file": "SpinWheel/WheelEnter/Portrait/SpinWheelPortraitEnter.anim",
+   "name": "SpinWheelPortraitEnter",
+   "duration": 1.75,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-spin-wheel-wheel-enter-portrait-spin-wheel-portrait-enter",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-bear-enter": {
+   "file": "WinPopup/AnimalsPortraitPopup/BearEnter.anim",
+   "name": "BearEnter",
+   "duration": 1.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-bear-enter",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-bear-idle": {
+   "file": "WinPopup/AnimalsPortraitPopup/BearIdle.anim",
+   "name": "BearIdle",
+   "duration": 4.0,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-bear-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-bird-enter": {
+   "file": "WinPopup/AnimalsPortraitPopup/BirdEnter.anim",
+   "name": "BirdEnter",
+   "duration": 0.8,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-bird-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-bird-idle": {
+   "file": "WinPopup/AnimalsPortraitPopup/BirdIdle.anim",
+   "name": "BirdIdle",
+   "duration": 4.1,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-bird-idle",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-cat-enter": {
+   "file": "WinPopup/AnimalsPortraitPopup/CatEnter.anim",
+   "name": "CatEnter",
+   "duration": 1.2,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-cat-enter",
+     "channels": [
+      "px",
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-cat-idle": {
+   "file": "WinPopup/AnimalsPortraitPopup/CatIdle.anim",
+   "name": "CatIdle",
+   "duration": 2.4167,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-cat-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-frog-enter": {
+   "file": "WinPopup/AnimalsPortraitPopup/FrogEnter.anim",
+   "name": "FrogEnter",
+   "duration": 1.3833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-frog-enter",
+     "channels": [
+      "py",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-frog-idle": {
+   "file": "WinPopup/AnimalsPortraitPopup/FrogIdle.anim",
+   "name": "FrogIdle",
+   "duration": 5.1667,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-frog-idle",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-rabbit-enter": {
+   "file": "WinPopup/AnimalsPortraitPopup/RabbitEnter.anim",
+   "name": "RabbitEnter",
+   "duration": 1.4833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-rabbit-enter",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-animals-portrait-popup-rabbit-idle": {
+   "file": "WinPopup/AnimalsPortraitPopup/RabbitIdle.anim",
+   "name": "RabbitIdle",
+   "duration": 4.6,
+   "loop": true,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-animals-portrait-popup-rabbit-idle",
+     "channels": [
+      "px",
+      "py",
+      "rz",
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-background-fade-in-background-animation": {
+   "file": "WinPopup/BackgroundFadeIn/BackgroundAnimation.anim",
+   "name": "BackgroundAnimation",
+   "duration": 0.45,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-background-fade-in-background-animation",
+     "channels": [
+      "a"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-stars-enter1": {
+   "file": "WinPopup/Stars/Enter1.anim",
+   "name": "Enter1",
+   "duration": 0.1667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-stars-enter1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-stars-enter2": {
+   "file": "WinPopup/Stars/Enter2.anim",
+   "name": "Enter2",
+   "duration": 0.3333,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-stars-enter2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-stars-enter3": {
+   "file": "WinPopup/Stars/Enter3.anim",
+   "name": "Enter3",
+   "duration": 0.65,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-stars-enter3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-stars-star-animation": {
+   "file": "WinPopup/Stars/StarAnimation.anim",
+   "name": "StarAnimation",
+   "duration": 1.05,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-stars-star-animation",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [
+    "m_Enabled",
+    "m_PlayOnAwake"
+   ],
+   "spriteCurves": []
+  },
+  "win-popup-target-box-background-enter": {
+   "file": "WinPopup/TargetBox/BackgroundEnter.anim",
+   "name": "BackgroundEnter",
+   "duration": 0.35,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-target-box-background-enter",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-target-box-item-animation": {
+   "file": "WinPopup/TargetBox/ItemAnimation.anim",
+   "name": "ItemAnimation",
+   "duration": 0.8833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-target-box-item-animation",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-target-box-item-enter1": {
+   "file": "WinPopup/TargetBox/ItemEnter1.anim",
+   "name": "ItemEnter1",
+   "duration": 0.3,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-target-box-item-enter1",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-target-box-item-enter2": {
+   "file": "WinPopup/TargetBox/ItemEnter2.anim",
+   "name": "ItemEnter2",
+   "duration": 0.6667,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-target-box-item-enter2",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  },
+  "win-popup-target-box-item-enter3": {
+   "file": "WinPopup/TargetBox/ItemEnter3.anim",
+   "name": "ItemEnter3",
+   "duration": 0.9833,
+   "loop": false,
+   "paths": [
+    {
+     "path": "",
+     "keyframes": "ua-win-popup-target-box-item-enter3",
+     "channels": [
+      "sx",
+      "sy"
+     ]
+    }
+   ],
+   "unsupported": [],
+   "spriteCurves": []
+  }
+ },
+ "controllers": {
+  "background-fade-in-background-fade-in": {
+   "file": "BackgroundFadeIn/BackgroundFadeIn.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "background-fade-in-fade-in",
+     "transitions": []
+    }
+   ]
+  },
+  "booster-shop-popup-balloons-blue-balloon": {
+   "file": "BoosterShopPopupBalloons/BlueBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "booster-shop-popup-balloons-blue-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "booster-shop-popup-balloons-pink-balloon": {
+   "file": "BoosterShopPopupBalloons/PinkBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "booster-shop-popup-balloons-pink-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "booster-shop-popup-balloons-purple-balloon": {
+   "file": "BoosterShopPopupBalloons/PurpleBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "booster-shop-popup-balloons-purple-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "buttons-bubbles-button": {
+   "file": "Buttons/Bubbles/Button.controller",
+   "parameters": [
+    "Pressed"
+   ],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Pressed",
+     "clip": "buttons-bubbles-pressed",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Enter",
+     "clip": "buttons-bubbles-enter",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Default",
+     "clip": null,
+     "transitions": [
+      {
+       "to": "Pressed",
+       "conditions": [
+        {
+         "param": "Pressed",
+         "value": 0
+        }
+       ],
+       "hasExitTime": false
+      }
+     ]
+    }
+   ]
+  },
+  "buttons-rectangles-rectanble-button": {
+   "file": "Buttons/Rectangles/RectanbleButton.controller",
+   "parameters": [
+    "Pressed"
+   ],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Pressed",
+     "clip": "buttons-rectangles-pressed",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Enter",
+     "clip": "buttons-bubbles-enter",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Default",
+     "clip": null,
+     "transitions": [
+      {
+       "to": "Pressed",
+       "conditions": [
+        {
+         "param": "Pressed",
+         "value": 0
+        }
+       ],
+       "hasExitTime": false
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bear-face-bear-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/Bear/FaceBearAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-bear-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-bear-face-bear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-bird-yellow-face-bird-yellow-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/BirdYellow/FaceBirdYellowAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-bird-yellow-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-bird-yellow-face-bird-yellow-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-blue-cat-face-blue-cat-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/BlueCat/FaceBlueCatAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-blue-cat-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-blue-cat-face-blue-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-cat-tiger-face-cat-tiger-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/CatTiger/FaceCatTigerAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-cat-tiger-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-cat-tiger-face-cat-tiger-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-fox-face-fox-animator": {
+   "file": "GameScene/AnimalFaceAnimations/Fox/FaceFoxAnimator.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-fox-face-fox-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-frog-face-frog-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/Frog/FaceFrogAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-frog-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-frog-face-frog-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-koala-bear-face-koala-animator": {
+   "file": "GameScene/AnimalFaceAnimations/KoalaBear/FaceKoalaAnimator.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-koala-bear-face-koala-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-owl-face-owl-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/Owl/FaceOwlAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-owl-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-owl-face-owl-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-panda-bear-face-panda-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/PandaBear/FacePandaAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-panda-bear-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-panda-bear-face-panda-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pig-face-pig-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/Pig/FacePigAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-pig-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-pig-face-pig-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-pink-rabbit-face-pink-rabbit-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/PinkRabbit/FacePinkRabbitAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-pink-rabbit-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-pink-rabbit-face-pink-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-face-animations-white-rabbit-face-white-rabbit-animator1": {
+   "file": "GameScene/AnimalFaceAnimations/WhiteRabbit/FaceWhiteRabbitAnimator1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "game-scene-animal-face-animations-white-rabbit-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "game-scene-animal-face-animations-white-rabbit-face-white-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-animal-press-button-animal-press": {
+   "file": "GameScene/AnimalPress/ButtonAnimalPress.controller",
+   "parameters": [
+    "Pressed"
+   ],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Pressed",
+     "clip": "game-scene-animal-press-animal-pressed",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Enter",
+     "clip": "buttons-bubbles-enter",
+     "transitions": [
+      {
+       "to": "Default",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Default",
+     "clip": null,
+     "transitions": [
+      {
+       "to": "Pressed",
+       "conditions": [
+        {
+         "param": "Pressed",
+         "value": 0
+        }
+       ],
+       "hasExitTime": false
+      }
+     ]
+    }
+   ]
+  },
+  "game-scene-color-cat-color-cat-move": {
+   "file": "GameScene/ColorCat/ColorCatMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "game-scene-color-cat-color-cat-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-moves-text-moves-text": {
+   "file": "GameScene/MovesText/MovesText.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "game-scene-moves-text-moves-text-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-ring-ring": {
+   "file": "GameScene/Ring/Ring.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "game-scene-ring-ring-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-score-info-speech-landscape-layout-score-info-speech": {
+   "file": "GameScene/ScoreInfoSpeech-LandscapeLayout/ScoreInfoSpeech.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "game-scene-score-info-speech-landscape-layout-score-info-speech",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-stars-star1": {
+   "file": "GameScene/Stars/Star1.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "game-scene-stars-star-idle1",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-stars-star2": {
+   "file": "GameScene/Stars/Star2.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "game-scene-stars-star-idle2",
+     "transitions": []
+    }
+   ]
+  },
+  "game-scene-stars-star3": {
+   "file": "GameScene/Stars/Star3.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "game-scene-stars-star-idle3",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-animals-bird": {
+   "file": "HomeScene/Animals/Bird.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-animals-bird-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-animals-cat": {
+   "file": "HomeScene/Animals/Cat.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-animals-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-animals-panda": {
+   "file": "HomeScene/Animals/Panda.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-animals-panda-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-balloons-blue-balloon-blue-balloon": {
+   "file": "HomeScene/Balloons/BlueBalloon/BlueBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-balloons-blue-balloon-blue-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-balloons-pink-balloon-pink-balloon": {
+   "file": "HomeScene/Balloons/PinkBalloon/PinkBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-balloons-pink-balloon-pink-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-balloons-purple-balloon-purple-balloon": {
+   "file": "HomeScene/Balloons/PurpleBalloon/PurpleBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-balloons-purple-balloon-purple-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-balloons-white-balloon-white-balloon": {
+   "file": "HomeScene/Balloons/WhiteBalloon/WhiteBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-balloons-white-balloon-white-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-trees-tree-rose": {
+   "file": "HomeScene/Trees/TreeRose.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-trees-tree-rose-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-trees-tree-yellow": {
+   "file": "HomeScene/Trees/TreeYellow.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-trees-tree-yellow-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-bird-bird": {
+   "file": "HomeScenePortrait/Animals/Bird/Bird.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-animals-bird-bird-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-bird-hair": {
+   "file": "HomeScenePortrait/Animals/Bird/Hair.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-animals-bird-hair",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-bird-wing-left": {
+   "file": "HomeScenePortrait/Animals/Bird/WingLeft.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "home-scene-portrait-animals-bird-wing-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-bird-wing-right": {
+   "file": "HomeScenePortrait/Animals/Bird/WingRight.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "home-scene-portrait-animals-bird-wing-rightdle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-cat-cat": {
+   "file": "HomeScenePortrait/Animals/Cat/Cat.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-animals-cat-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-animals-panda-panda": {
+   "file": "HomeScenePortrait/Animals/Panda/Panda.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-animals-panda-panda-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-balloons-blue-balloon-blue-balloon": {
+   "file": "HomeScenePortrait/Balloons/BlueBalloon/BlueBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-balloons-blue-balloon-blue-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-balloons-pink-balloon-pink-balloon": {
+   "file": "HomeScenePortrait/Balloons/PinkBalloon/PinkBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-balloons-pink-balloon-pink-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-balloons-purple-balloon-purple-balloon": {
+   "file": "HomeScenePortrait/Balloons/PurpleBalloon/PurpleBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-balloons-purple-balloon-purple-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-trees-tree-rose-tree-rose": {
+   "file": "HomeScenePortrait/Trees/TreeRose/TreeRose.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-trees-tree-rose-tree-rose-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "home-scene-portrait-trees-tree-yellow-tree-yellow": {
+   "file": "HomeScenePortrait/Trees/TreeYellow/TreeYellow.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "home-scene-portrait-trees-tree-yellow-tree-yellow-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "idle-press-bubble-button-button": {
+   "file": "Idle&Press/BubbleButton/Button.controller",
+   "parameters": [
+    "Pressed"
+   ],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Pressed",
+     "clip": "buttons-bubbles-pressed",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Enter",
+     "clip": "buttons-bubbles-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Exit",
+     "clip": "buttons-bubbles-exit",
+     "transitions": []
+    },
+    {
+     "name": "Idle",
+     "clip": "idle-press-bubble-button-move-soft",
+     "transitions": [
+      {
+       "to": "Pressed",
+       "conditions": [
+        {
+         "param": "Pressed",
+         "value": 0
+        }
+       ],
+       "hasExitTime": false
+      }
+     ]
+    }
+   ]
+  },
+  "idle-press-soft-button-soft-button": {
+   "file": "Idle&Press/SoftButton/SoftButton.controller",
+   "parameters": [
+    "Pressed"
+   ],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Pressed",
+     "clip": "buttons-rectangles-pressed",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Enter",
+     "clip": "idle-press-soft-button-soft-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Exit",
+     "clip": "buttons-bubbles-exit",
+     "transitions": []
+    },
+    {
+     "name": "Idle",
+     "clip": "idle-press-soft-button-soft-idle",
+     "transitions": [
+      {
+       "to": "Pressed",
+       "conditions": [
+        {
+         "param": "Pressed",
+         "value": 0
+        }
+       ],
+       "hasExitTime": false
+      }
+     ]
+    }
+   ]
+  },
+  "items-idle-ask-friends-button-animals-bear": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/Bear.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "items-idle-ask-friends-button-animals-bear-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "items-idle-ask-friends-button-animals-bear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-ask-friends-button-animals-cat": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/Cat.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "items-idle-ask-friends-button-animals-cat-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "items-idle-ask-friends-button-animals-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-ask-friends-button-animals-rabbit": {
+   "file": "ItemsIdle/AskFriendsButtonAnimals/Rabbit.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "items-idle-ask-friends-button-animals-rabbit-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "items-idle-ask-friends-button-animals-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-cat-rose-lollipop-cat-lollipop-eyes": {
+   "file": "ItemsIdle/CatRoseLollipop/CatLollipopEyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-cat-rose-lollipop-cat-lollipop-eyes-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-cat-rose-lollipop-cat-lollipop-shake": {
+   "file": "ItemsIdle/CatRoseLollipop/CatLollipopShake.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-cat-rose-lollipop-cat-lollipop-shake-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-mail-amount-mail-amount-pulse": {
+   "file": "ItemsIdle/MailAmount/MailAmountPulse.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-mail-amount-mail-amount-pulse-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-pulse-pulse": {
+   "file": "ItemsIdle/Pulse/Pulse.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-pulse-pulse-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-pulse2-pulse2": {
+   "file": "ItemsIdle/Pulse2/Pulse2.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-pulse2-pulse2-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-pulse3-pulse3": {
+   "file": "ItemsIdle/Pulse3/Pulse3.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-pulse3-pulse3-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-pulse-quick-pulse-quick": {
+   "file": "ItemsIdle/PulseQuick/PulseQuick.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-pulse-quick-pulse-quic-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-rabbit-lollipop-rabbit-lollipop": {
+   "file": "ItemsIdle/RabbitLollipop/RabbitLollipop.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "items-idle-rabbit-lollipop-rabbit-lollipop-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-skull-eye-glow": {
+   "file": "ItemsIdle/Skull/EyeGlow.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "items-idle-skull-eye-glow-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "items-idle-sparkles-sparkle1": {
+   "file": "ItemsIdle/Sparkles/Sparkle1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "items-idle-sparkles-enter-sparkle1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "items-idle-sparkles-idle-sparkle1",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-avatar-avatar": {
+   "file": "LevelScene/Avatar/Avatar.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "buttons-bubbles-enter4",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-scene-avatar-avatar-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-cat-sign-cat-sign": {
+   "file": "LevelScene/CatSign/CatSign.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-cat-sign-cat-sign-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-menu-level-menu": {
+   "file": "LevelScene/Menu/LevelMenu.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": null,
+     "transitions": []
+    },
+    {
+     "name": "Animation1",
+     "clip": "level-scene-menu-level-animation1",
+     "transitions": []
+    },
+    {
+     "name": "Animation2",
+     "clip": "level-scene-menu-level-animation2",
+     "transitions": []
+    },
+    {
+     "name": "Animation3",
+     "clip": "level-scene-menu-level-animation3",
+     "transitions": []
+    },
+    {
+     "name": "Animation4",
+     "clip": "level-scene-menu-level-animation4",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-shine-shine": {
+   "file": "LevelScene/Shine/Shine.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-shine-shine-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-angel-green-angel-green-angel-move": {
+   "file": "LevelScenePortrait/Angel/GreenAngel/GreenAngelMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-angel-green-angel-green-angel-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-angel-pink-angel-pink-angel-move": {
+   "file": "LevelScenePortrait/Angel/PinkAngel/PinkAngelMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-angel-pink-angel-pink-angel-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-angel-wings-wing-left": {
+   "file": "LevelScenePortrait/Angel/Wings/WingLeft.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-angel-wings-wing-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-angel-wings-wing-right": {
+   "file": "LevelScenePortrait/Angel/Wings/WingRight.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-angel-wings-wing-right-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-angel-yellow-angel-yellow-angel-move": {
+   "file": "LevelScenePortrait/Angel/YellowAngel/YellowAngelMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-angel-yellow-angel-yellow-angel-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-blue-balloon": {
+   "file": "LevelScenePortrait/Balloons/BlueBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-blue-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-pink-balloon": {
+   "file": "LevelScenePortrait/Balloons/PinkBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-pink-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-purple-balloon": {
+   "file": "LevelScenePortrait/Balloons/PurpleBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-purple-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-white-balloon01": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon01.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-white-balloon01-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-white-balloon02": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon02.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-white-balloon02-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-white-balloon03": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon03.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-white-balloon03-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-balloons-white-balloon04": {
+   "file": "LevelScenePortrait/Balloons/WhiteBalloon04.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-balloons-white-balloon04-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-cat-balloon-cat-balloon-move": {
+   "file": "LevelScenePortrait/CatBalloon/CatBalloonMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-cat-balloon-cat-balloon-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-cat-bubbles-cat-bubble1": {
+   "file": "LevelScenePortrait/CatBubbles/CatBubble1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-scene-portrait-cat-bubbles-bubble-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-cat-bubbles-cat-bubble-idle1",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-cat-bubbles-cat-bubble2": {
+   "file": "LevelScenePortrait/CatBubbles/CatBubble2.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-scene-portrait-cat-bubbles-bubble-enter2",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-cat-bubbles-cat-bubble-idle2",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-clouds-cloud1": {
+   "file": "LevelScenePortrait/Clouds/Cloud1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-scene-portrait-clouds-clous1-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-clouds-cloud-i1dle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-clouds-cloud2": {
+   "file": "LevelScenePortrait/Clouds/Cloud2.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-clouds-cloud2-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-shine-shine": {
+   "file": "LevelScenePortrait/Shine/Shine.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-shine-shine-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-water-shine-water-shine": {
+   "file": "LevelScenePortrait/WaterShine/WaterShine.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-water-shine-water-shine-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-scene-portrait-water-shine-water-shine-move": {
+   "file": "LevelScenePortrait/WaterShine/WaterShineMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "level-scene-portrait-water-shine-water-shine-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-up-animals-bear": {
+   "file": "LevelUp/Animals/Bear.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-up-animals-bear-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-up-animals-bear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-up-animals-bird": {
+   "file": "LevelUp/Animals/Bird.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-up-animals-bird-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-up-animals-bird-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-up-animals-cat": {
+   "file": "LevelUp/Animals/Cat.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-up-animals-cat-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-up-animals-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-up-animals-panda-bear": {
+   "file": "LevelUp/Animals/PandaBear.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-up-animals-panda-bear-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-up-animals-panda-bear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "level-up-animals-rabbit": {
+   "file": "LevelUp/Animals/Rabbit.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "level-up-animals-rabbit-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "level-up-animals-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "locks-default-lock1": {
+   "file": "Locks/Default/Lock1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "locks-default-lock-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "locks-default-lock-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "locks-popup-lock-popup": {
+   "file": "Locks/Popup/LockPopup.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "locks-popup-lock-popup-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-failed-text-failed-text": {
+   "file": "LosePopup/FailedText/FailedText.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-failed-text-failed-text-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "lose-popup-failed-text-failed-text-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-hang-rabbit-ear-left": {
+   "file": "LosePopup/HangRabbit/EarLeft.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "lose-popup-hang-rabbit-ear-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-hang-rabbit-ear-right": {
+   "file": "LosePopup/HangRabbit/EarRight.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "lose-popup-hang-rabbit-ear-right-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-hang-rabbit-hang-rabbit": {
+   "file": "LosePopup/HangRabbit/HangRabbit.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-hang-rabbit-enter-rabbit",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "lose-popup-hang-rabbit-hang-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-target-box-background": {
+   "file": "LosePopup/TargetBox/Background.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-target-box-background-enter",
+     "transitions": []
+    }
+   ]
+  },
+  "lose-popup-target-box-item1": {
+   "file": "LosePopup/TargetBox/Item1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-target-box-item-enter1",
+     "transitions": [
+      {
+       "to": "Animation",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Animation",
+     "clip": "lose-popup-target-box-item-animation",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-bubbles-bubble1": {
+   "file": "PausePopup/Bubbles/Bubble1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "pause-popup-bubbles-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "pause-popup-bubbles-bubble-idle1",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-bubbles-bubble2": {
+   "file": "PausePopup/Bubbles/Bubble2.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "pause-popup-bubbles-enter2",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "pause-popup-bubbles-bubble-idle2",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-cat-cat": {
+   "file": "PausePopup/Cat/Cat.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "pause-popup-cat-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-cat-clock": {
+   "file": "PausePopup/Cat/Clock.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "pause-popup-cat-clock-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-cat-cloud": {
+   "file": "PausePopup/Cat/Cloud.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "pause-popup-cat-cloud-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "pause-popup-cat-tail": {
+   "file": "PausePopup/Cat/Tail.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "pause-popup-cat-tail-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-default-popup": {
+   "file": "Popups/Default/Popup.controller",
+   "parameters": [],
+   "default": "Open",
+   "states": [
+    {
+     "name": "Open",
+     "clip": "popups-default-popup-open",
+     "transitions": []
+    },
+    {
+     "name": "Close",
+     "clip": "popups-default-popup-close",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-default-popup-close-button": {
+   "file": "Popups/Default/PopupCloseButton.controller",
+   "parameters": [
+    "Normal",
+    "Highlighted",
+    "Pressed",
+    "Disabled"
+   ],
+   "default": "Normal",
+   "states": [
+    {
+     "name": "Normal",
+     "clip": null,
+     "transitions": []
+    },
+    {
+     "name": "Highlighted",
+     "clip": null,
+     "transitions": []
+    },
+    {
+     "name": "Pressed",
+     "clip": "buttons-bubbles-pressed",
+     "transitions": []
+    },
+    {
+     "name": "Disabled",
+     "clip": null,
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-cat-key-login-popup-cat-key-eyes": {
+   "file": "PopupsTopImages/CatKeyLoginPopup/CatKeyEyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-cat-key-login-popup-cat-ket-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-cat-key-login-popup-cat-key-move": {
+   "file": "PopupsTopImages/CatKeyLoginPopup/CatKeyMove.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-cat-key-login-popup-cat-key-move-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-cat-popups-top-cat-body": {
+   "file": "PopupsTopImages/CatPopupsTop/CatBody.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-cat-popups-top-cat-body-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-cat-popups-top-cat-eyes": {
+   "file": "PopupsTopImages/CatPopupsTop/CatEyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-cat-popups-top-cat-eyes-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-invite-friends-popup-top-animals-bear": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/Bear.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-invite-friends-popup-top-animals-dbear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-invite-friends-popup-top-animals-cat": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/Cat.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-invite-friends-popup-top-animals-dcat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-invite-friends-popup-top-animals-rabbit": {
+   "file": "PopupsTopImages/InviteFriendsPopupTopAnimals/Rabbit.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-invite-friends-popup-top-animals-drabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-missions-popup-top-mountains-mountains": {
+   "file": "PopupsTopImages/MissionsPopupTopMountains/Mountains.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-missions-popup-top-mountains-mountains-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-missions-portrait-popup-cat-gasballoon-cat-balloon": {
+   "file": "PopupsTopImages/MissionsPortraitPopupCatGasballoon/CatBalloon.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-missions-portrait-popup-cat-gasballoon-cat-balloon-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-ear-left": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/EarLeft.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-ears-pink-popups-top-ear-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-ear-right": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/EarRight.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-ears-pink-popups-top-ear-right-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-ears-pink-popups-top-eyes": {
+   "file": "PopupsTopImages/RabbitEarsPinkPopupsTop/Eyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-ears-pink-popups-top-eyes-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-spin-wheel-top-eyes": {
+   "file": "PopupsTopImages/RabbitSpinWheelTop/Eyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-spin-wheel-top-eyes-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-bunny-body": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/BunnyBody.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-white-popups-top-bunny-body-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-bunny-eyes": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/BunnyEyes.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-white-popups-top-bunny-eyes-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-ear-left": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/EarLeft.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-white-popups-top-ear-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "popups-top-images-rabbit-white-popups-top-ear-right": {
+   "file": "PopupsTopImages/RabbitWhitePopupsTop/EarRight.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "popups-top-images-rabbit-white-popups-top-ear-right-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-missions-puppy-progress-bar-puppy-color-progress-bar": {
+   "file": "ProgressBars/Missions/PuppyProgressBar/PuppyColorProgressBar.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-missions-puppy-progress-bar-puppy-color-progress-bar-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-missions-puppy-progress-bar-puppy-progress-bar": {
+   "file": "ProgressBars/Missions/PuppyProgressBar/PuppyProgressBar.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-missions-puppy-progress-bar-puppy-progress-bar-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-missions-top-progress-bar-diamond": {
+   "file": "ProgressBars/Missions/TopProgressBar/Diamond.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-missions-top-progress-bar-diamond-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-missions-top-progress-bar-top-progress-bar": {
+   "file": "ProgressBars/Missions/TopProgressBar/TopProgressBar.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-missions-top-progress-bar-top-progress-bar-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-progress-bar-game-landscape-progress-bar-game-landscape": {
+   "file": "ProgressBars/ProgressBarGameLandscape/ProgressBarGameLandscape.controller",
+   "parameters": [],
+   "default": "New State",
+   "states": [
+    {
+     "name": "New State",
+     "clip": "progress-bars-progress-bar-game-landscape-progress-bargame-landscape-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-progress-bar-game-portrait-progress-bar-game-portrait": {
+   "file": "ProgressBars/ProgressBarGamePortrait/ProgressBarGamePortrait.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-progress-bar-game-portrait-progress-bar-game-portrait-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "progress-bars-ranking-top-progress-bar": {
+   "file": "ProgressBars/Ranking/TopProgressBar.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "progress-bars-ranking-top-progress-bar-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "radial-radial-left": {
+   "file": "Radial/RadialLeft.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "radial-radial-left-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "radial-radial-right": {
+   "file": "Radial/RadialRight.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "radial-radial-right-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "spin-wheel-bubbles-bubble1": {
+   "file": "SpinWheel/Bubbles/Bubble1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "spin-wheel-bubbles-bubble-enter1",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "spin-wheel-bubbles-bubble-idle1",
+     "transitions": []
+    }
+   ]
+  },
+  "spin-wheel-prize-center-arrow-prize-center-arrow": {
+   "file": "SpinWheel/PrizeCenterArrow/PrizeCenterArrow.controller",
+   "parameters": [],
+   "default": "Idle",
+   "states": [
+    {
+     "name": "Idle",
+     "clip": "spin-wheel-prize-center-arrow-prize-center-arrow-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "spin-wheel-wheel-enter-landscape-spin-wheel-landscape": {
+   "file": "SpinWheel/WheelEnter/Landscape/SpinWheelLandscape.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "spin-wheel-wheel-enter-landscape-spin-wheel-landscape-enter",
+     "transitions": []
+    }
+   ]
+  },
+  "spin-wheel-wheel-enter-portrait-spin-wheel-portrait": {
+   "file": "SpinWheel/WheelEnter/Portrait/SpinWheelPortrait.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "spin-wheel-wheel-enter-portrait-spin-wheel-portrait-enter",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-animals-portrait-popup-bear": {
+   "file": "WinPopup/AnimalsPortraitPopup/Bear.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-animals-portrait-popup-bear-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "win-popup-animals-portrait-popup-bear-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-animals-portrait-popup-bird": {
+   "file": "WinPopup/AnimalsPortraitPopup/Bird.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-animals-portrait-popup-bird-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "win-popup-animals-portrait-popup-bird-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-animals-portrait-popup-cat": {
+   "file": "WinPopup/AnimalsPortraitPopup/Cat.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-animals-portrait-popup-cat-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "win-popup-animals-portrait-popup-cat-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-animals-portrait-popup-frog": {
+   "file": "WinPopup/AnimalsPortraitPopup/Frog.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-animals-portrait-popup-frog-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "win-popup-animals-portrait-popup-frog-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-animals-portrait-popup-rabbit": {
+   "file": "WinPopup/AnimalsPortraitPopup/Rabbit.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-animals-portrait-popup-rabbit-enter",
+     "transitions": [
+      {
+       "to": "Idle",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Idle",
+     "clip": "win-popup-animals-portrait-popup-rabbit-idle",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-background-fade-in-background": {
+   "file": "WinPopup/BackgroundFadeIn/Background.controller",
+   "parameters": [],
+   "default": "Open",
+   "states": [
+    {
+     "name": "Open",
+     "clip": "win-popup-background-fade-in-background-animation",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-stars-star1": {
+   "file": "WinPopup/Stars/Star1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "win-popup-stars-enter1",
+     "transitions": [
+      {
+       "to": "Animation",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Animation",
+     "clip": "win-popup-stars-star-animation",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-target-box-background": {
+   "file": "WinPopup/TargetBox/Background.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-target-box-background-enter",
+     "transitions": []
+    }
+   ]
+  },
+  "win-popup-target-box-item1": {
+   "file": "WinPopup/TargetBox/Item1.controller",
+   "parameters": [],
+   "default": "Enter",
+   "states": [
+    {
+     "name": "Enter",
+     "clip": "lose-popup-target-box-item-enter1",
+     "transitions": [
+      {
+       "to": "Animation",
+       "conditions": [],
+       "hasExitTime": true
+      }
+     ]
+    },
+    {
+     "name": "Animation",
+     "clip": "lose-popup-target-box-item-animation",
+     "transitions": []
+    }
+   ]
+  }
+ }
+}

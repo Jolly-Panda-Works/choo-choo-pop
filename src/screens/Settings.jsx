@@ -2,13 +2,17 @@ import { useState } from 'react';
 import { useSave, update, resetProgress } from '../store.js';
 import { useT } from '../i18n.js';
 import { billing } from '../services/billing.js';
-import { BackIcon } from '../ui/icons.jsx';
+import { BackButton } from '../ui/icons.jsx';
+import { UI_ART } from '../board/sprites.js';
 import Modal from '../ui/Modal.jsx';
 
-function Toggle({ label, on, onChange }) {
+function Toggle({ label, on, onChange, icon }) {
   return (
     <button className="row" onClick={() => onChange(!on)} role="switch" aria-checked={on}>
-      <span>{label}</span>
+      <span className="row-label">
+        {icon && <img className="row-ico" src={`${UI_ART}${icon}-${on ? 'enabled' : 'disabled'}.webp`} alt="" draggable="false" />}
+        {label}
+      </span>
       <i className={'switch' + (on ? ' on' : '')} />
     </button>
   );
@@ -22,15 +26,13 @@ export default function Settings({ onBack, onStory }) {
   return (
     <main className="screen settings">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('back')}>
-          <BackIcon />
-        </button>
+        <BackButton onClick={onBack} label={t('back')} />
         <h2>{t('settings')}</h2>
         <span />
       </header>
       <div className="panel">
-        <Toggle label={t('sound')} on={save.sound} onChange={(v) => update({ sound: v })} />
-        <Toggle label={t('vibration')} on={save.vibrate} onChange={(v) => update({ vibrate: v })} />
+        <Toggle icon="sound" label={t('sound')} on={save.sound} onChange={(v) => update({ sound: v })} />
+        <Toggle icon="alert" label={t('vibration')} on={save.vibrate} onChange={(v) => update({ vibrate: v })} />
         <button className="row" onClick={onStory}>
           <span>{t('replayStory')}</span>
           <span>▶</span>

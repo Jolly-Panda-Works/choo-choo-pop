@@ -13,20 +13,14 @@ import Settings from './screens/Settings.jsx';
 import Shop from './screens/Shop.jsx';
 import Story from './screens/Story.jsx';
 import AdHost from './ui/AdHost.jsx';
-
-function Clouds() {
-  return (
-    <div className="sky" aria-hidden="true">
-      <i className="cloud c1" />
-      <i className="cloud c2" />
-      <i className="cloud c3" />
-      <div className="hills" />
-    </div>
-  );
-}
+import { IconDefs } from './ui/icons.jsx';
+import HomeScene from './ui/HomeScene.jsx';
 
 // screens that sit on the grass (top-down world) instead of the sky
-const GRASS = new Set(['game', 'stage', 'map']);
+const GRASS = new Set(['game']);
+// the stage map has its own island-and-sea art; every other menu screen sits on the home sky scene
+const SEA = new Set(['map']);
+const SCENE_DECOR = new Set(['home', 'stage']);
 
 export default function App() {
   const save = useSave();
@@ -106,7 +100,8 @@ export default function App() {
   const sky = !GRASS.has(screen.name);
   return (
     <div className={'app on-' + screen.name} style={{ '--grass': `url(${ART}tiles/grass-b.png)` }}>
-      {sky && <Clouds />}
+      <IconDefs />
+      {sky && !SEA.has(screen.name) && <HomeScene decor={SCENE_DECOR.has(screen.name)} />}
       <div className="rotate-hint">↻ {t('portraitOnly')}</div>
       {screen.name === 'home' && (
         <Home
@@ -124,6 +119,7 @@ export default function App() {
         <Stage
           stageId={screen.stage}
           onBack={() => replace('map')}
+          onStage={(id) => replace('stage', { stage: id })}
           onPick={(n) => replace('game', { level: n, stage: screen.stage })}
           onShop={() => go('shop')}
         />

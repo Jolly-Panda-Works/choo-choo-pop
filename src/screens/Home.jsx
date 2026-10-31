@@ -3,13 +3,12 @@ import { sfx } from '../audio.js';
 import { APP_VERSION } from '../config.js';
 import { useSave } from '../store.js';
 import { Coin } from '../ui/icons.jsx';
-import logo from '../assets/logo.webp';
+import Logotype from '../ui/Logotype.jsx';
+import { ua, uaDelay } from '../anim/ua.js';
 
 export default function Home({ onPlay, onMap, onShop, onSettings, hasProgress }) {
   const t = useT();
   const save = useSave();
-  const words = t('title').split(' ');
-  const last = words.pop();
   const go = (fn) => () => {
     sfx.click();
     fn();
@@ -20,26 +19,20 @@ export default function Home({ onPlay, onMap, onShop, onSettings, hasProgress })
         <Coin size={20} /> {t.n(save.coins)}
       </button>
       <div className="home-top">
-        <img className="logo-img bob" src={logo} alt="" draggable="false" />
-        <h1 className="game-title">
-          {words.map((w, i) => (
-            <span key={i}>{w} </span>
-          ))}
-          <span className="pop">{last}</span>
-        </h1>
+        <Logotype className="bob" />
       </div>
       <div className="home-actions">
-        <button className="btn big yellow" onClick={go(onPlay)}>
+        <button className={'btn big yellow ' + ua('buttons-bubbles-enter1')} onClick={go(onPlay)}>
           {hasProgress ? t('continue') : t('play')}
         </button>
-        <button className="btn big blue" onClick={go(onMap)}>
+        <button className={'btn big blue ' + ua('buttons-bubbles-enter2')} style={uaDelay(0.1)} onClick={go(onMap)}>
           {t('map')}
         </button>
         <div className="btn-row">
-          <button className="btn" onClick={go(onShop)}>
+          <button className={'btn ' + ua('buttons-bubbles-enter3')} style={uaDelay(0.2)} onClick={go(onShop)}>
             {t('shop')}
           </button>
-          <button className="btn" onClick={go(onSettings)}>
+          <button className={'btn ' + ua('buttons-bubbles-enter4')} style={uaDelay(0.3)} onClick={go(onSettings)}>
             {t('settings')}
           </button>
         </div>

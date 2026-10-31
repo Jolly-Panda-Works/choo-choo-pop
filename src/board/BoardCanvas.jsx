@@ -9,21 +9,27 @@ import { getSprites, getTrainSet } from './sprites.js';
 // Strict top-down 2D board drawn on a canvas with the PNG sprites from art/.
 // World units: 1 = one cell, x = east, y = south, origin = board centre.
 
+// Merkin (display) / Vazirmatn (Persian glyphs, the new fonts have no Arabic letters). Merkin only has a regular weight.
 const FONT =
   EDITION === 'fa'
-    ? '"Vazirmatn Variable", system-ui, sans-serif'
-    : '"Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif';
+    ? '"Merkin", "Vazirmatn Variable", system-ui, sans-serif'
+    : '"Merkin", "Cabin", "Trebuchet MS", system-ui, sans-serif';
+const FONT_W = EDITION === 'fa' ? 900 : 400;
 
-const GATE_L = 0.8; // length of the tunnel sprite along the track
+// Tunnel gates: a capsule lying across the track just outside the board edge.
+const GATE_W = 1.06; // length of the capsule across the track (cells)
+const GATE_OUT = 0.17; // gate centre this far beyond the board edge (cells); the train is cut at this plane
+const GATE_EXTENT = GATE_OUT + 0.27; // how far the gate reaches out from the edge, for the layout
 const CAR_LEN = 0.84;
 const CAR_GAP = 0.9;
 export const TRAIN_LENGTH = CAR_GAP * 4;
 const RUN_SPEED = 8; // cells per second
 
+// number badges: the glossy map-stage buttons (yellow = still counting, green = done, pink = too many)
 const CLUE = {
-  normal: { bg: '#fff3c4', ring: '#f2b632', fg: '#7a4a1d' },
-  ok: { bg: '#7ddc8a', ring: '#3fae57', fg: '#ffffff' },
-  over: { bg: '#ff8c8c', ring: '#e04b4b', fg: '#ffffff' },
+  normal: { btn: 'btnYellow', stroke: '#fff6c9', fg: '#8a4b12' },
+  ok: { btn: 'btnGreen', stroke: '#3f8f1c', fg: '#ffffff' },
+  over: { btn: 'btnPink', stroke: '#b8304f', fg: '#ffffff' },
 };
 const lineState = (count, clue) => (count === clue ? 'ok' : count > clue ? 'over' : 'normal');
 
@@ -33,12 +39,12 @@ function layoutFor(level, W, H, reserveBottom) {
   has[level.entry.side] = true;
   has[level.exit.side] = true;
   // column numbers sit above the board, row numbers right of it; a tunnel on that side pushes them further out
-  const topClue = -rows / 2 - (has[0] ? 1.62 : 0.82);
-  const rightClue = cols / 2 + (has[1] ? 1.62 : 0.82);
-  const minX = -cols / 2 - (has[3] ? 1.4 : 0.24);
-  const maxX = rightClue + 0.36;
-  const minY = topClue - 0.36;
-  const maxY = rows / 2 + (has[2] ? 1.4 : 0.24);
+  const topClue = -rows / 2 - (has[0] ? GATE_EXTENT + 0.62 : 0.82);
+  const rightClue = cols / 2 + (has[1] ? GATE_EXTENT + 0.62 : 0.82);
+  const minX = -cols / 2 - (has[3] ? GATE_EXTENT + 0.16 : 0.24);
+  const maxX = rightClue + 0.4;
+  const minY = topClue - 0.4;
+  const maxY = rows / 2 + (has[2] ? GATE_EXTENT + 0.16 : 0.24);
   const availH = Math.max(80, H - reserveBottom);
   const pad = 12;
   const S = Math.max(10, Math.min((W - pad * 2) / (maxX - minX), (availH - pad * 2) / (maxY - minY), 100));
@@ -64,11 +70,12 @@ function makeDecor(level, lay, W, H) {
       const px = x + (rng() - 0.5) * step * 0.7;
       const py = y + (rng() - 0.5) * step * 0.7;
       const kind = rng();
-      const size = kind < 0.28 ? S * 1.35 : kind < 0.5 ? S * 0.95 : S * 0.5;
+      const size = kind < 0.28 ? S * 1.35 : kind < 0.5 ? S * 0.95 : S * 0.62;
       const half = size * 0.5;
       if (px + half > keep.x0 && px - half < keep.x1 && py + half > keep.y0 && py - half < keep.y1) continue;
       if (rng() < 0.28) continue;
-      out.push({ k: kind < 0.28 ? 'tree' : kind < 0.5 ? 'bush' : 'flower', x: px, y: py, size, flip: rng() < 0.5 });
+      const k = kind < 0.28 ? 'tree' : kind < 0.5 ? 'bush' : rng() < 0.5 ? 'flowerPink' : 'flowerYellow';
+      out.push({ k, x: px, y: py, size, flip: rng() < 0.5 });
     }
   }
   out.sort((a, b) => a.y - b.y);
@@ -132,6 +139,55 @@ function draw(R, now) {
   const py = (y) => oy + y * S;
   const won = R.phase === 'run' || R.phase === 'won';
 
+  // --- tunnel gates (green = entry, red = exit)
+  // Sprite frame: the capsule lies across the track, the arrow shows the travel direction (entry: up, exit: down).
+  // Entry arrow -> into the board, exit arrow -> out of the board, whatever side of the board the gate sits on.
+  const gateOf = (which) => {
+    const info = level[which];
+    const [vx, vy] = SIDE_VEC[info.side];
+    const dist = 0.5 + GATE_OUT;
+    const dir = which === 'entry' ? [-vx, -vy] : [vx, vy];
+    const base = which === 'entry' ? -Math.PI / 2 : Math.PI / 2;
+    return {
+      which,
+      vx,
+      vy,
+      cx: px(info.c - cols / 2 + 0.5 + vx * dist),
+      cy: py(info.r - rows / 2 + 0.5 + vy * dist),
+      rot: Math.atan2(dir[1], dir[0]) - base,
+    };
+  };
+  const gates = [gateOf('entry'), gateOf('exit')];
+  // keep only the board side of a gate's plane (everything beyond the gate centre is hidden)
+  const clipInside = (gt) => {
+    const ang = Math.atan2(gt.vy, gt.vx);
+    const c = Math.cos(ang);
+    const s = Math.sin(ang);
+    const B = 6000;
+    const pt = (lx, ly) => [gt.cx + lx * c - ly * s, gt.cy + lx * s + ly * c];
+    const [a, b, d, e] = [pt(-B, -B), pt(0, -B), pt(0, B), pt(-B, B)];
+    g.beginPath();
+    g.moveTo(a[0], a[1]);
+    g.lineTo(b[0], b[1]);
+    g.lineTo(d[0], d[1]);
+    g.lineTo(e[0], e[1]);
+    g.closePath();
+    g.clip();
+  };
+  const drawGate = (gt) => {
+    const sprite = sp[gt.which];
+    const t = sp[gt.which + 'Trim'];
+    const k = (GATE_W * S) / t.w;
+    g.save();
+    g.translate(gt.cx, gt.cy);
+    g.rotate(gt.rot);
+    g.shadowColor = 'rgba(10,50,70,0.4)';
+    g.shadowBlur = S * 0.12;
+    g.shadowOffsetY = S * 0.05;
+    g.drawImage(sprite, -(t.x + t.w / 2) * k, -(t.y + t.h / 2) * k, sprite.width * k, sprite.height * k);
+    g.restore();
+  };
+
   // --- decoration on the grass
   for (const d of R.decor) {
     const img = sp[d.k];
@@ -151,18 +207,18 @@ function draw(R, now) {
   const bw = cols * S + 0.34 * S;
   const bh = rows * S + 0.34 * S;
   g.save();
-  g.shadowColor = 'rgba(40,25,10,0.35)';
-  g.shadowBlur = S * 0.25;
-  g.shadowOffsetY = S * 0.08;
+  g.shadowColor = 'rgba(10,70,90,0.38)';
+  g.shadowBlur = S * 0.22;
+  g.shadowOffsetY = S * 0.1;
   g.beginPath();
   g.roundRect(bx, by, bw, bh, S * 0.2);
-  g.fillStyle = '#8a5a33';
+  g.fillStyle = '#ffffff'; // white candy rim, like the map-stage buttons
   g.fill();
   g.restore();
   g.beginPath();
-  g.roundRect(bx + S * 0.03, by + S * 0.03, bw - S * 0.06, bh - S * 0.06, S * 0.18);
-  g.strokeStyle = '#c28a52';
-  g.lineWidth = S * 0.045;
+  g.roundRect(bx + S * 0.035, by + S * 0.035, bw - S * 0.07, bh - S * 0.07, S * 0.17);
+  g.strokeStyle = '#bfe3ea';
+  g.lineWidth = S * 0.05;
   g.stroke();
 
   // --- cells
@@ -211,7 +267,8 @@ function draw(R, now) {
     const y = py(Math.floor(gi / cols) - rows / 2 + 0.5);
     const s = S * 0.72 * (inPath.has(gi) ? 0.9 : bob);
     g.globalAlpha = inPath.has(gi) ? 0.55 : 1;
-    g.drawImage(sp.star, x - s / 2, y - s / 2, s, s);
+    g.drawImage(sp.starShadow, x - s / 2, y - s / 2 + s * 0.06, s, s * (380 / 400));
+    g.drawImage(sp.starGold, x - s / 2, y - s / 2, s, s * (380 / 400));
     g.globalAlpha = 1;
   }
 
@@ -232,48 +289,26 @@ function draw(R, now) {
   });
   for (const key of [...R.appear.keys()]) if (!seen.has(key)) R.appear.delete(key);
 
-  // --- tunnels (green = in, red = out)
-  for (const which of ['entry', 'exit']) {
-    const info = level[which];
-    const [vx, vy] = SIDE_VEC[info.side];
-    const dist = 0.5 + 0.05 + GATE_L / 2;
-    const cx = px(info.c - cols / 2 + 0.5 + vx * dist);
-    const cy = py(info.r - rows / 2 + 0.5 + vy * dist);
-    const dir = which === 'entry' ? [-vx, -vy] : [vx, vy];
-    g.save();
-    g.translate(cx, cy);
-    g.rotate(Math.atan2(dir[1], dir[0]));
-    const D = GATE_L * S * (256 / 254);
-    g.shadowColor = 'rgba(30,20,10,0.35)';
-    g.shadowBlur = S * 0.12;
-    g.shadowOffsetY = S * 0.05;
-    g.drawImage(sp[which], -D / 2, -D / 2, D, D);
-    g.restore();
-  }
-
   // --- numbers
   const drawClue = (n, state, wx, wy, pulse) => {
     const st = CLUE[state];
     const x = px(wx);
     const y = py(wy);
     const rad = S * 0.3;
-    g.save();
-    g.shadowColor = 'rgba(40,25,10,0.3)';
-    g.shadowBlur = S * 0.08;
-    g.shadowOffsetY = S * 0.03;
-    g.beginPath();
-    g.arc(x, y, rad, 0, Math.PI * 2);
-    g.fillStyle = st.bg;
-    g.fill();
-    g.restore();
-    g.lineWidth = S * 0.045;
-    g.strokeStyle = st.ring;
-    g.stroke();
-    g.fillStyle = st.fg;
-    g.font = `900 ${S * 0.38}px ${FONT}`;
+    const img = sp[st.btn];
+    const w = rad * 2 * 1.36; // the sprite includes its white rim and base plate
+    const h = w * (370 / 380);
+    g.drawImage(img, x - w / 2, y - h * 0.46, w, h);
+    g.font = `${FONT_W} ${S * 0.4}px ${FONT}`;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
-    g.fillText(formatNumber(n), x, y + S * 0.025);
+    g.lineJoin = 'round';
+    g.lineWidth = S * 0.085;
+    g.strokeStyle = st.stroke;
+    const label = formatNumber(n);
+    if (state !== 'normal') g.strokeText(label, x, y + S * 0.02);
+    g.fillStyle = st.fg;
+    g.fillText(label, x, y + S * 0.02);
     if (pulse) {
       const k = 1 + 0.14 * Math.sin(now / 200);
       g.beginPath();
@@ -300,17 +335,19 @@ function draw(R, now) {
     }
   }
 
-  // --- train
+  // --- train: exists only between the two gates (cut at the gate planes, the gates are drawn on top of it)
   if (R.phase === 'run' && R.route && !R.done) {
     const set = getTrainSet(R.skin);
-    const d = ((now - R.runStart) / 1000) * RUN_SPEED;
-    if (d > R.route.total + TRAIN_LENGTH * 0.4) {
-      R.done = true;
+    const rt = R.route;
+    // the run starts with the engine just behind the entry gate, completely hidden
+    const d = rt.gateIn - 0.45 + ((now - R.runStart) / 1000) * RUN_SPEED;
+    if (d - 3 * CAR_GAP - CAR_LEN * 0.5 > rt.gateOut) {
+      R.done = true; // the last wagon has disappeared into the exit gate
       R.onRunDone?.();
     } else {
-      // smoke from the chimney
-      if (now - R.lastPuff > 75 && d > 0 && d < R.route.total) {
-        const head = sampleRoute(R.route, d);
+      // smoke from the chimney, only while the engine is between the gates
+      if (now - R.lastPuff > 75 && d > rt.gateIn && d < rt.gateOut) {
+        const head = sampleRoute(rt, d);
         R.lastPuff = now;
         R.puffs.push({
           x: head.x + Math.cos(head.ang) * 0.2,
@@ -320,10 +357,13 @@ function draw(R, now) {
           vy: -0.35 - Math.random() * 0.3,
         });
       }
+      g.save();
+      clipInside(gates[0]);
+      clipInside(gates[1]);
       for (let i = 3; i >= 0; i--) {
         const dd = d - i * CAR_GAP;
-        if (dd < 0 || dd > R.route.total - 0.05) continue;
-        const s = sampleRoute(R.route, dd);
+        if (dd < 0 || dd > rt.total - 0.05) continue;
+        const s = sampleRoute(rt, dd);
         const img = i === 0 ? set.engine : set.wagons[i - 1];
         const t = i === 0 ? sp.engineTrim : sp.wagonTrim;
         const k = (CAR_LEN * S) / t.w;
@@ -336,6 +376,7 @@ function draw(R, now) {
         g.drawImage(img, -(t.x + t.w / 2) * k, -(t.y + t.h / 2) * k, img.width * k, img.height * k);
         g.restore();
       }
+      g.restore();
     }
   }
   R.puffs = R.puffs.filter((p) => now - p.born < 800);
@@ -348,6 +389,9 @@ function draw(R, now) {
     g.drawImage(sp.smoke, x - s / 2, y - s / 2, s, s);
   }
   g.globalAlpha = 1;
+
+  // --- gates on top: the train comes out of / goes into them
+  for (const gt of gates) drawGate(gt);
 
   // --- coach finger (always on top)
   const gh = R.coach?.ghost;
@@ -398,7 +442,7 @@ export default function BoardCanvas({ level, path, pathRef, evalResult, phase, c
     r.skin = skin;
     r.onRunDone = () => cbRef.current.onRunDone?.();
     if (phase === 'run' && r.phase !== 'run') {
-      r.route = buildRoute(level, pathConnections(level, path), path);
+      r.route = buildRoute(level, pathConnections(level, path), path, GATE_OUT);
       r.runStart = performance.now();
       r.done = false;
       r.puffs = [];

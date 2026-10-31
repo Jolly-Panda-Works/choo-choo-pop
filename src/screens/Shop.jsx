@@ -9,7 +9,7 @@ import { loadSprites, getTrainSet, getSprites } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import Panda from '../ui/Panda.jsx';
 import ParentGate from '../ui/ParentGate.jsx';
-import { BackIcon, Coin, Bulb } from '../ui/icons.jsx';
+import { BackButton, Coin, Bulb } from '../ui/icons.jsx';
 
 function TrainPreview({ skin }) {
   const ref = useRef(null);
@@ -96,9 +96,7 @@ export default function Shop({ onBack }) {
   return (
     <main className="screen shop">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('back')}>
-          <BackIcon />
-        </button>
+        <BackButton onClick={onBack} label={t('back')} />
         <h2>{t('shop')}</h2>
         <span className="chip coin-chip">
           <Coin size={20} /> {t.n(save.coins)}
@@ -195,7 +193,7 @@ export default function Shop({ onBack }) {
               const on = save.pandaSkin === s.id;
               return (
                 <button key={s.id} className={'skin' + (on ? ' on' : '')} onClick={() => buySkinTap('panda', PANDA_SKINS, s)}>
-                  <Panda pose="salute" skin={s.id} size={74} />
+                  <Panda pose="salute" skin={s.id} size={104} />
                   <b>{t('skin_' + s.id)}</b>
                   <span className="price">{on ? t('using') : owned ? t('use') : (<><Coin size={18} /> {t.n(s.price)}</>)}</span>
                 </button>

@@ -7,14 +7,25 @@ import { TRAIN_SKINS, skinById } from '../game/skins.js';
 
 export const ART = `${import.meta.env.BASE_URL}choo-choo-pop-assets/art/`;
 
+export const MAP_ART = ART + 'map/';
+// v4 UI kit (art/ui/*.webp, converted from the delivered popup.zip): pill + round buttons, arrows, popup frame, home scene, ...
+export const UI_ART = ART + 'ui/';
+
 const FILES = {
   straight: 'track/straight.png',
+  // Tunnel gates (v3): green = entry, red = exit. Each image is a capsule lying ACROSS the track; the arrow on it shows
+  // the travel direction in the image's own frame (entry: up, exit: down) - BoardCanvas rotates it per board side.
   entry: 'gates/entry.png',
   exit: 'gates/exit.png',
   grassA: 'tiles/grass-a.png',
   grassB: 'tiles/grass-b.png',
   ground: 'tiles/ground-laid.png',
-  star: 'tiles/star.png',
+  // glossy map-stage art: given-star tiles and number badges
+  starGold: 'map/ui/star-gold.webp',
+  starShadow: 'map/ui/star-shadow.webp',
+  btnYellow: 'map/ui/btn-yellow.webp',
+  btnGreen: 'map/ui/btn-green.webp',
+  btnPink: 'map/ui/btn-pink.webp',
   engine: 'train/engine.png',
   wagonBlue: 'train/wagon-blue.png',
   wagonYellow: 'train/wagon-yellow.png',
@@ -22,7 +33,9 @@ const FILES = {
   smoke: 'train/smoke.png',
   tree: 'deco/tree.png',
   bush: 'deco/bush.png',
-  flower: 'deco/flower.png',
+  // decorative flowers (soft shadow is baked in)
+  flowerPink: 'deco/flower-pink.webp',
+  flowerYellow: 'deco/flower-yellow.webp',
 };
 
 function loadImage(url) {
@@ -142,6 +155,8 @@ export function loadSprites() {
         const s = Object.fromEntries(pairs);
         s.curve = warpCurve(s.straight);
         s.half = halfStraight(s.straight);
+        s.entryTrim = trim(s.entry, 12);
+        s.exitTrim = trim(s.exit, 12);
         s.engineTrim = trim(s.engine);
         s.wagonTrim = trim(s.wagonBlue);
         sprites = s;

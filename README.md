@@ -90,3 +90,20 @@ npm run cap:sync:fa && (cd android && ./gradlew assembleDebug -PEDITION=fa)
 - `docs/revenue_model.py` مدل سناریوی درآمد (قابل اجرا؛ فرض‌های آن قبل از تبلیغ/خرید نوشته شده بود)
 
 > `three` و `@react-three/fiber` دیگر استفاده نمی‌شوند. (در `package.json` ماندند چون محیطی که این تغییر را ساخت به npm دسترسی نداشت و `package-lock.json` را نمی‌شد درست به‌روز کرد.) با `npm uninstall three @react-three/fiber` پاک کن.
+
+## نسخهٔ ۳ – سبک Map Stage
+- **گیت‌ها**: `art/gates/entry.png` (سبز) و `exit.png` (قرمز) جدید؛ فلش روی گیت همیشه جهت حرکت را نشان می‌دهد (ورودی به داخل صفحه، خروجی به بیرون). قطار فقط بین دو گیت دیده می‌شود (روی صفحهٔ گیت‌ها بریده می‌شود و گیت روی آن کشیده می‌شود). `src/board/BoardCanvas.jsx`، `route.js`.
+- **پاندا**: ۸ پوز تمام‌قد از PSD در `art/panda/*.webp` (شفاف، بدون قاب). `src/ui/Panda.jsx` (`size` = ارتفاع).
+- **صفحهٔ استیج‌ها و نقشه**: از `art/map/` (دکمه‌های براق، ستاره‌ها، ابر، درخشش آب، تایل‌های جزیره). تنظیم تم‌ها: `src/game/mapTheme.js`.
+- **سبک کلی**: `src/styles.css` (دکمه‌های براق با لبهٔ سفید، دریای فیروزه‌ای)، فونت‌ها در `src/assets/fonts` (Merkin تیتر، Cabin متن؛ فارسی با وزیرمتن).
+- **انیمیشن‌های Unity**: `python3 scripts/convert-unity-anims.py <پوشهٔ Animations> src/anim` ← `unity-anims.css` + `unity-anims.json`. استفاده: `className={ua('buttons-bubbles-enter1')}` (`src/anim/ua.js`).
+- **گل‌ها**: `art/deco/flower-pink|yellow.webp` تزئین زمین بازی.
+
+## نسخهٔ ۴ – UI جدید، لول‌ها و ریلیز خودکار
+- **پس‌زمینهٔ جزیره‌ای فقط برای نقشهٔ استیج‌هاست** (`StageMap.jsx`). صفحهٔ لول‌های هر استیج (`Stage.jsx`) دیگر جزیره ندارد: شبکهٔ ۵ ستونه از حباب‌های براق با ستاره‌ها زیرشان، عنوان «استیج n/۴» با فلش‌های قبل/بعد، مارکر پاندا روی لول فعلی، حباب خاکستری + قفل برای لول بعدی و حباب مات + قفل برای بقیه. فلش بعد فقط وقتی فعال می‌شود که استیج بعدی ساخته شده باشد.
+- **UI Kit جدید** (`popup.zip` → `public/choo-choo-pop-assets/art/ui/*.webp`، تبدیل‌شده با اسکریپت): دکمه‌های قرصی (`.btn`، با border-image تا گوشه‌ها کج نشوند)، دکمهٔ گرد برگشت، فلش‌ها، قاب پاپ‌آپ، آیکون صدا/هشدار و اسلایدر در تنظیمات، صحنهٔ آسمان/تپه/درخت‌های خانه (`ui/HomeScene.jsx`) برای خانه، لول‌ها، فروشگاه و تنظیمات.
+- **لوگوتایپ منوی خانه**: `src/assets/logotype/en.webp` و `fa.webp` (هر نسخه فایل خودش را نشان می‌دهد؛ اگر فایلی نباشد عنوان به‌صورت متن رسم می‌شود). راهنما: `src/assets/logotype/README.txt`.
+- **ریلیز خودکار** (`.github/workflows/android.yml`، `scripts/next-version.mjs`): با هر push به main، اگر هر دو نسخه (en و fa) و تست مرحله‌ها موفق بود، شمارهٔ نسخه بالا می‌رود، `package.json` با کامیت `chore(release): vX.Y.Z [skip ci]` به‌روز می‌شود، تگ `vX.Y.Z` ساخته می‌شود و GitHub Release با APK (و در صورت وجود Secretهای امضا، APK/AAB امضاشده) منتشر می‌شود.
+  - نوع افزایش از پیام کامیت‌ها: `feat…` ← minor، `BREAKING CHANGE` یا `type!:` ← major، بقیه ← patch. در اجرای دستی (Run workflow) می‌توانی `patch/minor/major` را خودت انتخاب کنی.
+  - اولین ریلیز (وقتی هنوز تگی نیست) همان نسخهٔ `package.json` است. PRها فقط بیلد و تست می‌شوند.
+  - اگر شاخهٔ main محافظت‌شده باشد و push بات رد شود، ریلیز باز هم ساخته می‌شود و تگ روی کامیت بیلدشده می‌نشیند.

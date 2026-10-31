@@ -38,7 +38,7 @@ export default function Story({ onDone }) {
             playsInline
           />
         ) : (
-          <Panda pose={s.pose} skin={save.pandaSkin} size={210} variant="card" className="story-panda" />
+          <Panda pose={s.pose} skin={save.pandaSkin} size={290} variant="card" className="story-panda" />
         )}
         <div className="story-bubble">{t(s.key)}</div>
       </div>

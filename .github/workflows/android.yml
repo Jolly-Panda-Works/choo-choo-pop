@@ -1,13 +1,51 @@
 name: Build Android
 
+# push to main/master  -> build both editions; if everything succeeds: bump the version, tag it and publish a GitHub Release
+# pull_request         -> build + test only (no version bump, no release)
+# manual run           -> same as push; you can pick the bump (auto / patch / minor / major)
 on:
   push:
     branches: [main, master]
   pull_request:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump for the release'
+        type: choice
+        default: auto
+        options: [auto, patch, minor, major]
+
+permissions:
+  contents: read
+
+# one release at a time, so two quick pushes never get the same version number
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
+  # ---- 1. which version is this build? ----------------------------------------------------------
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history + tags, needed to find the last release
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: v
+        run: |
+          BUMP="${{ github.event.inputs.bump || 'auto' }}"
+          VERSION="$(node scripts/next-version.mjs --bump "$BUMP")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "### Version $VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+  # ---- 2. build both editions -------------------------------------------------------------------
   build:
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -15,6 +53,7 @@ jobs:
         edition: [en, fa] # en = Choo Choo Pop, fa = هو هو چی چی
     env:
       EDITION: ${{ matrix.edition }}
+      VERSION_NAME: ${{ needs.prepare.outputs.version }}
       # Optional: add these 4 repo secrets to also get a signed release APK + AAB
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -41,14 +80,15 @@ jobs:
       - name: Test levels (20 levels, solvable + unique + difficulty curve)
         run: npm run test:levels
 
+      # the app shows this number (vite reads package.json), so set it before building
+      - name: Set version ${{ needs.prepare.outputs.version }}
+        run: npm version "$VERSION_NAME" --no-git-tag-version --allow-same-version
+
       - name: Build web (${{ matrix.edition }})
         run: VITE_EDITION=$EDITION npm run build
 
       - name: Sync Capacitor
         run: npx cap sync android
-
-      - name: Read version
-        run: echo "VERSION_NAME=$(node -p "require('./package.json').version")" >> "$GITHUB_ENV"
 
       - name: Build debug APK
         working-directory: android
@@ -78,3 +118,70 @@ jobs:
           path: |
             android/app/build/outputs/apk/release/*.apk
             android/app/build/outputs/bundle/release/*.aab
+
+  # ---- 3. only when BOTH editions built fine: commit the new version, tag it, publish the release ----
+  release:
+    needs: [prepare, build]
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the version commit + tag, create the release
+    env:
+      VERSION: ${{ needs.prepare.outputs.version }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect files
+        run: |
+          mkdir -p out
+          for ed in en fa; do
+            for f in artifacts/choo-choo-pop-$ed-debug-apk/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION-debug.apk"; done
+            if ls artifacts/choo-choo-pop-$ed-release/*.apk >/dev/null 2>&1; then
+              for f in artifacts/choo-choo-pop-$ed-release/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.apk"; done
+              for f in artifacts/choo-choo-pop-$ed-release/*.aab; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.aab"; done
+            fi
+          done
+          ls -la out
+
+      # keeps package.json / package-lock.json in step with the tag. If the branch is protected (or moved on
+      # meanwhile) the push is skipped and the tag is put on the commit that was built instead.
+      - name: Commit the new version
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+          TARGET="$GITHUB_SHA"
+          if ! git diff --quiet -- package.json package-lock.json; then
+            git add package.json package-lock.json
+            git commit -m "chore(release): v$VERSION [skip ci]"
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              TARGET="$(git rev-parse HEAD)"
+            else
+              echo "::warning::Could not push the version commit to ${GITHUB_REF_NAME}; tagging the built commit instead."
+            fi
+          fi
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag and GitHub Release
+        run: |
+          NOTE="Choo Choo Pop (en) and هو هو چی چی (fa), version $VERSION."
+          if ! ls out/*.aab >/dev/null 2>&1; then
+            NOTE="$NOTE"$'\n\n'"Debug APKs only (no signing secrets configured). Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD to also get signed APK + AAB."
+          fi
+          gh release create "v$VERSION" out/* \
+            --target "${{ steps.commit.outputs.target }}" \
+            --title "v$VERSION" \
+            --notes "$NOTE" \
+            --generate-notes

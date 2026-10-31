@@ -36,11 +36,13 @@ export function localCurve(a, b) {
 }
 
 /** World-space polyline (with lead-in / lead-out) used to run the train. */
-export function buildRoute(level, conns, path) {
+export function buildRoute(level, conns, path, gateOut = 0.17) {
   const pts = [];
   const ox = (level.cols - 1) / 2;
   const oz = (level.rows - 1) / 2;
-  const LEAD = 3.2;
+  // The train only exists between the two gates: the lead-in / lead-out are long enough to hide the whole train
+  // behind the gate plane (BoardCanvas clips everything outside the planes, the gates are drawn on top).
+  const LEAD = 4.4;
 
   // lead-in
   {
@@ -61,6 +63,7 @@ export function buildRoute(level, conns, path) {
       pts.push([c - ox + lx, r - oz + lz]);
     }
   }
+  const outStart = pts.length;
   // lead-out
   {
     const [r, c] = [level.exit.r, level.exit.c];
@@ -72,7 +75,8 @@ export function buildRoute(level, conns, path) {
   for (let i = 1; i < pts.length; i++) {
     dist.push(dist[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
   }
-  return { pts, dist, total: dist[dist.length - 1] };
+  // route distance at which the engine centre crosses the entry gate plane / the exit gate plane
+  return { pts, dist, total: dist[dist.length - 1], gateIn: LEAD - gateOut, gateOut: dist[outStart] + gateOut };
 }
 
 export function sampleRoute(route, d) {

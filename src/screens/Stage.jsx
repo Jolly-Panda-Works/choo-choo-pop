@@ -1,115 +1,140 @@
-import { useEffect, useMemo, useRef } from 'react';
 import { useSave, starsInRange } from '../store.js';
 import { useT } from '../i18n.js';
-import { STAGES, stageLevels } from '../game/stages.js';
+import { STAGES, stageLevels, stageBuilt } from '../game/stages.js';
 import { difficultyOf, nodeKind } from '../game/levels.js';
+import { NODE_BTN } from '../game/mapTheme.js';
 import { STAGE_SIZE } from '../config.js';
-import { ART } from '../board/sprites.js';
+import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
-import Panda from '../ui/Panda.jsx';
-import { Stars, BackIcon, Coin } from '../ui/icons.jsx';
+import { usePandaSrc } from '../ui/Panda.jsx';
+import { BackButton, Coin } from '../ui/icons.jsx';
+import { Crown } from '../ui/MapKit.jsx';
+import { ua, uaDelay } from '../anim/ua.js';
 
-const COLS = 4;
-const ROW_H = 128;
-const TOP_PAD = 120;
-const BOTTOM_PAD = 90;
-const XS = [13, 37.5, 62.5, 87]; // percent
+// Levels (stations) of one stage as a clean grid of glossy bubbles with their stars underneath:
+//   passed  -> coloured by difficulty + gold stars
+//   current -> same, with the panda marker above it and a pulsing shine
+//   next    -> grey bubble with a padlock
+//   later   -> frosted bubble with a padlock
+// This screen deliberately does NOT use the island map art - that belongs to the stage map (StageMap.jsx).
 
-/** Position of station i (0-based): the path snakes upwards, 4 per row. */
-function place(i, rows) {
-  const row = Math.floor(i / COLS);
-  const k = i % COLS;
-  const col = row % 2 === 0 ? k : COLS - 1 - k;
-  const wave = Math.sin(i * 1.3) * 12;
-  return { x: XS[col], y: TOP_PAD + (rows - 1 - row) * ROW_H + wave };
-}
-
-const Crown = () => (
-  <svg className="crown" viewBox="0 0 32 22" width="30" height="21" aria-hidden="true">
-    <path d="M3 19 L1 5 L10 11 L16 2 L22 11 L31 5 L29 19 Z" fill="#ffd43b" stroke="#c48a00" strokeWidth="2" strokeLinejoin="round" />
-    <circle cx="16" cy="12" r="2.2" fill="#e64980" />
+const Lock = () => (
+  <svg className="lv-lock" viewBox="0 0 24 28" width="26" height="30" aria-hidden="true">
+    <path d="M6.5 11V8.5a5.5 5.5 0 0111 0V11" fill="none" stroke="#7d8a93" strokeWidth="3.2" strokeLinecap="round" />
+    <rect x="3" y="10.5" width="18" height="15" rx="4.5" fill="#fff" stroke="#c9d3d9" strokeWidth="1.2" />
+    <circle cx="12" cy="17" r="2.2" fill="#8795a0" />
+    <path d="M12 18v3.4" stroke="#8795a0" strokeWidth="2.2" strokeLinecap="round" />
   </svg>
 );
 
-export default function Stage({ stageId, onBack, onPick, onShop }) {
+function Marker({ skin }) {
+  const src = usePandaSrc('wave', skin);
+  return (
+    <span className="lv-marker" aria-hidden="true">
+      <span className={'lv-marker-face ' + ua('home-scene-portrait-animals-panda-panda-idle')}>
+        <span className="lv-marker-clip">
+          <img src={src} alt="" draggable="false" />
+        </span>
+      </span>
+    </span>
+  );
+}
+
+function Stars3({ n }) {
+  return (
+    <span className="lv-stars" aria-hidden="true">
+      {[1, 2, 3].map((i) => (
+        <img key={i} src={`${MAP_ART}ui/star-${i <= n ? 'gold' : 'grey'}.webp`} alt="" draggable="false" />
+      ))}
+    </span>
+  );
+}
+
+export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   const save = useSave();
   const t = useT();
   const st = STAGES[stageId - 1];
-  const levels = useMemo(() => stageLevels(stageId), [stageId]);
-  const rows = Math.ceil(STAGE_SIZE / COLS);
-  const H = TOP_PAD + rows * ROW_H + BOTTOM_PAD - 40;
-  const pts = levels.map((_, i) => place(i, rows));
-  const scroller = useRef(null);
-  const current = Math.min(Math.max(save.unlocked, st.first), st.last);
-
-  // start with the current station in the middle of the screen
-  useEffect(() => {
-    const el = scroller.current;
-    if (!el) return;
-    const p = pts[current - st.first];
-    el.scrollTop = Math.max(0, p.y - el.clientHeight / 2);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stageId]);
-
-  const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
+  const levels = stageLevels(stageId);
   const got = starsInRange(save, st.first, st.last);
+  const prev = stageId > 1 ? stageId - 1 : null;
+  // the next stage can be opened with the arrow only when it exists (all its levels are built)
+  const next = stageId < STAGES.length && stageBuilt(stageId + 1) ? stageId + 1 : null;
+  const go = (id) => () => {
+    if (!id) return;
+    sfx.click();
+    onStage(id);
+  };
 
   return (
-    <main className="screen stage">
+    <main className="screen levels">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('back')}>
-          <BackIcon />
-        </button>
-        <div className="title-block">
-          <h2>{t(st.nameKey)}</h2>
-          <span className="chip small-chip">
-            ★ {t.n(got)}/{t.n(STAGE_SIZE * 3)}
-          </span>
-        </div>
+        <span className="chip small-chip">
+          <img className="chip-star" src={`${MAP_ART}ui/star-gold.webp`} alt="" draggable="false" /> {t.n(got)}/{t.n(STAGE_SIZE * 3)}
+        </span>
         <button className="chip coin-chip" onClick={onShop} aria-label={t('shop')}>
-          <Coin size={20} /> {t.n(save.coins)}
+          <Coin size={22} /> {t.n(save.coins)}
         </button>
       </header>
 
-      <div className="stage-scroll" ref={scroller}>
-        <div className="stage-board" style={{ height: H }}>
-          <svg className="stage-track" viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" aria-hidden="true">
-            <path d={d} className="mt-ground" />
-            <path d={d} className="mt-sleepers" />
-            <path d={d} className="mt-rail" />
-          </svg>
-          <img className="deco d1" src={`${ART}deco/tree.png`} alt="" draggable="false" />
-          <img className="deco d2" src={`${ART}deco/bush.png`} alt="" draggable="false" />
-          <img className="deco d3" src={`${ART}deco/tree.png`} alt="" draggable="false" />
-          <img className="deco d4" src={`${ART}deco/flower.png`} alt="" draggable="false" />
+      <div className="pager">
+        <button className="pager-arrow prev" disabled={!prev} onClick={go(prev)} aria-label={t('prevStage')}>
+          <img src={`${UI_ART}arrow-left.webp`} alt="" draggable="false" />
+        </button>
+        <div className="pager-title">
+          <h2>
+            {t('stageWord')} {t.n(stageId)}/{t.n(STAGES.length)}
+          </h2>
+          <span className="pager-sub">{t(st.nameKey)}</span>
+        </div>
+        <button className="pager-arrow next" disabled={!next} onClick={go(next)} aria-label={t('nextStage')}>
+          <img src={`${UI_ART}arrow-right.webp`} alt="" draggable="false" />
+        </button>
+      </div>
+
+      <div className="lv-scroll">
+        <div className="lv-grid">
           {levels.map((n, i) => {
             const kind = nodeKind(difficultyOf(n));
             const locked = n > save.unlocked;
-            const here = n === save.unlocked && n <= st.last && !save.stars[n];
+            const nextLocked = n === save.unlocked + 1;
             const s = save.stars[n] || 0;
+            const here = n === save.unlocked && !s;
+            const art = locked ? (nextLocked ? 'btn-grey' : null) : 'btn-' + NODE_BTN[kind];
             return (
-              <button
-                key={n}
-                className={`node k-${kind}${locked ? ' locked' : s ? ' passed' : ''}${here ? ' current' : ''}`}
-                style={{ left: pts[i].x + '%', top: pts[i].y + 'px' }}
-                disabled={locked}
-                onClick={() => {
-                  sfx.click();
-                  onPick(n);
-                }}
-                aria-label={`${t('station')} ${i + 1}`}
-              >
-                {kind === 'super' && <Crown />}
-                {s > 0 && !locked && <Stars n={s} size={22} className="node-stars" />}
-                {here && <Panda pose="wave" skin={save.pandaSkin} size={44} className="node-panda" />}
-                <span className="stone">
-                  {locked ? <img src={`${ART}ui/lock.png`} width="30" height="30" alt="" draggable="false" /> : <b>{t.n(i + 1)}</b>}
-                </span>
-              </button>
+              <div key={n} className={`lv k-${kind}${locked ? ' locked' : ''}${here ? ' current' : ''}`}>
+                <button
+                  className={'lv-btn ' + ua('buttons-bubbles-enter' + ((i % 5) + 1))}
+                  style={uaDelay(0.04 + i * 0.035)}
+                  disabled={locked}
+                  onClick={() => {
+                    sfx.click();
+                    onPick(n);
+                  }}
+                  aria-label={`${t('station')} ${i + 1}`}
+                >
+                  {here && <i className={'node-shine ' + ua('level-scene-shine-shine-idle')} />}
+                  {here && <Marker skin={save.pandaSkin} />}
+                  {kind === 'super' && !locked && <Crown />}
+                  <img
+                    className={'lv-art' + (art ? '' : ' bub')}
+                    src={art ? `${MAP_ART}ui/${art}.webp` : `${UI_ART}level-bubble.webp`}
+                    alt=""
+                    draggable="false"
+                  />
+                  {!locked && <b className="lv-n">{t.n(i + 1)}</b>}
+                  {locked && nextLocked && <b className="lv-n dim">{t.n(i + 1)}</b>}
+                  {locked && <Lock />}
+                </button>
+                {locked ? <span className="lv-stars ghost" /> : <Stars3 n={s} />}
+              </div>
             );
           })}
         </div>
       </div>
+
+      <footer className="levels-foot">
+        <BackButton onClick={onBack} label={t('back')} />
+      </footer>
     </main>
   );
 }
