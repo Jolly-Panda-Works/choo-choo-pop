@@ -12,3 +12,5 @@ android/local.properties
 android/.idea
 *.keystore
 *.jks
+
+public/choo-choo-pop-assets/_work/vite-cache

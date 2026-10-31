@@ -11,7 +11,7 @@ import { mulberry32, shuffle } from '../src/game/rng.js';
 import { generateCandidate } from '../src/game/generator.js';
 import { solveStats } from '../src/game/solver.js';
 
-// difficulty: 0 tutorial, 1 easy, 2 medium, 3 hard
+// difficulty: 0 tutorial, 1 easy, 2 medium, 3 hard, 4 super hard (stage 1 has only the very last level like this)
 // sides: 0 N, 1 E, 2 S, 3 W   entry/exit = [row, col, side]   cells are row*3+col
 const TUTORIAL = [
   // 1. just drag from the green arrow to the red arrow (straight line)
@@ -45,7 +45,8 @@ const PLAN = [
   [5, 6, 0.62, 2, 800, 1400, 3],
   [5, 6, 0.64, 3, 1400, 2200, 3],
   [6, 6, 0.6, 3, 1300, 2500, 3],
-  [6, 6, 0.62, 3, 2500, 5000, 3],
+  // super hard: level 20 (the stage boss). Same 6x6 board but far more dead ends and only 2 helper stars.
+  [6, 6, 0.66, 2, 9000, 80000, 4],
 ];
 
 function hydrate(c, given) {

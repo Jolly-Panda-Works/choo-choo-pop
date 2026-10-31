@@ -2,12 +2,12 @@ import { getLevel, levelCount } from '../src/game/levels.js';
 import { evaluate, stepOnto, startPath, initialPath, applyHint } from '../src/game/logic.js';
 import { solveStats } from '../src/game/solver.js';
 import { analyzePath, coachFor } from '../src/game/tutorial.js';
-import { TOTAL_LEVELS, TUTORIAL_LEVELS } from '../src/game/constants.js';
+import { STAGE_SIZE, TUTORIAL_LEVELS } from '../src/game/constants.js';
 
 const fail = (m) => {
   throw new Error(m);
 };
-if (levelCount !== TOTAL_LEVELS) fail(`levelData has ${levelCount} levels but TOTAL_LEVELS is ${TOTAL_LEVELS}`);
+if (levelCount % STAGE_SIZE !== 0) fail(`levelData has ${levelCount} levels; it must be a whole number of stages (${STAGE_SIZE} each)`);
 
 let prev = null;
 for (let n = 1; n <= levelCount; n++) {
@@ -39,8 +39,16 @@ for (let n = 1; n <= levelCount; n++) {
     // kid-friendly caps
     if (lv.rows > 6 || lv.cols > 6) fail(`Level ${n}: bigger than 6x6`);
   }
+  // super hard rules: stage 1 has exactly one (its last level); later stages have the last two
+  {
+    const inStage = ((n - 1) % STAGE_SIZE) + 1;
+    const stage = Math.ceil(n / STAGE_SIZE);
+    const expectSuper = stage === 1 ? inStage === STAGE_SIZE : inStage >= STAGE_SIZE - 1;
+    if (expectSuper !== (lv.difficulty === 4)) fail(`Level ${n}: super hard must be ${expectSuper ? 'set' : 'unset'} here`);
+    if (lv.difficulty === 4 && prev && st.nodes <= prev.nodes) fail(`Level ${n}: super hard must be harder than the level before`);
+  }
   prev = { area: lv.rows * lv.cols, difficulty: lv.difficulty, nodes: st.nodes };
-  const label = ['tutorial', 'easy', 'medium', 'hard'][lv.difficulty];
+  const label = ['tutorial', 'easy', 'medium', 'hard', 'SUPER'][lv.difficulty];
   console.log(
     `level ${String(n).padStart(2)}: ${lv.rows}x${lv.cols} ${label.padEnd(8)} ${String(lv.solution.length).padStart(2)} rails, ${lv.given.length} star tiles, search nodes ${String(st.nodes).padStart(5)} - unique solution OK`,
   );

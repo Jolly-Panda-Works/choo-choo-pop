@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSave } from './store.js';
+import { useSave, update } from './store.js';
 import { useT } from './i18n.js';
 import { levelCount } from './game/levels.js';
+import { stageOfLevel } from './game/stages.js';
+import { loadSprites, ART } from './board/sprites.js';
+import { MOCK_SERVICES } from './config.js';
 import Home from './screens/Home.jsx';
-import LevelSelect from './screens/LevelSelect.jsx';
+import StageMap from './screens/StageMap.jsx';
+import Stage from './screens/Stage.jsx';
 import Game from './screens/Game.jsx';
 import Settings from './screens/Settings.jsx';
+import Shop from './screens/Shop.jsx';
+import Story from './screens/Story.jsx';
+import AdHost from './ui/AdHost.jsx';
 
 function Clouds() {
   return (
@@ -18,18 +25,24 @@ function Clouds() {
   );
 }
 
+// screens that sit on the grass (top-down world) instead of the sky
+const GRASS = new Set(['game', 'stage', 'map']);
+
 export default function App() {
   const save = useSave();
   const t = useT();
-  const [screen, setScreen] = useState({ name: 'home', level: 1 });
+  // first launch: the story, then straight into level 1
+  const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story', then: 'game' }));
   const screenRef = useRef(screen);
   screenRef.current = screen;
+  const stack = useRef([]);
 
   useEffect(() => {
     document.documentElement.lang = t.lang;
     document.documentElement.dir = t.dir;
     document.documentElement.classList.add('ed-' + t.lang);
     document.title = t('title');
+    loadSprites().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t.lang, t.dir]);
 
@@ -42,6 +55,29 @@ export default function App() {
     }
   }, []);
 
+  const go = (name, extra = {}) => {
+    stack.current.push(screenRef.current);
+    setScreen({ name, ...extra });
+  };
+  const replace = (name, extra = {}) => {
+    stack.current = [];
+    setScreen({ name, ...extra });
+  };
+  const back = (fallback) => {
+    const prev = stack.current.pop();
+    setScreen(prev || fallback);
+  };
+
+  const nextLevel = Math.min(save.unlocked, levelCount);
+  const stageOf = (n) => stageOfLevel(n);
+
+  const finishStory = () => {
+    update({ storySeen: true });
+    const s = screenRef.current;
+    if (s.then === 'game') replace('game', { level: 1, stage: 1 });
+    else back({ name: 'home' });
+  };
+
   // Android back button
   useEffect(() => {
     let handle;
@@ -51,43 +87,60 @@ export default function App() {
         if (!Capacitor.isNativePlatform()) return;
         const { App: CapApp } = await import('@capacitor/app');
         handle = await CapApp.addListener('backButton', () => {
-          const s = screenRef.current.name;
-          if (s === 'game') setScreen({ name: 'levels' });
-          else if (s === 'levels' || s === 'settings') setScreen({ name: 'home' });
-          else CapApp.exitApp();
+          const s = screenRef.current;
+          if (s.name === 'home') CapApp.exitApp();
+          else if (s.name === 'story') finishStory();
+          else if (s.name === 'game') replace('stage', { stage: stageOf(s.level) });
+          else if (s.name === 'stage') replace('map');
+          else if (s.name === 'map') replace('home');
+          else back({ name: 'home' });
         });
       } catch (e) {
         /* web build */
       }
     })();
     return () => handle?.remove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const go = (name, level) => setScreen({ name, level: level ?? screenRef.current.level });
-  const nextUnlocked = Math.min(save.unlocked, levelCount);
-
+  const sky = !GRASS.has(screen.name);
   return (
-    <div className="app">
-      <Clouds />
+    <div className={'app on-' + screen.name} style={{ '--grass': `url(${ART}tiles/grass-b.png)` }}>
+      {sky && <Clouds />}
       <div className="rotate-hint">↻ {t('portraitOnly')}</div>
       {screen.name === 'home' && (
         <Home
-          onPlay={() => go('game', nextUnlocked)}
-          onLevels={() => go('levels')}
-          onSettings={() => go('settings')}
           hasProgress={save.unlocked > 1}
+          onPlay={() => replace('game', { level: nextLevel, stage: stageOf(nextLevel) })}
+          onMap={() => replace('map')}
+          onShop={() => go('shop')}
+          onSettings={() => go('settings')}
         />
       )}
-      {screen.name === 'levels' && <LevelSelect onBack={() => go('home')} onPick={(n) => go('game', n)} />}
-      {screen.name === 'settings' && <Settings onBack={() => go('home')} />}
+      {screen.name === 'map' && (
+        <StageMap onBack={() => replace('home')} onOpen={(id) => replace('stage', { stage: id })} onShop={() => go('shop')} />
+      )}
+      {screen.name === 'stage' && (
+        <Stage
+          stageId={screen.stage}
+          onBack={() => replace('map')}
+          onPick={(n) => replace('game', { level: n, stage: screen.stage })}
+          onShop={() => go('shop')}
+        />
+      )}
       {screen.name === 'game' && (
         <Game
           key={screen.level}
           levelNo={screen.level}
-          onLevels={() => go('levels')}
-          onNext={() => go('game', Math.min(levelCount, screen.level + 1))}
+          onMap={() => replace('stage', { stage: stageOf(screen.level) })}
+          onNext={() => replace('game', { level: Math.min(levelCount, screen.level + 1) })}
+          onShop={() => go('shop')}
         />
       )}
+      {screen.name === 'shop' && <Shop onBack={() => back({ name: 'home' })} />}
+      {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
+      {screen.name === 'story' && <Story onDone={finishStory} />}
+      {MOCK_SERVICES && <AdHost />}
     </div>
   );
 }

@@ -1,8 +1,11 @@
 import { LEVEL_DATA } from './levelData.js';
 
+/** Number of levels that are really built (stage 1 = 20 for now). */
 export const levelCount = LEVEL_DATA.length;
-// 0 = guided tutorial (levels 1-5), then easy / medium / hard
-export const DIFFICULTY_KEYS = ['tutorial', 'easy', 'medium', 'hard'];
+// 0 = guided tutorial (levels 1-5), then easy / medium / hard, 4 = super hard (stage boss)
+export const DIFFICULTY_KEYS = ['tutorial', 'easy', 'medium', 'hard', 'superHard'];
+/** Visual family of the difficulty on the map: the tutorial looks like "easy". */
+export const nodeKind = (difficulty) => ['easy', 'easy', 'normal', 'hard', 'super'][difficulty] || 'easy';
 
 const cache = new Map();
 
@@ -33,3 +36,6 @@ export function getLevel(n) {
   cache.set(n, level);
   return level;
 }
+
+/** Difficulty of a level without building it (used by the map). */
+export const difficultyOf = (n) => LEVEL_DATA[n - 1]?.difficulty ?? 1;
