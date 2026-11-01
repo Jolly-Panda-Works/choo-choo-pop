@@ -1,6 +1,5 @@
-feat(shop): tabs inside the frame, distinct row backgrounds per item state, remove items chip
+fix(home): crash "undefined is not iterable" in Home pos()
 
-- Tabs now sit inside the white panel (same width as the rows) instead of on its border.
-- Skin / ads rows have three looks: blue = can be bought, pink = owned, green = equipped
-  (with a green, non-dimmed "In use" button). New art: shop-row-green, sbtn-green.
-- Remove the items-count chip (crate icon + number) from the shop header.
+The round-button row refactor dropped the manifest lookup, so the Play button
+(h-play, not part of the row) had no position. pos() now uses the row slot when the
+button has one and the mockup rect from v5manifest.json otherwise.

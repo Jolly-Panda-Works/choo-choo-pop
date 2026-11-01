@@ -5,15 +5,20 @@ import { useSave } from '../store.js';
 import { Coin } from '../ui/icons.jsx';
 import Logotype from '../ui/Logotype.jsx';
 import { V5_ART } from '../board/sprites.js';
+import M from '../ui/v5manifest.json';
 import { missionDone } from '../game/missions.js';
 
 const W = 1440;
 const H = 2280;
 // the four round buttons sit on one gentle arc below Play: [x, y] of the top-left corner, all 252 x 266 design px
 const ROW = { 'h-settings': [100, 1305], 'h-map': [429, 1385], 'h-missions': [758, 1385], 'h-shop': [1087, 1305] };
+const pct = (x0, y0, x1, y1) => ({ left: `${(x0 / W) * 100}%`, top: `${(y0 / H) * 100}%`, width: `${((x1 - x0) / W) * 100}%`, height: `${((y1 - y0) / H) * 100}%` });
 const pos = (name) => {
-  const [x, y] = ROW[name];
-  return { left: `${(x / W) * 100}%`, top: `${(y / H) * 100}%`, width: `${(252 / W) * 100}%`, height: `${(266 / H) * 100}%` };
+  if (ROW[name]) {
+    const [x, y] = ROW[name];
+    return pct(x, y, x + 252, y + 266);
+  }
+  return pct(...M[name]); // h-play keeps its place from the mockup
 };
 
 /** Home (v5 mockup 01): the PSD scene, a big round Play button and Settings / Missions / Shop bubbles. */
