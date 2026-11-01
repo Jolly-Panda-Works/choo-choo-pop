@@ -33,6 +33,10 @@ export default function App() {
   const screenRef = useRef(screen);
   screenRef.current = screen;
   const stack = useRef([]);
+  // shop and coin popups open ON the current screen (no screen change) and close back to it
+  const [overlay, setOverlay] = useState(null);
+  const overlayRef = useRef(null);
+  overlayRef.current = overlay;
 
   useEffect(() => {
     document.documentElement.lang = t.lang;
@@ -120,7 +124,8 @@ export default function App() {
         const { App: CapApp } = await import('@capacitor/app');
         handle = await CapApp.addListener('backButton', () => {
           const s = screenRef.current;
-          if (s.name === 'home') CapApp.exitApp();
+          if (overlayRef.current) setOverlay(null);
+          else if (s.name === 'home') CapApp.exitApp();
           else if (s.name === 'story') finishStory();
           else if (s.name === 'game') replace('stage', { stage: stageOf(s.level) });
           else if (s.name === 'stage') replace('map');
@@ -145,14 +150,14 @@ export default function App() {
         <Home
           onPlay={() => replace('game', { level: nextLevel, stage: stageOf(nextLevel) })}
           onMap={() => replace('map')}
-          onCoins={() => go('coins')}
+          onCoins={() => setOverlay('coins')}
           onMissions={() => go('missions')}
-          onShop={() => go('shop')}
+          onShop={() => setOverlay('shop')}
           onSettings={() => go('settings')}
         />
       )}
       {screen.name === 'map' && (
-        <StageMap onBack={() => replace('home')} onOpen={(id) => replace('stage', { stage: id })} onShop={() => go('shop')} />
+        <StageMap onBack={() => replace('home')} onOpen={(id) => replace('stage', { stage: id })} onShop={() => setOverlay('shop')} />
       )}
       {screen.name === 'stage' && (
         <Stage
@@ -160,7 +165,7 @@ export default function App() {
           onBack={() => replace('map')}
           onStage={(id) => replace('stage', { stage: id })}
           onPick={(n, picks) => replace('game', { level: n, stage: screen.stage, picks })}
-          onShop={() => go('shop')}
+          onShop={() => setOverlay('shop')}
         />
       )}
       {screen.name === 'game' && (
@@ -170,15 +175,15 @@ export default function App() {
           startPicks={screen.picks}
           onMap={() => replace('stage', { stage: stageOf(screen.level) })}
           onNext={() => replace('game', { level: Math.min(levelCount, screen.level + 1) })}
-          onShop={() => go('shop')}
-          onCoins={() => go('coins')}
+          onShop={() => setOverlay('shop')}
+          onCoins={() => setOverlay('coins')}
         />
       )}
-      {screen.name === 'shop' && <Shop onBack={() => back({ name: 'home' })} onCoins={() => go('coins')} />}
-      {screen.name === 'coins' && <CoinShop onBack={() => back({ name: 'home' })} />}
       {screen.name === 'missions' && <Missions onBack={() => back({ name: 'home' })} />}
       {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
       {screen.name === 'story' && <Story onDone={finishStory} />}
+      {overlay === 'shop' && <Shop onBack={() => setOverlay(null)} onCoins={() => setOverlay('coins')} />}
+      {overlay === 'coins' && <CoinShop onBack={() => setOverlay(null)} />}
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
     </div>

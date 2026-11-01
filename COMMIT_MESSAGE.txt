@@ -1,3 +1,14 @@
+fix(popups): shop and coins popups open on the current screen and close back to it
+
+Tapping the coin chip (top right) used to switch to a separate "shop" / "coins"
+screen; closing it went through the screen history and the previous screen was
+mounted again (a running game or an open start popup was lost). The shop and coin
+popups are now overlays in App.jsx: they open on top of the screen the player is on
+(home, map, levels, game) and the X (or the Android back button) just closes them,
+leaving that screen untouched. Shop -> coins switches between the two popups.
+
+---
+
 feat(transition): cloud scene transition between screens, start popup opens on the levels screen
 
 - Start popup: tapping a level on the levels screen (grid or panda-house track) now
