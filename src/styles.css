@@ -356,8 +356,6 @@ button:disabled { opacity: 0.5; cursor: default; }
 .h5btn { background: none; padding: 0; filter: drop-shadow(0 calc(100cqw * 0.006) 4px rgba(10, 70, 90, 0.35)); transition: transform 0.08s; }
 .h5btn:active { transform: scale(0.94); }
 .h5btn img { pointer-events: none; }
-.h5map { container-type: inline-size; }
-.h5map span { position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 3%; font-family: var(--font-display); font-size: 30cqw; line-height: 1; color: #fff; -webkit-text-stroke: 0.05em #b84a10; paint-order: stroke fill; text-shadow: 0 0.05em 0 #b84a10; pointer-events: none; }
 .h5play { animation: h5pulse 1.6s ease-in-out infinite; }
 @keyframes h5pulse { 50% { transform: scale(1.045); } }
 .home5-logo { display: grid; place-items: center; }

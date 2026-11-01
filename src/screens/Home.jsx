@@ -5,21 +5,15 @@ import { useSave } from '../store.js';
 import { Coin } from '../ui/icons.jsx';
 import Logotype from '../ui/Logotype.jsx';
 import { V5_ART } from '../board/sprites.js';
-import M from '../ui/v5manifest.json';
 import { missionDone } from '../game/missions.js';
 
 const W = 1440;
 const H = 2280;
-// the three round buttons sit lower than in the mockup to make room for the Map button under Play
-const LOWER = { 'h-settings': 230, 'h-missions': 230, 'h-shop': 230 };
-const MAP_BTN = [541, 1372, 901, 1523];
+// the four round buttons sit on one gentle arc below Play: [x, y] of the top-left corner, all 252 x 266 design px
+const ROW = { 'h-settings': [100, 1305], 'h-map': [429, 1385], 'h-missions': [758, 1385], 'h-shop': [1087, 1305] };
 const pos = (name) => {
-  const [x0, y0, x1, y1] = M[name];
-  const dy = LOWER[name] || 0;
-  return pos2(x0, y0 + dy, x1, y1 + dy);
-};
-const pos2 = (x0, y0, x1, y1) => {
-  return { left: `${(x0 / W) * 100}%`, top: `${(y0 / H) * 100}%`, width: `${((x1 - x0) / W) * 100}%`, height: `${((y1 - y0) / H) * 100}%` };
+  const [x, y] = ROW[name];
+  return { left: `${(x / W) * 100}%`, top: `${(y / H) * 100}%`, width: `${(252 / W) * 100}%`, height: `${(266 / H) * 100}%` };
 };
 
 /** Home (v5 mockup 01): the PSD scene, a big round Play button and Settings / Missions / Shop bubbles. */
@@ -45,16 +39,8 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
           <Logotype className="bob" />
         </div>
         {btn('h-play', onPlay, t('play'), 'h5play')}
-        <button
-          className="h5btn h5map"
-          style={pos2(...MAP_BTN)}
-          onClick={go(onMap)}
-          aria-label={t('map')}
-        >
-          <img src={`${V5_ART}btn-orange.webp`} alt="" draggable="false" />
-          <span>{t('map')}</span>
-        </button>
         {btn('h-settings', onSettings, t('settings'))}
+        {btn('h-map', onMap, t('map'))}
         {btn('h-missions', onMissions, t('missions'))}
         {btn('h-shop', onShop, t('shop'))}
       </div>

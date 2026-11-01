@@ -1,8 +1,5 @@
-feat(ui): settings screen in the shop popup style, shop split into tabs
+feat(home): Map becomes a round bubble in the button row
 
-- Settings: same popup frame, panda, ribbon and blue/pink rows as the shop. Sound and
-  vibration are toggle rows; replay story, restore purchases and reset progress are
-  button rows. The reset confirmation modal is unchanged.
-- Shop: one tab per section - Boosts (free hint video, power-ups, hint packs), Trains,
-  Pandas, No ads. The list scrolls independently per tab and starts at the top on switch.
-- i18n: tab labels (en / fa).
+- New round "Map" bubble (art/v5/h-map.webp, same style as settings / missions / shop).
+- Home: settings, map, missions and shop sit in one arc under Play; the pill-shaped Map
+  button is removed.
