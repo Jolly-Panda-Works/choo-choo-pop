@@ -87,8 +87,16 @@ jobs:
       - name: Build web (${{ matrix.edition }})
         run: VITE_EDITION=$EDITION npm run build
 
+      # the android/ project is created here if it is not committed
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: |
+          [ -d android ] || npx cap add android
+          npx cap sync android
+
+      # edition-aware applicationId / app name / version; defaults for every -P property
+      # (fixes "A problem occurred evaluating project ':app'. > Value is null" at android/app/build.gradle)
+      - name: Configure Android edition (${{ matrix.edition }})
+        run: node scripts/android-edition.mjs
 
       # the game is portrait only
       - name: Lock portrait orientation
