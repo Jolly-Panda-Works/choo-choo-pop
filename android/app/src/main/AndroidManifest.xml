@@ -36,8 +36,7 @@
         </provider>
     </application>
 
-    <!-- Cafe Bazaar in-app billing (Persian edition): lets the app see/open Bazaar on Android 11+ and talk to its billing service.
-         Harmless in the English edition (nothing calls Bazaar there). -->
+    <!-- Cafe Bazaar: lets the app see/open Bazaar on Android 11+ and talk to its billing service. -->
     <queries>
         <package android:name="com.farsitel.bazaar" />
     </queries>

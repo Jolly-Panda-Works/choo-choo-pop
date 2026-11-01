@@ -2,17 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSave, update, resetProgress, currentLang } from '../store.js';
 import { useT } from '../i18n.js';
 import { billing } from '../services/billing.js';
-import {
-  bazaarAppAvailable,
-  bazaarAutoUpdate,
-  enableBazaarAutoUpdate,
-  moreGamesAvailable,
-  openMoreGames,
-  rateOnBazaar,
-  signInWithBazaar,
-  signOutOfBazaar,
-  useBazaarLogin,
-} from '../services/bazaarApp.js';
+import { usePlatformRows } from '../services/platform.jsx';
 import { CREDITS } from '../config.js';
 import { UI_ART, ART } from '../board/sprites.js';
 import { Popup, PandaPeek, Ribbon, Pic, rect, k, fs, box } from '../ui/v5.jsx';
@@ -32,12 +22,6 @@ export default function Settings({ onBack, onStory, onCoins }) {
   const [note, setNote] = useState('');
   const timer = useRef();
   useEffect(() => () => clearTimeout(timer.current), []);
-  const bazaar = bazaarAppAvailable();
-  const login = useBazaarLogin();
-  const [autoUpdate, setAutoUpdate] = useState('unsupported');
-  useEffect(() => {
-    if (bazaar) bazaarAutoUpdate().then(setAutoUpdate);
-  }, [bazaar]);
   const say = (m) => {
     setNote(m);
     clearTimeout(timer.current);
@@ -51,38 +35,6 @@ export default function Settings({ onBack, onStory, onCoins }) {
     { key: 'language', name: t('language'), btn: { label: t.lang === 'fa' ? 'English' : 'فارسی', run: () => update({ lang: currentLang() === 'fa' ? 'en' : 'fa' }) } },
     { key: 'story', name: t('replayStory'), btn: { label: '\u25B6', run: onStory } },
   ];
-  if (bazaar) {
-    const connected = login === 'connected';
-    rows.push({
-      key: 'bazaarLogin',
-      name: connected ? t('bazaarSignOut') : t('bazaarSignIn'),
-      btn: {
-        label: connected ? '\u2713' : '\u2192',
-        run: async () => {
-          if (connected) return signOutOfBazaar();
-          const r = await signInWithBazaar();
-          const text = { connected: 'bazaarSignedIn', cancelled: 'bazaarCancelled', needsLogin: 'bazaarNeedsLogin', failed: 'bazaarFailed' }[r];
-          if (text) say(t(text));
-        },
-      },
-    });
-    rows.push({ key: 'rate', name: t('rateGame'), btn: { label: '\u2605', run: rateOnBazaar } });
-    if (moreGamesAvailable()) rows.push({ key: 'more', name: t('moreGames'), btn: { label: '\u2192', run: openMoreGames } });
-    if (autoUpdate === 'disabled') {
-      rows.push({
-        key: 'autoUpdate',
-        name: t('autoUpdate'),
-        btn: {
-          label: '\u21BB',
-          run: () => {
-            enableBazaarAutoUpdate();
-            // Bazaar asks the player; check again when they come back
-            setTimeout(() => bazaarAutoUpdate().then(setAutoUpdate), 4000);
-          },
-        },
-      });
-    }
-  }
   if (billing.available())
     rows.push({
       key: 'restore',
@@ -95,6 +47,7 @@ export default function Settings({ onBack, onStory, onCoins }) {
         },
       },
     });
+  rows.push(...usePlatformRows(t, say));
   rows.push({ key: 'reset', name: t('resetProgress'), danger: true, btn: { label: '\u2715', run: () => setConfirm(true) } });
   rows.push({ key: 'credit', name: `${t('gameBy')} ${CREDITS.author}`, btn: { label: '\u2197', run: () => window.open(CREDITS.website, '_blank') } });
 

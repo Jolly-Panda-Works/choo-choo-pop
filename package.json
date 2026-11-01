@@ -9,14 +9,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:bazaar": "VITE_STORE=bazaar vite",
     "build": "vite build",
-    "build:bazaar": "VITE_STORE=bazaar vite build",
     "preview": "vite preview",
     "levels:build": "node scripts/build-levels.mjs",
     "test:levels": "node scripts/test-levels.mjs",
-    "cap:sync": "npm run build && cap sync android",
-    "cap:sync:bazaar": "npm run build:bazaar && cap sync android"
+    "cap:sync": "npm run build && cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

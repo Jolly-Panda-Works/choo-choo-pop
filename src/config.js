@@ -1,9 +1,7 @@
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.0.0';
 
 // One game in two languages; the player switches in the settings.
-// The Cafe Bazaar build (VITE_STORE=bazaar, see package.json scripts) adds Bazaar's services and starts in Persian.
-export const STORE = import.meta.env.VITE_STORE === 'bazaar' ? 'bazaar' : 'global';
-export const DEFAULT_LANG = STORE === 'bazaar' ? 'fa' : 'en';
+export const DEFAULT_LANG = 'fa';
 
 export const CREDITS = { author: 'Usef Farahmand', website: 'https://www.useffarahmand.com' };
 

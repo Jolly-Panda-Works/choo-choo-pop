@@ -1,4 +1,4 @@
-# Choo Choo Pop · هو هو چی چی
+# Choo Choo Pop
 
 بازی پازل ریل‌چینی برای کودکان (رده‌ی سنی ۷ سال)، کاملاً **top-down** (بوم دوبعدی + اسپرایت‌های PNG)، React + Capacitor (اندروید) و بیلد خودکار با GitHub Actions.
 شناسه‌ی اپ: `com.jollypanda.choochoopop`
@@ -9,19 +9,17 @@
 | `en` | Choo Choo Pop | `com.jollypanda.choochoopop` | فقط انگلیسی |
 | `fa` | هو هو چی چی | `com.jollypanda.choochoopop.fa` | فقط فارسی (فونت وزیرمتن داخل اپ، رقم‌های فارسی، راست‌به‌چپ) |
 
-هر دو زبان در هر بیلد هستند و بازیکن زبان را در تنظیمات عوض می‌کند. بیلد عمومی با انگلیسی و بیلد بازار با فارسی شروع می‌شود (`VITE_STORE=bazaar`). راهنمای بازار: `docs/BAZAAR.fa.md`.
+بازی یک نسخه دارد و هر دو زبان در آن هست؛ بازیکن زبان را در تنظیمات عوض می‌کند. آخرین نسخه همیشه روی `main` است. شاخه‌ی `bazaar` همان `main` به‌اضافه‌ی تنظیمات کافه‌بازار است: برای هر بیلد، `main` در آن مرج می‌شود و هیچ‌وقت برعکس.
 
 ```bash
 npm install
 npm run dev            # مرورگر، انگلیسی
-npm run dev:bazaar     # مرورگر، پیش‌فرض فارسی
 npm run test:levels    # هر ۲۰ مرحله: حل‌پذیر + جواب یکتا + منحنی سختی + قانون super hard + آموزش
 
 # اندروید (بعد از هر بار بیلد وب، همان نسخه را سینک کن)
-npm run cap:sync && (cd android && ./gradlew assembleDebug -PEDITION=en)
-npm run cap:sync:bazaar && (cd android && ./gradlew assembleDebug -PEDITION=fa)
+npm run cap:sync && (cd android && ./gradlew assembleDebug)
 ```
-در GitHub Actions شاخه‌ی `main` بیلد عمومی و شاخه‌ی `bazaar` بیلد بازار را می‌سازد. برای APK/AAB امضاشده چهار Secret بساز:
+در GitHub Actions هر push روی `main` بازی را می‌سازد. برای APK/AAB امضاشده چهار Secret بساز:
 `KEYSTORE_BASE64`، `KEYSTORE_PASSWORD`، `KEY_ALIAS`، `KEY_PASSWORD`.
 
 ## ساختار بازی (نسخهٔ ۱.۲)
@@ -46,16 +44,8 @@ npm run cap:sync:bazaar && (cd android && ./gradlew assembleDebug -PEDITION=fa)
 - `src/services/ads.js` → `registerAdsProvider({ init, isRewardedReady, showInterstitial, showRewarded })`
 - `src/services/billing.js` → `registerBillingProvider({ init, getPrices, purchase, restore })`
 
-سرویس را در `src/main.jsx` قبل از `render` ثبت کن (مثلاً بر اساس `EDITION`: بازار/مایکت/تپسل برای `fa`، Google Play برای `en`).
+نسخه‌ی فروشگاهی، سرویس‌ها را در `src/services/platform.jsx` ثبت می‌کند؛ روی `main` این فایل خالی است.
 **بدون ارائه‌دهنده در نسخهٔ نهایی** هیچ تبلیغی نشان داده نمی‌شود، دکمه‌ی «ویدیو» پنهان است و خرید غیرفعال است (هیچ‌وقت سکه‌ی مجانی داده نمی‌شود). در `npm run dev` یا با `VITE_MOCK_SERVICES=1` تبلیغ و خرید **آزمایشی** فعال است (`src/ui/AdHost.jsx`).
-
-### پرداخت درون‌برنامه‌ای کافه‌بازار (نسخهٔ فارسی)
-زیرساخت آماده است و فقط در نسخهٔ `fa` اندروید فعال می‌شود (SDK رسمی بازار: Poolakey):
-- **سمت JS:** `src/services/bazaar.js` (ارائه‌دهندهٔ `billing`) و ثبت آن در `src/main.jsx`. اتصال تنبل (هنگام اولین استفاده) است؛ اگر بازار نصب نباشد خرید بدون خطای بازی شکست می‌خورد.
-- **سمت اندروید:** `android/app/src/edition-fa/kotlin/.../BazaarBillingPlugin.kt` (پلاگین Capacitor به نام `BazaarBilling`) و وابستگی Poolakey فقط وقتی `-PEDITION=fa`. نسخهٔ پیش‌فرض `2.2.0` است؛ آخرین نسخه را از ریلیزهای Poolakey بررسی و در صورت نیاز با `-PPOOLAKEY_VERSION=x.y.z` عوض کن. در نسخهٔ `en` پلاگین خالی است.
-- **راه‌اندازی:** ۱) در پنل توسعه‌دهندگان بازار محصولات درون‌برنامه‌ای را با همین شناسه‌ها بساز: `coins_small`، `coins_medium`، `coins_large`، `coins_giant` (مصرفی) و `remove_ads` (غیرمصرفی). ۲) کلید RSA برنامه را در `.env.local` بگذار (`VITE_BAZAAR_RSA_KEY`، نمونه در `.env.example`). ۳) `npm run cap:sync:bazaar` و بعد بیلد `./gradlew assembleRelease -PEDITION=fa`.
-- **جریان خرید سکه:** خرید ← اعطای سکه ← مصرف‌کردن (consume) خرید در بازار تا دوباره قابل خرید باشد. اگر برنامه وسط کار بسته شود، `billing.recover()` در شروع بعدی خرید ناتمام را اعطا و مصرف می‌کند (توکن‌های اعطاشده برای جلوگیری از اعطای دوباره نگه داشته می‌شوند).
-- **قیمت‌ها** از خود بازار می‌آیند و با همان متن محلی (تومان/ریال) نمایش داده می‌شوند.
 
 ## قوانین بازی
 - جدول یک تونل سبز (ورود) و یک تونل قرمز (خروج) دارد؛ با کشیدن انگشت یک مسیر پیوسته بین آن‌ها بچین.

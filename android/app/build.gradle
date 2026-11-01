@@ -1,31 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-// Two store builds of the same game (both languages are in each, see Settings):
-//   ./gradlew assembleRelease -PEDITION=en   -> "Choo Choo Pop"   (com.jollypanda.choochoopop), starts in English
-//   ./gradlew assembleRelease -PEDITION=fa   -> "Choo Choo Pop"   (com.jollypanda.choochoopop.fa), Cafe Bazaar, starts in Persian
-// The web bundle must be built for the same store first (npm run cap:sync / cap:sync:bazaar).
-def edition = (project.findProperty('EDITION') ?: 'en').toString()
-if (!['en', 'fa'].contains(edition)) {
-    throw new GradleException("EDITION must be 'en' or 'fa' (got '${edition}')")
-}
-
 android {
     namespace = "com.jollypanda.choochoopop"
     compileSdk = rootProject.ext.compileSdkVersion
     buildFeatures {
-        // Bazaar's login check service (src/edition-fa/aidl)
-        aidl = (edition == 'fa')
+        // Bazaar's login check service (src/bazaar/aidl)
+        aidl = true
     }
     sourceSets {
-        // edition-specific app name lives in src/edition-<en|fa>/res/values/app_name.xml
-        main.res.srcDirs += "src/edition-${edition}/res"
-        // edition-specific native code: src/edition-fa has the Cafe Bazaar billing plugin, src/edition-en an empty list
-        main.java.srcDirs += "src/edition-${edition}/kotlin"
-        main.aidl.srcDirs += "src/edition-${edition}/aidl"
+        // Cafe Bazaar native code, on this branch only
+        main.java.srcDirs += 'src/bazaar/kotlin'
+        main.aidl.srcDirs += 'src/bazaar/aidl'
     }
     defaultConfig {
-        applicationId "com.jollypanda.choochoopop" + (edition == 'fa' ? '.fa' : '')
+        applicationId "com.jollypanda.choochoopop.fa"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // "=" is required: without it Groovy reads `versionCode (x).toInteger()` as `versionCode(x).toInteger()`
@@ -62,13 +51,10 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-    // Cafe Bazaar - Persian edition only: in-app billing (Poolakey), sign in + in-app storage (CafeBazaarAuth),
-    // in-app update (bazaarUpdater). Same versions as Mini Sumo; override with -PPOOLAKEY_VERSION=x.y.z etc.
-    if (edition == 'fa') {
-        implementation "com.github.cafebazaar.Poolakey:poolakey:${project.findProperty('POOLAKEY_VERSION') ?: '2.2.0'}"
-        implementation "com.github.cafebazaar.CafeBazaarAuth:auth:${project.findProperty('BAZAAR_AUTH_VERSION') ?: '1.1.0'}"
-        implementation "com.github.cafebazaar:bazaarUpdater:${project.findProperty('BAZAAR_UPDATER_VERSION') ?: '1.2.0'}"
-    }
+    // Cafe Bazaar: in-app billing (Poolakey), sign in + in-app storage (CafeBazaarAuth), in-app update (bazaarUpdater)
+    implementation "com.github.cafebazaar.Poolakey:poolakey:2.2.0"
+    implementation "com.github.cafebazaar.CafeBazaarAuth:auth:1.1.0"
+    implementation "com.github.cafebazaar:bazaarUpdater:1.2.0"
 }
 
 apply from: 'capacitor.build.gradle'

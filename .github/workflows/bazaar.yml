@@ -1,4 +1,4 @@
-# Cafe Bazaar build: the game starting in Persian, with Bazaar in-app billing, sign in and updates.
+# Cafe Bazaar build. This branch is main plus the Bazaar settings; it never merges back into main.
 # Runs on the `bazaar` branch (and on demand). Step by step setup: docs/BAZAAR.fa.md.
 #
 # Keep the branch up to date with main (`git checkout bazaar && git merge main && git push`);
@@ -57,7 +57,6 @@ jobs:
     name: Android (Cafe Bazaar)
     runs-on: ubuntu-latest
     env:
-      VITE_STORE: bazaar
       VITE_BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
       VITE_BAZAAR_DEVELOPER_ID: ${{ vars.BAZAAR_DEVELOPER_ID }}
       HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
@@ -100,7 +99,7 @@ jobs:
       - name: Test levels
         run: npm run test:levels
 
-      - name: Build web (Bazaar)
+      - name: Build web
         run: npm run build
 
       - name: Sync Capacitor
@@ -108,7 +107,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PEDITION=fa -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }}
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }}
 
       - name: Build signed release (APK + AAB)
         if: env.HAS_KEYSTORE == 'true'
@@ -121,7 +120,7 @@ jobs:
         run: |
           printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > "$RUNNER_TEMP/release.keystore"
           ./gradlew assembleRelease bundleRelease --no-daemon \
-            -PEDITION=fa -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }} \
+            -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }} \
             -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \

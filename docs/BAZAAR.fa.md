@@ -1,6 +1,8 @@
 # نسخه‌ی کافه‌بازار (Choo Choo Pop)
 
-بازی یک نسخه دارد و بازیکن زبان را در تنظیمات عوض می‌کند. بیلد بازار (`VITE_STORE=bazaar` و `-PEDITION=fa`) با زبان فارسی شروع می‌شود، خدمات بازار را دارد و شناسه‌ی بسته‌اش `com.jollypanda.choochoopop.fa` است. ساختار کار مثل Mini Sumo است: روی شاخه‌ی `bazaar` هر push نسخه را می‌سازد (**Actions ← Bazaar**) و تا وقتی نسخه‌ی پایدار نداریم، نسخه فقط به‌صورت پیش‌نویس آلفا به پیشخان می‌رود و به دست عموم نمی‌رسد.
+آخرین نسخه‌ی بازی همیشه روی `main` است. شاخه‌ی `bazaar` همان `main` به‌اضافه‌ی تنظیمات بازار است: برای هر بیلد، `main` در آن مرج می‌شود و **هیچ‌وقت برعکس**. این شاخه با زبان فارسی شروع می‌شود و شناسه‌ی بسته‌اش `com.jollypanda.choochoopop.fa` است. هر push روی آن نسخه را می‌سازد (**Actions ← Bazaar**) و تا وقتی نسخه‌ی پایدار نداریم، نسخه فقط به‌صورت پیش‌نویس آلفا به پیشخان می‌رود و به دست عموم نمی‌رسد.
+
+همه‌ی چیزهایی که فقط در این شاخه هستند: `src/services/platform.jsx` (جایگزین قلاب‌های خالی `main`)، `src/services/bazaar.js`، `src/services/bazaarApp.js`، `android/app/src/bazaar`، `DEFAULT_LANG` در `src/config.js`، چند خط در فایل‌های Gradle و `AndroidManifest.xml` و `MainActivity.java`، و این راهنما و `bazaar.yml`.
 
 ## چه چیزهایی در بازی هست
 

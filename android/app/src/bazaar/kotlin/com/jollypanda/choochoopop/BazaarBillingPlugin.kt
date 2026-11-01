@@ -36,7 +36,7 @@ import ir.cafebazaar.poolakey.config.SecurityCheck
 import ir.cafebazaar.poolakey.request.PurchaseRequest
 
 /**
- * Capacitor bridge for Cafe Bazaar. Persian edition only (src/edition-fa).
+ * Capacitor bridge for Cafe Bazaar.
  * JS side: src/services/bazaar.js (billing) and src/services/bazaarApp.js (the rest).
  *
  * Billing (Poolakey): connect({ rsaPublicKey }), disconnect(), getSkuDetails({ productIds }),

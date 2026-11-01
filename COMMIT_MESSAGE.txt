@@ -1,12 +1,12 @@
-feat(bazaar): one game with a language setting, Cafe Bazaar build, studio splash
+feat: one game with a language setting, studio splash, phone layout fixes
 
-- one game: both languages ship in every build; Settings switches language (save.lang).
-  The Bazaar build (VITE_STORE=bazaar) starts in Persian, the global build in English.
-- Cafe Bazaar like Mini Sumo: bazaar branch + workflow, sign in with Bazaar and its in-app
-  storage, update check, auto-update, rate and review, more games, Pishkhan release as an
-  alpha draft by default (no stable version yet), required release notes.
+- one game: both languages in one build, Settings switches language (save.lang); no more
+  en/fa editions. The app's name and logo are always English.
 - Jolly Panda studio card on launch; "A game by Usef Farahmand" in Settings.
-- docs/BAZAAR.fa.md: setup step by step.
+- phones: Home buttons stay on screen on tall phones, coin chip clear of the logo, map title
+  above the nodes, game top bar and tools fit 320 px, coins shown in Settings.
+- Cafe Bazaar code moves to the bazaar branch; src/services/platform.jsx is the one file that
+  branch replaces, so merging main into it stays clean.
 
 ---
 

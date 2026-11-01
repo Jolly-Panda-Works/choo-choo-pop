@@ -1,11 +1,10 @@
-// Cafe Bazaar features of the Bazaar Android build, besides billing (src/services/bazaar.js):
+// Cafe Bazaar features on Android, besides billing (src/services/bazaar.js):
 // - sign in with Bazaar, with the save kept in Bazaar's in-app storage (10 KB per player), so a new phone continues the game,
 // - Bazaar's pages: rate and review, the developer's other games,
 // - updates: whether Bazaar has a newer version, the in-app update, auto-update.
-// Native side: android/app/src/edition-fa/kotlin/.../BazaarBillingPlugin.kt. Setup: docs/BAZAAR.fa.md.
+// Native side: android/app/src/bazaar/kotlin/.../BazaarBillingPlugin.kt. Setup: docs/BAZAAR.fa.md.
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { STORE } from '../config.js';
 import { Bazaar } from './bazaar.js';
 import { getState, subscribe, update, totalStars } from '../store.js';
 
@@ -19,7 +18,7 @@ const SAVE_DELAY = 3000;
 // settings of this phone: they stay when a save comes back from Bazaar
 const LOCAL_ONLY = ['sound', 'vibrate', 'lang', 'adCount', 'adTarget'];
 
-export const bazaarAppAvailable = () => STORE === 'bazaar' && Capacitor.getPlatform() === 'android';
+export const bazaarAppAvailable = () => Capacitor.getPlatform() === 'android';
 export const moreGamesAvailable = () => bazaarAppAvailable() && !!DEVELOPER_ID;
 
 const storage = (run, fallback) => {

@@ -43,7 +43,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "### Version $VERSION" >> "$GITHUB_STEP_SUMMARY"
 
-  # ---- 2. build the game (both languages; the Cafe Bazaar build is bazaar.yml) -------------------
+  # ---- 2. build the game ------------------------------------------------------------------------
   build:
     needs: prepare
     runs-on: ubuntu-latest
@@ -93,8 +93,7 @@ jobs:
           [ -d android ] || npx cap add android
           npx cap sync android
 
-      # NOTE: android/app/build.gradle is committed and already edition-aware (-PEDITION / -PVERSION_CODE /
-      # -PVERSION_NAME with safe defaults, src/edition-<en|fa> source sets, Kotlin plugin). Do NOT rewrite it
+      # NOTE: android/app/build.gradle is committed (-PVERSION_CODE / -PVERSION_NAME with safe defaults). Do NOT rewrite it
       # here: the old scripts/android-edition.mjs replaced the head of the file and broke the tail
       # ("Could not get unknown property 'edition' ... DefaultDependencyHandler").
 
@@ -106,7 +105,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
 
       - uses: actions/upload-artifact@v4
         with:
@@ -119,7 +118,7 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
           ./gradlew assembleRelease bundleRelease --no-daemon \
-            -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
+            -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
             -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
