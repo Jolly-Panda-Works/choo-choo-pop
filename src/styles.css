@@ -452,3 +452,6 @@ button:disabled { opacity: 0.5; cursor: default; }
   .cloudwipe.in .cw-fill { animation: cw-fill-in 0.3s linear both; }
   .cloudwipe.out .cw-fill { animation: cw-fill-out 0.4s linear both; }
 }
+
+/* soft top / bottom edge of the levels scroll area: houses and rails fade out before the clipping edge (the cloud banks only cover part of it) */
+.lv-view .lv-scroll { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); }
