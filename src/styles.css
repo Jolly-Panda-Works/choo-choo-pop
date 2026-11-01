@@ -169,6 +169,13 @@ button:disabled { opacity: 0.5; cursor: default; }
 .app.on-home, .app.on-stage, .app.on-shop, .app.on-settings, .app.on-story { background: #8fd6f0; }
 .on-game .topbar h2 { -webkit-text-stroke: 6px #2d8a3a; text-shadow: 0 4px 0 #1f6a2b; }
 .stage-scroll { flex: 1; overflow-y: auto; margin: 4px -16px -16px; position: relative; -webkit-overflow-scrolling: touch; }
+/* world map: the map fills the whole screen and the header floats over it; no scrollbar, drag to move */
+.screen.map { padding: 0; }
+.screen.map .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; padding: 12px 16px; pointer-events: none; }
+.screen.map .topbar > * { pointer-events: auto; }
+.screen.map .stage-scroll { position: absolute; inset: 0; margin: 0; scrollbar-width: none; -ms-overflow-style: none; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.screen.map .stage-scroll::-webkit-scrollbar { display: none; }
+.screen.map .stage-scroll.dragging { cursor: grabbing; }
 .stage-board { position: relative; width: 100%; overflow: hidden; }
 .tile-stack { position: absolute; inset: 0; display: flex; flex-direction: column; }
 .tile-stack img { width: 100%; display: block; flex: none; }
@@ -187,12 +194,9 @@ button:disabled { opacity: 0.5; cursor: default; }
 .node:disabled { opacity: 1; }
 .node-n { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); text-align: center; font-size: 28px; line-height: 1; color: #fff; -webkit-text-stroke: 5px var(--c); paint-order: stroke fill; pointer-events: none; }
 .node-n.big { font-size: 46px; -webkit-text-stroke-width: 7px; }
+.stage-node .node-n.big { font-size: calc(var(--s) * 0.42); -webkit-text-stroke-width: calc(var(--s) * 0.07); }
 .node { --c: #3b9f1c; } .node.k-normal { --c: #1d93a8; } .node.k-hard { --c: #c2740a; } .node.k-super { --c: #7a3fc4; }
 .node.k-super .node-n { font-size: 36px; }
-.stage-node { --c: #3b9f1c; }
-.stage-node:nth-of-type(2) .node-n { --c: #c2740a; }
-.stage-node:nth-of-type(3) .node-n { --c: #1d93a8; }
-.stage-node:nth-of-type(4) .node-n { --c: #c93a7a; }
 .node-shine { position: absolute; left: 50%; top: 46%; width: 100%; height: 100%; margin: -50% 0 0 -50%; background: url('/choo-choo-pop-assets/art/map/ui/shine.webp') center / contain no-repeat; pointer-events: none; z-index: -1; }
 .node-stars { position: absolute; top: -34%; left: 50%; transform: translateX(-50%); gap: 0; z-index: 2; }
 .node-stars img:nth-child(2) { margin-bottom: 7px; }
@@ -206,13 +210,21 @@ button:disabled { opacity: 0.5; cursor: default; }
 .btn-row { display: flex; gap: 12px; }
 .btn-row .btn { flex: 1; min-width: 0; --h: 50px; --cap: 25px; font-size: 18px; }
 
-.stage-node { display: flex; flex-direction: column; align-items: center; }
+.stage-node { display: block; }
+.stage-node.idle { pointer-events: none; }
+.stage-node.current { z-index: 30 !important; }
 .stage-node .node-face { height: auto; aspect-ratio: 380 / 370; }
 .stage-node.locked .node-btn { opacity: 0.95; }
-.stage-panda { position: absolute !important; bottom: 52%; inset-inline-end: 72%; z-index: 3; }
+/* the pin hovers beside the current city's button (cities on one island are close together, so it must not cover the neighbours' labels) */
+.map-pin { position: absolute; right: 84%; bottom: 2%; height: auto; transform-origin: 50% 100%; z-index: 3; pointer-events: none; filter: drop-shadow(0 5px 4px rgba(10, 70, 90, 0.35)); animation: pin-bob 1.6s ease-in-out infinite; }
+@keyframes pin-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .map-pin { animation: none; } }
+.stage-node .ribbon { padding: 1px 10px; border-radius: 12px; border-width: 2px; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: -14px; white-space: nowrap; }
 .ribbon { margin-top: -8px; background: linear-gradient(#fff, #eef9fb); border: 3px solid #fff; border-radius: 16px; padding: 3px 14px; box-shadow: 0 4px 0 var(--plate), 0 7px 10px rgba(10, 80, 95, 0.25); display: flex; flex-direction: column; align-items: center; line-height: 1.25; position: relative; }
 .ribbon b { font-size: 16px; white-space: nowrap; }
 .ribbon small { font-size: 13px; opacity: 0.85; }
+.stage-node .ribbon b { font-size: 13px; }
+.stage-node .ribbon small { font-size: 11px; }
 
 /* ---- shop ---- */
 .shop-scroll { flex: 1; overflow-y: auto; padding: 8px 2px 24px; margin: 0 -4px; }

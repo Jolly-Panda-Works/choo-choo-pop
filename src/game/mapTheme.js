@@ -25,3 +25,27 @@ export const STAGE_THEMES = [
 export const NODE_BTN = { easy: 'green', normal: 'blue', hard: 'orange', super: 'purple' };
 
 export const stackHeight = (tiles) => tiles.reduce((h, n) => h + TILE[n], 0); // in units of the screen width
+
+// The 11 city spots of the world map, in play order (bottom -> top). Measured on the art: `x` = percent of the map width,
+// `f` = position inside its tile (0 = top, 1 = bottom). City i is stage i + 1; spots beyond the built stages stay locked and empty.
+export const CITIES = [
+  { tile: 'green-start', x: 52.9, f: 0.82 },
+  { tile: 'green-start', x: 55.7, f: 0.447 },
+  { tile: 'green-start', x: 52.8, f: 0.326 },
+  { tile: 'desert-1', x: 50.8, f: 0.898 },
+  { tile: 'desert-1', x: 51.6, f: 0.715 },
+  { tile: 'ice-1', x: 53.5, f: 0.891 },
+  { tile: 'ice-1', x: 52.3, f: 0.678 },
+  { tile: 'ice-1', x: 51.7, f: 0.524 },
+  { tile: 'candy-1', x: 52.4, f: 0.787 },
+  { tile: 'candy-1', x: 44.8, f: 0.605 },
+  { tile: 'candy-1', x: 51.9, f: 0.177 },
+];
+
+// glossy button colour + number outline colour per island theme (by the tile a city sits on)
+export const TILE_BTN = {
+  'green-start': { btn: 'green', ink: '#3b9f1c' },
+  'desert-1': { btn: 'yellow', ink: '#c2740a' },
+  'ice-1': { btn: 'blue', ink: '#1d93a8' },
+  'candy-1': { btn: 'pink', ink: '#c93a7a' },
+};

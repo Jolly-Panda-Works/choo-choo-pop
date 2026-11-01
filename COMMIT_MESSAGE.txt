@@ -1,5 +1,15 @@
-fix(home): crash "undefined is not iterable" in Home pos()
+feat(map): 11 fixed city spots, panda pin, floating header, drag-to-scroll
 
-The round-button row refactor dropped the manifest lookup, so the Play button
-(h-play, not part of the row) had no position. pos() now uses the row slot when the
-button has one and the mockup rect from v5manifest.json otherwise.
+- Remove the dotted trail between the cities.
+- Place the 11 city spots at the positions marked on the island art (CITIES in
+  game/mapTheme.js, tile + percent based so they survive tile changes). City i is
+  stage i + 1; spots without a built stage render as a plain locked button with no
+  label and no tap target. Button colour/outline now follows the island the spot is on.
+- Size the city buttons to the marked circles and tuck the ribbons so neighbouring
+  spots on one island do not cover each other.
+- Use the panda conductor location badge (art/map/ui/pin-panda.webp) as the
+  "you are here" marker instead of the waving panda sticker.
+- Header: the map now fills the whole screen and the top bar floats over it, so the
+  background shows through the header.
+- Hide the scrollbar; the map can be dragged with mouse/pen (with a little inertia and
+  click suppression after a drag). Touch keeps native scrolling.
