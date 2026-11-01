@@ -7,7 +7,7 @@ import { STAGE_SIZE } from '../config.js';
 import { MAP_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import Modal from '../ui/Modal.jsx';
-import { BackButton, Coin } from '../ui/icons.jsx';
+import { BackButton, CoinChip } from '../ui/icons.jsx';
 import { TileStack, SeaDecor, useWidth } from '../ui/MapKit.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
 
@@ -15,7 +15,7 @@ import { ua, uaDelay } from '../anim/ua.js';
 // City spots (11 in total) live in game/mapTheme.js; the stages built so far take the first ones, the rest stay locked.
 const WORLD = ['green-start', 'desert-1', 'ice-1', 'candy-1', 'end'];
 
-export default function StageMap({ onBack, onOpen, onShop }) {
+export default function StageMap({ onBack, onOpen, onCoins }) {
   const save = useSave();
   const t = useT();
   const [msg, setMsg] = useState(null);
@@ -122,9 +122,7 @@ export default function StageMap({ onBack, onOpen, onShop }) {
       <header className="topbar">
         <BackButton onClick={onBack} label={t('back')} />
         <h2>{t('map')}</h2>
-        <button className="chip coin-chip" onClick={onShop} aria-label={t('shop')}>
-          <Coin size={22} /> {t.n(save.coins)}
-        </button>
+        <CoinChip amount={t.n(save.coins)} onClick={() => { sfx.click(); onCoins(); }} label={t('coins')} />
       </header>
 
       <div className="stage-scroll" ref={scroller}>

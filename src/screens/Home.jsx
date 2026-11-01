@@ -2,7 +2,7 @@ import { useT } from '../i18n.js';
 import { sfx } from '../audio.js';
 import { APP_VERSION } from '../config.js';
 import { useSave } from '../store.js';
-import { Coin } from '../ui/icons.jsx';
+import { CoinChip } from '../ui/icons.jsx';
 import Logotype from '../ui/Logotype.jsx';
 import { V5_ART } from '../board/sprites.js';
 import M from '../ui/v5manifest.json';
@@ -52,9 +52,7 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
         {btn('h-missions', onMissions, t('missions'))}
         {btn('h-shop', onShop, t('shop'))}
       </div>
-      <button className="chip coin-chip home-coins" onClick={go(onCoins)} aria-label={t('coins')}>
-        <Coin size={24} /> {t.n(save.coins)} <b className="plus">+</b>
-      </button>
+      <CoinChip className="home-coins" amount={t.n(save.coins)} onClick={go(onCoins)} label={t('coins')} />
       <p className="ver">
         {t('version')} {t.n(APP_VERSION)}
       </p>

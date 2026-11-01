@@ -20,6 +20,15 @@ export function Coin({ size = 22 }) {
   return <img className="coin-ico" src={`${V5_ART}coin-gold.webp`} width={size} height={size} alt="" draggable="false" />;
 }
 
+/** Coin counter chip (coin + amount + green plus) - the same on every screen; it opens the coin popup. */
+export function CoinChip({ amount, onClick, label, className = '' }) {
+  return (
+    <button className={'chip coin-chip ' + className} onClick={onClick} aria-label={label}>
+      <Coin size={24} /> {amount} <b className="plus">+</b>
+    </button>
+  );
+}
+
 // `size` is a number of px, or a CSS size string like '60%' (inside the scaled v5 popups)
 const dim = (size) => (typeof size === 'string' ? { style: { width: size, height: 'auto' } } : { width: size, height: size });
 export function Bulb({ size = 26 }) {

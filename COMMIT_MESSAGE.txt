@@ -1,3 +1,12 @@
+refactor(ui): one coin counter chip on every screen, like Home
+
+Home, the stage map, the levels screen and the game now share one CoinChip component
+(ui/icons.jsx): coin + amount + green plus, same size. The stage map and the levels
+screen used to show a smaller chip without the plus that opened the shop; like on Home
+it now opens the coin popup (on top of the current screen).
+
+---
+
 fix(stage): soft top and bottom edge on the levels scroll area
 
 The cloud banks only cover part of the edge of the scroll area, so houses and rails

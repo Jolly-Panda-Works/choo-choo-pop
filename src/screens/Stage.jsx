@@ -10,7 +10,7 @@ import StartPopup from '../ui/StartPopup.jsx';
 import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import { usePandaSrc } from '../ui/Panda.jsx';
-import { BackButton, Coin } from '../ui/icons.jsx';
+import { BackButton, CoinChip } from '../ui/icons.jsx';
 import { Crown, CloudEdges, useDragScroll } from '../ui/MapKit.jsx';
 import ForestTrack from '../ui/ForestTrack.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
@@ -59,7 +59,7 @@ function Stars3({ n }) {
 // how long the houses of the old stage take to fly out before the next stage is opened (ms)
 const EXIT_MS = 520;
 
-export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
+export default function Stage({ stageId, onBack, onPick, onCoins, onStage }) {
   const save = useSave();
   const t = useT();
   const st = STAGES[stageId - 1];
@@ -95,9 +95,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
         <span className="chip small-chip">
           <img className="chip-star" src={`${MAP_ART}ui/star-gold.webp`} alt="" draggable="false" /> {t.n(got)}/{t.n(STAGE_SIZE * 3)}
         </span>
-        <button className="chip coin-chip" onClick={onShop} aria-label={t('shop')}>
-          <Coin size={22} /> {t.n(save.coins)}
-        </button>
+        <CoinChip amount={t.n(save.coins)} onClick={() => { sfx.click(); onCoins(); }} label={t('coins')} />
       </header>
 
       <div className="pager">
@@ -174,7 +172,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
           tutorial={isTutorial(pickedLevel)}
           onPlay={(picks) => onPick(picked, picks)}
           onClose={() => setPicked(null)}
-          onCoins={onShop}
+          onCoins={onCoins}
         />
       )}
     </main>

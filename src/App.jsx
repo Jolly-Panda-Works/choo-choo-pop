@@ -157,7 +157,7 @@ export default function App() {
         />
       )}
       {screen.name === 'map' && (
-        <StageMap onBack={() => replace('home')} onOpen={(id) => replace('stage', { stage: id })} onShop={() => setOverlay('shop')} />
+        <StageMap onBack={() => replace('home')} onOpen={(id) => replace('stage', { stage: id })} onCoins={() => setOverlay('coins')} />
       )}
       {screen.name === 'stage' && (
         <Stage
@@ -165,7 +165,7 @@ export default function App() {
           onBack={() => replace('map')}
           onStage={(id) => replace('stage', { stage: id })}
           onPick={(n, picks) => replace('game', { level: n, stage: screen.stage, picks })}
-          onShop={() => setOverlay('shop')}
+          onCoins={() => setOverlay('coins')}
         />
       )}
       {screen.name === 'game' && (

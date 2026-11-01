@@ -4,7 +4,7 @@ import { loadSprites } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
 import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
-import { Stars, Coin, Bulb, BackButton, PowerIcon } from '../ui/icons.jsx';
+import { Stars, Coin, CoinChip, Bulb, BackButton, PowerIcon } from '../ui/icons.jsx';
 import StartPopup from '../ui/StartPopup.jsx';
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission } from '../store.js';
 import { useT } from '../i18n.js';
@@ -250,9 +250,7 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
             <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
           </span>
         </div>
-        <button className="chip coin-chip" onClick={onCoins} aria-label={t('coins')}>
-          <Coin size={22} /> {t.n(save.coins)} <b className="plus">+</b>
-        </button>
+        <CoinChip amount={t.n(save.coins)} onClick={onCoins} label={t('coins')} />
       </header>
 
       <div className="board-wrap">
