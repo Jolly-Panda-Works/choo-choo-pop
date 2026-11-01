@@ -16,7 +16,7 @@ import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
 import { TUTORIAL_LEVELS, COIN_BASE, COINS_PER_STAR, STAGE_SIZE, POWERUPS, POWERUP_STAGE, PEEK_MS } from '../config.js';
 
-export default function Game({ levelNo, onMap, onNext, onShop, onCoins }) {
+export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoins }) {
   const baseLevel = useMemo(() => getLevel(levelNo), [levelNo]);
   const [bonusGiven, setBonusGiven] = useState([]); // gold stars laid by the star power-up
   const level = useMemo(() => (bonusGiven.length ? { ...baseLevel, given: [...baseLevel.given, ...bonusGiven] } : baseLevel), [baseLevel, bonusGiven]);
@@ -28,7 +28,8 @@ export default function Game({ levelNo, onMap, onNext, onShop, onCoins }) {
   const [peekUntil, setPeekUntil] = useState(0);
   const [noPower, setNoPower] = useState(null);
   // intro (start popup) | play | run | won | lost
-  const [phase, setPhase] = useState('intro');
+  // (opened from the start popup of the levels screen: that popup was already answered, so the level starts right away)
+  const [phase, setPhase] = useState(startPicks ? 'play' : 'intro');
   const [hintsUsed, setHintsUsed] = useState(0);
   const [mistakes, setMistakes] = useState(0);
   const [toast, setToast] = useState('');
@@ -201,6 +202,15 @@ export default function Game({ levelNo, onMap, onNext, onShop, onCoins }) {
     list.forEach((id) => usePower(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickTick, playing]);
+
+  // start popup was shown on the levels screen: apply its boosters and begin
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (!startPicks || startedRef.current) return;
+    startedRef.current = true;
+    begin(startPicks);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const watchForHint = async () => {
     const ok = await ads.rewarded();

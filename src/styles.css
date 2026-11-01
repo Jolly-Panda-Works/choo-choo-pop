@@ -434,3 +434,21 @@ button:disabled { opacity: 0.5; cursor: default; }
   .fn, .fn.current, .ft-rail, .pager-title, .cloud-edge { animation: none !important; }
   .ft.leaving .fn { opacity: 0; }
 }
+
+/* ---- scene transition: clouds meet in the middle of the screen, the screen changes, the clouds part (ui/CloudWipe.jsx) ---- */
+.cloudwipe { position: fixed; inset: 0; z-index: 900; overflow: hidden; pointer-events: auto; touch-action: none; }
+.cw-fill { position: absolute; inset: 0; background: linear-gradient(#eaf8ff, #cfeefa); opacity: 0; }
+.cw-cloud { position: absolute; height: auto; pointer-events: none; will-change: transform; filter: drop-shadow(0 6px 8px rgba(40, 140, 180, 0.18)); transform: translateX(calc(var(--sx) * 1vw)) scaleX(var(--flip)); }
+.cloudwipe.in .cw-cloud { animation: cw-in 0.5s cubic-bezier(0.2, 0.75, 0.3, 1) var(--d) both; }
+.cloudwipe.out .cw-cloud { animation: cw-out 0.5s cubic-bezier(0.55, 0, 0.8, 0.35) var(--d) both; }
+.cloudwipe.in .cw-fill { animation: cw-fill-in 0.28s ease-out 0.4s both; }
+.cloudwipe.out .cw-fill { animation: cw-fill-out 0.25s ease-in both; }
+@keyframes cw-in { from { transform: translateX(calc(var(--sx) * 1vw)) scaleX(var(--flip)); } to { transform: translateX(0) scaleX(var(--flip)); } }
+@keyframes cw-out { from { transform: translateX(0) scaleX(var(--flip)); } to { transform: translateX(calc(var(--sx) * 1vw)) scaleX(var(--flip)); } }
+@keyframes cw-fill-in { to { opacity: 1; } }
+@keyframes cw-fill-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .cw-cloud { transform: none !important; animation: none !important; opacity: 0; }
+  .cloudwipe.in .cw-fill { animation: cw-fill-in 0.3s linear both; }
+  .cloudwipe.out .cw-fill { animation: cw-fill-out 0.4s linear both; }
+}

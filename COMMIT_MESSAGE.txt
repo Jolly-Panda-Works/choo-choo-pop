@@ -1,3 +1,20 @@
+feat(transition): cloud scene transition between screens, start popup opens on the levels screen
+
+- Start popup: tapping a level on the levels screen (grid or panda-house track) now
+  opens the "Station N" popup on that same screen instead of loading the game first.
+  Play -> the game loads straight into the level with the chosen boosters applied
+  (Game takes `startPicks`, so it no longer shows its own start popup in that case);
+  the X just closes the popup. Next level / first launch / Home Play still use the
+  start popup inside Game as before.
+- Scene transition (ui/CloudWipe.jsx): the map clouds (art/map/ui/cloud-1/2) sweep in
+  from both sides and meet in the middle of the screen, the screen is switched while
+  it is fully covered, then the clouds part again. Applied to every go/replace/back in
+  App.jsx (home, map, levels, game, shop, missions, settings, story, coins, Android
+  back). Clicks are blocked while it runs; the stage pager arrows (stage -> stage)
+  keep their own house fly-in/out animation. prefers-reduced-motion: soft fade only.
+
+---
+
 feat(stage): houses fly in/out, camera glide, drag instead of scrollbar, cloud edges
 
 - Changing stage (pager arrows): the houses of the old stage fly out, the new

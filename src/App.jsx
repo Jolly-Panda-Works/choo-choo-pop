@@ -17,6 +17,7 @@ import Missions from './screens/Missions.jsx';
 import AdHost from './ui/AdHost.jsx';
 import { IconDefs } from './ui/icons.jsx';
 import HomeScene from './ui/HomeScene.jsx';
+import CloudWipe, { CLOSE_MS, OPEN_MS } from './ui/CloudWipe.jsx';
 
 // screens that sit on the grass (top-down world) instead of the sky
 const GRASS = new Set(['game']);
@@ -51,18 +52,49 @@ export default function App() {
     }
   }, []);
 
-  const go = (name, extra = {}) => {
-    stack.current.push(screenRef.current);
-    setScreen({ name, ...extra });
+  // scene transition: clouds cover the screen, the screen is switched underneath them, the clouds part again.
+  // Clicks are blocked while it runs. Pager arrows of the levels screen (stage -> stage) keep their own animation.
+  const [wipe, setWipe] = useState('idle');
+  const busy = useRef(false);
+  const timers = useRef([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  const withWipe = (change, instant = false) => {
+    if (busy.current) return;
+    if (instant) return change();
+    busy.current = true;
+    setWipe('in');
+    timers.current.push(
+      setTimeout(() => {
+        change();
+        setWipe('out');
+        timers.current.push(
+          setTimeout(() => {
+            setWipe('idle');
+            busy.current = false;
+          }, OPEN_MS),
+        );
+      }, CLOSE_MS),
+    );
   };
-  const replace = (name, extra = {}) => {
-    stack.current = [];
-    setScreen({ name, ...extra });
-  };
-  const back = (fallback) => {
-    const prev = stack.current.pop();
-    setScreen(prev || fallback);
-  };
+
+  const go = (name, extra = {}) =>
+    withWipe(() => {
+      stack.current.push(screenRef.current);
+      setScreen({ name, ...extra });
+    });
+  const replace = (name, extra = {}) =>
+    withWipe(
+      () => {
+        stack.current = [];
+        setScreen({ name, ...extra });
+      },
+      name === 'stage' && screenRef.current.name === 'stage',
+    );
+  const back = (fallback) =>
+    withWipe(() => {
+      const prev = stack.current.pop();
+      setScreen(prev || fallback);
+    });
 
   useEffect(() => {
     refreshMissions();
@@ -127,7 +159,7 @@ export default function App() {
           stageId={screen.stage}
           onBack={() => replace('map')}
           onStage={(id) => replace('stage', { stage: id })}
-          onPick={(n) => replace('game', { level: n, stage: screen.stage })}
+          onPick={(n, picks) => replace('game', { level: n, stage: screen.stage, picks })}
           onShop={() => go('shop')}
         />
       )}
@@ -135,6 +167,7 @@ export default function App() {
         <Game
           key={screen.level}
           levelNo={screen.level}
+          startPicks={screen.picks}
           onMap={() => replace('stage', { stage: stageOf(screen.level) })}
           onNext={() => replace('game', { level: Math.min(levelCount, screen.level + 1) })}
           onShop={() => go('shop')}
@@ -146,6 +179,7 @@ export default function App() {
       {screen.name === 'missions' && <Missions onBack={() => back({ name: 'home' })} />}
       {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
       {screen.name === 'story' && <Story onDone={finishStory} />}
+      <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
     </div>
   );

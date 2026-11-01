@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSave, starsInRange } from '../store.js';
 import { useT } from '../i18n.js';
-import { STAGES, stageLevels, stageBuilt } from '../game/stages.js';
-import { difficultyOf, nodeKind } from '../game/levels.js';
+import { STAGES, stageLevels, stageBuilt, indexInStage } from '../game/stages.js';
+import { difficultyOf, nodeKind, getLevel } from '../game/levels.js';
 import { NODE_BTN, STAGE_THEMES } from '../game/mapTheme.js';
-import { STAGE_SIZE } from '../config.js';
+import { STAGE_SIZE, COIN_BASE, COINS_PER_STAR } from '../config.js';
+import { isTutorial } from '../game/tutorial.js';
+import StartPopup from '../ui/StartPopup.jsx';
 import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import { usePandaSrc } from '../ui/Panda.jsx';
@@ -66,6 +68,9 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   const prev = stageId > 1 ? stageId - 1 : null;
   // the next stage can be opened with the arrow only when it exists (all its levels are built)
   const next = stageId < STAGES.length && stageBuilt(stageId + 1) ? stageId + 1 : null;
+  // level whose start popup is open (the popup opens on this screen; Play then moves on to the game)
+  const [picked, setPicked] = useState(null);
+  const pickedLevel = picked ? getLevel(picked) : null;
   const forest = STAGE_THEMES[stageId - 1]?.id === 'green';
   // forest stages: the houses fly out first, then the next stage opens (its ForestTrack mounts fresh and flies in)
   const [leavingFor, setLeavingFor] = useState(0);
@@ -112,7 +117,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
 
       <div className="lv-view">
       {forest ? (
-        <ForestTrack key={stageId} leaving={leaving} levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} />
+        <ForestTrack key={stageId} leaving={leaving} levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={setPicked} label={t('station')} num={(x) => t.n(x)} />
       ) : (
       <div className="lv-scroll" ref={gridScroll}>
         <div className="lv-grid">
@@ -131,7 +136,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
                   disabled={locked}
                   onClick={() => {
                     sfx.click();
-                    onPick(n);
+                    setPicked(n);
                   }}
                   aria-label={`${t('station')} ${i + 1}`}
                 >
@@ -157,6 +162,21 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
       )}
       <CloudEdges />
       </div>
+
+      {pickedLevel && (
+        <StartPopup
+          key={picked}
+          level={pickedLevel}
+          levelNo={picked}
+          inStage={indexInStage(picked)}
+          stars={save.stars[picked] || 0}
+          maxCoins={COIN_BASE[pickedLevel.difficulty] + COINS_PER_STAR * 3}
+          tutorial={isTutorial(pickedLevel)}
+          onPlay={(picks) => onPick(picked, picks)}
+          onClose={() => setPicked(null)}
+          onCoins={onShop}
+        />
+      )}
     </main>
   );
 }
