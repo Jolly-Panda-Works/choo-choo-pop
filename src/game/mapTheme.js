@@ -9,7 +9,7 @@ export const TILE = {
   'candy-1': 1710 / 1080,
   'candy-2': 1710 / 1080,
   'cloud-1': 1701 / 1080,
-  end: 1319 / 1080, // clouds - always the top tile
+  end: 500 / 1080, // clouds - always the top tile; the art is END_OVERLAP taller and fades out over the tile below
 };
 
 // One island theme per built stage. All four built stages sit on green islands (see CITIES).
@@ -24,6 +24,7 @@ export const STAGE_THEMES = [
 // glossy button colour per station difficulty (see game/levels.js nodeKind)
 export const NODE_BTN = { easy: 'green', normal: 'blue', hard: 'orange', super: 'purple' };
 
+export const END_OVERLAP = 300 / 1080;
 export const stackHeight = (tiles) => tiles.reduce((h, n) => h + TILE[n], 0); // in units of the screen width
 
 // The 18 city spots of the world map, in play order (bottom -> top). Measured on the art: `x` = percent of the map width,

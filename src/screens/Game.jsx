@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BoardCanvas from '../board/BoardCanvas.jsx';
-import { loadSprites } from '../board/sprites.js';
+import { loadSprites, holdSprites, UI_ART } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
 import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
-import { Stars, Coin, CoinChip, Bulb, BackButton, PowerIcon } from '../ui/icons.jsx';
-import StartPopup from '../ui/StartPopup.jsx';
+import { Stars, Coin, CoinChip, Bulb, BackButton, Icon, PowerIcon } from '../ui/icons.jsx';
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission } from '../store.js';
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
 import { startPaths, evaluate, applyHint, eraseWrong } from '../game/logic.js';
-import { isTutorial, coachFor, tutorialIdleMs } from '../game/tutorial.js';
+import { isTutorial, coachFor, tutorialIdleMs, idleCoach } from '../game/tutorial.js';
 import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
-import { TUTORIAL_LEVELS, COIN_BASE, COINS_PER_STAR, STAGE_SIZE, POWERUPS, POWERUP_STAGE, PEEK_MS } from '../config.js';
+import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, POWERUP_STAGE, PEEK_MS, IDLE_HINT_MS } from '../config.js';
 
-export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoins }) {
+export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
   const baseLevel = useMemo(() => getLevel(levelNo), [levelNo]);
   const [bonusGiven, setBonusGiven] = useState([]); // gold stars laid by the star power-up
   const level = useMemo(() => (bonusGiven.length ? { ...baseLevel, given: [...baseLevel.given, ...bonusGiven] } : baseLevel), [baseLevel, bonusGiven]);
@@ -27,15 +26,16 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
   const [powerUsed, setPowerUsed] = useState(0);
   const [peekUntil, setPeekUntil] = useState(0);
   const [noPower, setNoPower] = useState(null);
-  // intro (start popup) | play | run | won | lost
+  // play | run | won | lost | next (the start popup of the next station is up)
   // (opened from the start popup of the levels screen: that popup was already answered, so the level starts right away)
-  const [phase, setPhase] = useState(startPicks ? 'play' : 'intro');
+  const [phase, setPhase] = useState('play');
   const [hintsUsed, setHintsUsed] = useState(0);
   const [mistakes, setMistakes] = useState(0);
   const [toast, setToast] = useState('');
   const [stars, setStars] = useState(3);
   const [reward, setReward] = useState({ coins: 0 });
   const [noHints, setNoHints] = useState(false);
+  const [askLeave, setAskLeave] = useState(false);
   const [idle, setIdle] = useState(false);
   const pathRef = useRef(paths);
   const toastTimer = useRef();
@@ -45,21 +45,24 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
   const kind = nodeKind(level.difficulty);
 
   useEffect(() => {
+    const release = holdSprites();
     loadSprites().then(() => setReady(true));
+    return release;
   }, []);
 
   const result = useMemo(() => evaluate(level, paths), [level, paths]);
   const path = paths[0];
   const playing = phase === 'play';
 
-  // tutorial coach: after a moment without a move the finger shows what to do next
+  // after a moment without a move the finger shows what to do next (the tutorial coach, or the idle hint of a station)
   useEffect(() => {
-    if (!tutorial || !playing) return undefined;
+    if (!playing) return undefined;
     setIdle(false);
-    const timer = setTimeout(() => setIdle(true), tutorialIdleMs(level));
+    const timer = setTimeout(() => setIdle(true), tutorial ? tutorialIdleMs(level) : IDLE_HINT_MS);
     return () => clearTimeout(timer);
   }, [tutorial, playing, paths, level]);
   const coach = useMemo(() => (tutorial && playing ? coachFor(level, paths[0], idle) : null), [tutorial, playing, level, paths, idle]);
+  const idleHint = useMemo(() => (!tutorial && playing && idle ? idleCoach(level, paths) : null), [tutorial, playing, idle, level, paths]);
 
   const say = useCallback((msg) => {
     setToast(msg);
@@ -104,7 +107,8 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
 
   const onRunDone = useCallback(() => {
     setPhase('won');
-    sfx.win();
+    if (stageDone) sfx.levelUp();
+    else sfx.win();
     const res = completeLevel(levelNo, stars, level.difficulty);
     setReward(res);
     adDue.current = tickAdCounter(levelNo);
@@ -203,10 +207,10 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickTick, playing]);
 
-  // start popup was shown on the levels screen: apply its boosters and begin
+  // the start popup was shown on the screen before this one: apply its boosters and begin
   const startedRef = useRef(false);
   useEffect(() => {
-    if (!startPicks || startedRef.current) return;
+    if (startedRef.current) return;
     startedRef.current = true;
     begin(startPicks);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,17 +235,24 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
     fn();
   };
 
+  // leaving a level in play asks first; the Android back button comes here too
+  const goBack = () => {
+    if (playing) setAskLeave(true);
+    else onMap();
+  };
+  if (backRef) backRef.current = goBack;
+
   const lastLevel = levelNo >= levelCount;
   const inStage = indexInStage(levelNo);
-  const maxCoins = COIN_BASE[level.difficulty] + COINS_PER_STAR * 3;
   const stageDone = inStage === STAGE_SIZE;
+  const taughtPowers = POWERUPS.filter((p) => save.taught[p.id]);
 
   if (!ready) return <main className="screen game" />;
 
   return (
     <main className="screen game">
       <header className="topbar">
-        <BackButton onClick={onMap} label={t('back')} />
+        <BackButton onClick={goBack} label={t('back')} />
         <div className="title-block">
           <h2>
             {t('station')} {t.n(inStage)}
@@ -261,8 +272,9 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
           peekUntil={peekUntil}
           evalResult={result}
           phase={phase === 'play' || phase === 'run' || phase === 'won' ? phase : 'locked'}
-          coach={coach}
+          coach={coach || idleHint}
           skin={save.trainSkin}
+          railSkin={save.railSkin}
           reserveBottom={tutorial ? 104 : 0}
           onPath={onPath}
           onRunDone={onRunDone}
@@ -276,11 +288,11 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
         {toast && <div className="toast">{toast}</div>}
       </div>
 
-      {stage >= POWERUP_STAGE && (
+      {taughtPowers.length > 0 && (
         <div className="powers">
-          {POWERUPS.map((p) => (
+          {taughtPowers.map((p) => (
             <button key={p.id} className="power" onClick={() => usePower(p.id)} disabled={!playing} aria-label={t('pw_' + p.id)}>
-              <PowerIcon id={p.id} size={34} />
+              <PowerIcon id={p.id} size={28} />
               <span>{t('pw_' + p.id)}</span>
               <i className="badge">{t.n(save.powerups[p.id] || 0)}</i>
             </button>
@@ -289,28 +301,19 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
       )}
       <footer className="controls">
         <button className="ctl" onClick={undo} disabled={!playing || paths.every((p) => p.length <= 1)}>
-          <svg viewBox="0 0 24 24" width="26" height="26">
-            <path d="M9 7L4 12l5 5M4 12h10a6 6 0 010 12" transform="translate(0 -4)" />
-          </svg>
+          <img src={`${UI_ART}undo.png`} width="30" height="30" alt="" draggable="false" />
           <span>{t('undo')}</span>
         </button>
-        <button className="ctl accent" onClick={hint} disabled={!playing}>
-          <Bulb />
+        <button className="ctl" onClick={hint} disabled={!playing}>
+          <Bulb size={30} />
           <span>{t('hint')}</span>
           {!tutorial && <i className="badge">{t.n(save.hints)}</i>}
         </button>
         <button className="ctl" onClick={restart} disabled={!playing}>
-          <svg viewBox="0 0 24 24" width="26" height="26">
-            <path d="M4 12a8 8 0 108-8M4 4v5h5" />
-          </svg>
+          <img src={`${UI_ART}restart.png`} width="30" height="30" alt="" draggable="false" />
           <span>{t('restart')}</span>
         </button>
       </footer>
-
-      {/* ---- start of level ---- */}
-      {phase === 'intro' && (
-        <StartPopup level={level} levelNo={levelNo} inStage={inStage} stars={save.stars[levelNo] || 0} maxCoins={maxCoins} tutorial={tutorial} onPlay={begin} onClose={onMap} onCoins={onCoins} />
-      )}
 
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
@@ -330,7 +333,15 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
           {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
           <div className="modal-actions col">
             {!lastLevel && (
-              <button className="btn big yellow" onClick={() => leave(onNext)}>
+              <button
+                className="btn big yellow"
+                onClick={() =>
+                  leave(() => {
+                    setPhase('next');
+                    onNext();
+                  })
+                }
+              >
                 {t('next')}
               </button>
             )}
@@ -365,15 +376,34 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
         </Modal>
       )}
 
+      {/* ---- leave the level? ---- */}
+      {askLeave && (
+        <Modal pose="lever" title={t('leaveTitle')} onClose={() => setAskLeave(false)}>
+          {(leave) => (
+            <>
+              <p className="goal">{t('leaveText')}</p>
+              <div className="modal-actions col">
+                <button className="btn big green one-line" onClick={() => (sfx.click(), leave(() => setAskLeave(false)))}>
+                  {t('stayHere')}
+                </button>
+                <button className="btn red" onClick={() => (sfx.click(), onMap())}>
+                  {t('leaveLevel')}
+                </button>
+              </div>
+            </>
+          )}
+        </Modal>
+      )}
+
       {/* ---- no power-up left ---- */}
       {noPower && (
         <Modal pose="lever" title={t('noPowerTitle')} onClose={() => setNoPower(null)}>
           <p className="goal">{t('noPower')}</p>
           <div className="modal-actions col">
-            <button className="btn big blue" onClick={onShop}>
+            <button className="btn big green" onClick={onShop}>
               {t('shop')}
             </button>
-            <button className="btn" onClick={() => setNoPower(null)}>
+            <button className="btn red" onClick={() => setNoPower(null)}>
               {t('cancel')}
             </button>
           </div>
@@ -387,13 +417,13 @@ export default function Game({ levelNo, startPicks, onMap, onNext, onShop, onCoi
           <div className="modal-actions col">
             {ads.rewardedAvailable() && (
               <button className="btn big yellow" onClick={watchForHint}>
-                ▶ {t('watchForHint')}
+                <Icon name="play" /> {t('watchForHint')}
               </button>
             )}
-            <button className="btn big blue" onClick={onShop}>
+            <button className="btn big green" onClick={onShop}>
               {t('shop')}
             </button>
-            <button className="btn" onClick={() => setNoHints(false)}>
+            <button className="btn red" onClick={() => setNoHints(false)}>
               {t('cancel')}
             </button>
           </div>

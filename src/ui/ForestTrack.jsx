@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { MAP_ART } from '../board/sprites.js';
 import { difficultyOf, nodeKind } from '../game/levels.js';
 import { sfx } from '../audio.js';
-import { smoothPath, useWidth, useDragScroll } from './MapKit.jsx';
+import { smoothPath, useWidth, useDragScroll, usePauseOffscreen } from './MapKit.jsx';
 
 // Forest (green) stages: every level is a little panda house on a winding railway, level 1 at the bottom -> 20 at the top.
 //   locked -> the house is shown in grey (with a padlock); unlocked -> in colour
@@ -84,6 +84,7 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
   }, [w > 0]);
   // mouse drag instead of the scrollbar; taking hold of the view stops the camera glide
   useDragScroll(wrap, 0, stopCam);
+  usePauseOffscreen(wrap, '.fn', [levels]);
 
   const d = w ? smoothPath(pts) : '';
   const tie = Math.max(10, w * 0.09);

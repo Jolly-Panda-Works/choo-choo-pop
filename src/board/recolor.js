@@ -21,6 +21,28 @@ function rgbToHsl(r, g, b) {
   return [h, s, l];
 }
 
+/** Tints every coloured pixel of a sprite (the wood of a rail) to a hue; grey steel stays grey. */
+export function tintToCanvas(img, hue) {
+  const c = document.createElement('canvas');
+  c.width = img.width;
+  c.height = img.height;
+  const g = c.getContext('2d');
+  g.drawImage(img, 0, 0);
+  const data = g.getImageData(0, 0, c.width, c.height);
+  const d = data.data;
+  for (let i = 0; i < d.length; i += 4) {
+    if (!d[i + 3]) continue;
+    const [, s, l] = rgbToHsl(d[i], d[i + 1], d[i + 2]);
+    if (s < 0.14) continue;
+    const [r, gg, b] = hslToRgb(hue, Math.min(1, s + 0.15), l);
+    d[i] = r;
+    d[i + 1] = gg;
+    d[i + 2] = b;
+  }
+  g.putImageData(data, 0, 0);
+  return c;
+}
+
 function hslToRgb(h, s, l) {
   h /= 360;
   if (s === 0) return [l * 255, l * 255, l * 255];

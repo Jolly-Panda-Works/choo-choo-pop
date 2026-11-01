@@ -4,7 +4,7 @@ import { formatNumber } from '../i18n.js';
 import { SIDE_VEC, pathConnections, stepOnto, laneForCell, gateIsOuter } from '../game/logic.js';
 import { mulberry32 } from '../game/rng.js';
 import { buildRoute, sampleRoute } from './route.js';
-import { getSprites, getTrainSet } from './sprites.js';
+import { getSprites, getTrainSet, getRailSet } from './sprites.js';
 
 // Strict top-down 2D board drawn on a canvas with the PNG sprites from art/.
 // World units: 1 = one cell, x = east, y = south, origin = board centre.
@@ -52,7 +52,8 @@ function layoutFor(level, W, H, reserveBottom) {
   return { S, ox: W / 2 - cx * S, oy: availH / 2 - cy * S, topClue, rightClue, box: { minX, maxX, minY, maxY } };
 }
 
-/** Trees, bushes and flowers on the grass around the board (seeded per level so they never jump). */
+const EDGE = 4;
+/** Bushes on the grass around the board (seeded per level so they never jump). */
 function makeDecor(level, lay, W, H) {
   const rng = mulberry32(level.id * 977 + 13);
   const { S, ox, oy, box } = lay;
@@ -63,18 +64,25 @@ function makeDecor(level, lay, W, H) {
     y1: oy + box.maxY * S + 0.3 * S,
   };
   const out = [];
+  const sp = getSprites();
   const step = Math.max(46, S * 1.15);
   for (let y = -step * 0.4; y < H + step; y += step) {
     for (let x = -step * 0.4; x < W + step; x += step) {
       const px = x + (rng() - 0.5) * step * 0.7;
       const py = y + (rng() - 0.5) * step * 0.7;
-      const kind = rng();
-      const size = kind < 0.28 ? S * 1.35 : kind < 0.5 ? S * 0.95 : S * 0.62;
-      const half = size * 0.5;
-      if (px + half > keep.x0 && px - half < keep.x1 && py + half > keep.y0 && py - half < keep.y1) continue;
-      if (rng() < 0.28) continue;
-      const k = kind < 0.28 ? 'tree' : kind < 0.5 ? 'bush' : rng() < 0.5 ? 'flowerPink' : 'flowerYellow';
-      out.push({ k, x: px, y: py, size, flip: rng() < 0.5 });
+      if (rng() < 0.55) continue;
+      const size = S * 0.95;
+      const k = 'bush';
+      const flip = rng() < 0.5;
+      const skip = rng() < 0.28;
+      const img = sp[k];
+      const halfW = size * 0.5;
+      const halfH = ((img.height / img.width) * size) / 2;
+      // always whole: inside the canvas, clear of the board and of the other pieces
+      if (skip || px - halfW < EDGE || px + halfW > W - EDGE || py - halfH < EDGE || py + halfH > H - EDGE) continue;
+      if (px + halfW > keep.x0 && px - halfW < keep.x1 && py + halfH > keep.y0 && py - halfH < keep.y1) continue;
+      if (out.some((o) => Math.abs(o.x - px) < o.halfW + halfW && Math.abs(o.y - py) < o.halfH + halfH)) continue;
+      out.push({ k, x: px, y: py, size, flip, halfW, halfH });
     }
   }
   out.sort((a, b) => a.y - b.y);
@@ -109,20 +117,11 @@ function drawFinger(g, x, y, scale, pressed) {
   g.arc(0, 0, pressed ? 36 : 44, 0, Math.PI * 2);
   g.fillStyle = 'rgba(255,255,255,0.55)';
   g.fill();
-  g.lineJoin = 'round';
-  g.lineCap = 'round';
-  const part = (fn) => {
-    g.beginPath();
-    fn();
-    g.fillStyle = '#ffd0a6';
-    g.fill();
-    g.lineWidth = 7;
-    g.strokeStyle = '#b5683a';
-    g.stroke();
-  };
-  part(() => g.roundRect(-38, 34, 92, 78, 30));
-  part(() => g.roundRect(-62, 52, 40, 24, 12));
-  part(() => g.roundRect(-17, -6, 34, 100, 17));
+  // the art's fingertip sits at 23 % / 3 % of the image
+  const img = getSprites().hand;
+  const w = 170;
+  const h = (w * img.height) / img.width;
+  g.drawImage(img, -w * 0.23, -h * 0.03, w, h);
   g.restore();
 }
 
@@ -253,7 +252,7 @@ function draw(R, now) {
       const i = r * cols + c;
       const x = px(c - cols / 2);
       const y = py(r - rows / 2);
-      const img = inPath.has(i) ? sp.ground : (r + c) % 2 ? sp.grassA : sp.grassB;
+      const img = (r + c) % 2 ? sp.grassA : sp.grassB;
       g.drawImage(img, x, y, S + 0.6, S + 0.6);
       if (multi && inPath.has(i)) {
         g.globalAlpha = 0.3;
@@ -277,9 +276,10 @@ function draw(R, now) {
     const y = py(Math.floor(bi / cols) - rows / 2 + 0.5);
     g.fillStyle = 'rgba(40,110,50,0.55)';
     g.fillRect(x - S / 2, y - S / 2, S + 0.6, S + 0.6);
-    const im = sp.tree;
-    const w = S * 1.05;
-    g.drawImage(im, x - w / 2, y - (im.height / im.width) * w * 0.55, w, (im.height / im.width) * w);
+    const im = bi % 2 ? sp.treeYellow : sp.tree;
+    const w = S * 0.72;
+    const h = (im.height / im.width) * w;
+    g.drawImage(im, x - w / 2, y + S * 0.46 - h, w, h);
   }
   // soft grid lines
   g.strokeStyle = 'rgba(30,90,30,0.14)';
@@ -321,7 +321,8 @@ function draw(R, now) {
       const { kind, k } = pieceTurns(a, b);
       const cx = px((cell % cols) - cols / 2 + 0.5);
       const cy = py(Math.floor(cell / cols) - rows / 2 + 0.5);
-      const img = kind === 'curve' ? sp.curve : kind === 'half' ? sp.half : sp.straight;
+      const rails = getRailSet(R.railSkin);
+      const img = kind === 'curve' ? rails.curve : kind === 'half' ? rails.half : rails.straight;
       drawTile(g, img, cx, cy, S + 0.5, k, 0.6 + 0.4 * e);
     });
   });
@@ -471,7 +472,7 @@ function draw(R, now) {
   }
 }
 
-export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, evalResult, phase, coach, skin, reserveBottom = 0, onPath, onRunDone }) {
+export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, evalResult, phase, coach, skin, railSkin, reserveBottom = 0, onPath, onRunDone }) {
   const wrapRef = useRef(null);
   const cvRef = useRef(null);
   const R = useRef({
@@ -498,6 +499,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     r.counts = evalResult.counts;
     r.coach = coach;
     r.skin = skin;
+    r.railSkin = railSkin;
     r.onRunDone = () => cbRef.current.onRunDone?.();
     if (phase === 'run' && r.phase !== 'run') {
       r.routes = paths.map((pp, li) => buildRoute(level, level.lanes[li], pathConnections(level, pp, li), pp, GATE_OUT));
@@ -516,7 +518,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
       r.appear = new Map();
     }
     r.dirty = true;
-  }, [level, paths, evalResult, phase, coach, skin, reserveBottom, peekUntil]);
+  }, [level, paths, evalResult, phase, coach, skin, railSkin, reserveBottom, peekUntil]);
 
   // size + render loop
   useEffect(() => {
@@ -527,7 +529,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     if (import.meta.env.DEV) window.__board = r; // dev/test hook
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       r.W = Math.max(1, rect.width);
       r.H = Math.max(1, rect.height);
       r.dpr = dpr;
@@ -543,12 +545,17 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     resize();
     r.ready = true;
     let raf;
+    let lastGlint = 0;
+    const app = wrap.closest('.app');
     const loop = (t) => {
       raf = requestAnimationFrame(loop);
+      if (app.classList.contains('popup-open')) return; // the board is hidden behind a popup
       const animating =
-        r.coach || r.peekUntil > t || r.phase === 'run' || r.puffs.length > 0 || r.level?.given.length > 0 ||
-        [...r.appear.values()].some((t0) => t - t0 < 220);
-      if (!r.dirty && !animating) return;
+        r.coach || r.peekUntil > t || r.phase === 'run' || r.puffs.length > 0 || [...r.appear.values()].some((t0) => t - t0 < 220);
+      // the glint of the gold stars is slow: 20 frames a second are enough
+      const glint = r.phase === 'play' && r.level?.given.length > 0 && t - lastGlint > 50;
+      if (!r.dirty && !animating && !glint) return;
+      if (glint) lastGlint = t;
       r.dirty = false;
       draw(r, t);
     };

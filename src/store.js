@@ -8,7 +8,6 @@ import {
   AD_EVERY,
   START_POWERUPS,
   POWERUPS,
-  DAILY_GIFT_COINS,
   DEFAULT_LANG,
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions } from './game/missions.js';
@@ -25,18 +24,23 @@ const defaults = () => ({
   hints: START_HINTS,
   coins: START_COINS,
   sound: true,
+  music: true,
   vibrate: true,
   storySeen: false,
   adsRemoved: false,
   adCount: 0, // finished levels since the last ad
   adTarget: pickAdTarget(),
   trainSkin: 'classic',
+  railSkin: 'classic',
+  ownedRail: ['classic'],
+  starsSpent: 0,
+  taught: {}, // power-ups whose lesson was seen
   pandaSkin: 'classic',
   ownedTrain: ['classic'],
   ownedPanda: ['classic'],
   powerups: { star: START_POWERUPS, eraser: START_POWERUPS, peek: START_POWERUPS },
   mis: null, // missions, see game/missions.js
-  lastGift: '', // day of the last free daily gift
+  lastSpin: '', // day of the last free spin of the wheel
   lang: null, // 'en' | 'fa', null = the default of this build
 });
 
@@ -129,12 +133,8 @@ export function buyPowerup(id) {
 }
 
 // ---- free daily gift of the coin shop
-export const giftReady = (s = state) => s.lastGift !== dayKey();
-export function claimGift() {
-  if (!giftReady()) return 0;
-  update((s) => ({ lastGift: dayKey(), coins: s.coins + DAILY_GIFT_COINS }));
-  return DAILY_GIFT_COINS;
-}
+export const spinReady = (s = state) => s.lastSpin !== dayKey();
+export const useFreeSpin = () => update({ lastSpin: dayKey() });
 
 // ---- missions
 /** Make sure today's / this week's missions exist and count today as a visit. Safe to call any time. */
@@ -183,16 +183,6 @@ export function buyHintPack(pack) {
   return true;
 }
 
-/** kind: 'train' | 'panda' */
-export function buySkin(kind, skin) {
-  const owned = kind === 'train' ? 'ownedTrain' : 'ownedPanda';
-  if (state[owned].includes(skin.id)) return true;
-  if (!spendCoins(skin.price)) return false;
-  update((s) => ({ [owned]: [...s[owned], skin.id] }));
-  return true;
-}
-export const equipSkin = (kind, id) => update(kind === 'train' ? { trainSkin: id } : { pandaSkin: id });
-
 /**
  * Count a finished level towards the next ad. Returns true when an ad is due now
  * (and resets the counter). Never counts the tutorial; never due after "remove ads".
@@ -208,11 +198,20 @@ export function tickAdCounter(levelNo) {
   return false;
 }
 
+export const starBalance = (s = state) => totalStars(s) - (s.starsSpent || 0);
+const OWNED = { train: 'ownedTrain', rail: 'ownedRail' };
+const CURRENT = { train: 'trainSkin', rail: 'railSkin' };
+/** Looks are paid with stars earned from stations, never coins. */
+export function buyLook(kind, skin) {
+  if (starBalance() < skin.stars) return false;
+  update((s) => ({ starsSpent: (s.starsSpent || 0) + skin.stars, [OWNED[kind]]: [...s[OWNED[kind]], skin.id] }));
+  return true;
+}
+export const equipLook = (kind, id) => update({ [CURRENT[kind]]: id });
+export const markTaught = (id) => update((s) => ({ taught: { ...s.taught, [id]: true } }));
 export const totalStars = (s) => Object.values(s.stars).reduce((a, b) => a + b, 0);
 export const starsInRange = (s, from, to) => {
   let n = 0;
   for (let i = from; i <= to; i++) n += s.stars[i] || 0;
   return n;
 };
-export const resetProgress = () =>
-  update({ unlocked: 1, stars: {}, hints: START_HINTS, adCount: 0, storySeen: false });

@@ -31,13 +31,13 @@ export const COIN_PACKS = [
   { id: 'coins_small', coins: 200, extra: 5, name: 'pandaPack' },
 ];
 export const packBonus = (p) => Math.round((p.coins * p.extra) / (100 + p.extra));
-// coins from the optional rewarded video / the once-a-day gift of the coin shop
+// coins from the optional rewarded video
 export const VIDEO_COINS = 100;
-export const DAILY_GIFT_COINS = 50;
 
 // Power-ups: unlocked from stage 2 on. Bought with coins in the shop, also given by missions.
 export const START_POWERUPS = 2; // of each kind
 export const PEEK_MS = 3200;
+export const IDLE_HINT_MS = 5000; // no move for this long: the finger shows where to drag
 export const POWERUPS = [
   { id: 'star', price: 40 }, // lays one gold star tile (a sure rail)
   { id: 'eraser', price: 40 }, // wipes every wrong rail

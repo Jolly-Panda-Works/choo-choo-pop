@@ -2,18 +2,25 @@ import { useState } from 'react';
 import Panda from './Panda.jsx';
 import { useSave } from '../store.js';
 import { ua } from '../anim/ua.js';
+import { sfx } from '../audio.js';
 
 /**
  * Popup with the panda standing on its top edge.
  * Opens / closes with the converted Unity clips popups-default-popup-open / -close and the fade-in of the win popup background.
+ * `children` may be a function: it gets `leave(fn)`, which plays the closing clip and then runs fn.
  */
 export default function Modal({ pose, title, children, wide = false, onClose, titleClass = '' }) {
   const save = useSave();
   const [closing, setClosing] = useState(false);
+  const leave = (fn) => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(fn, 300);
+  };
   const close = () => {
     if (!onClose || closing) return;
-    setClosing(true);
-    setTimeout(onClose, 300);
+    sfx.close();
+    leave(onClose);
   };
   return (
     <div
@@ -25,9 +32,10 @@ export default function Modal({ pose, title, children, wide = false, onClose, ti
         onClick={(e) => e.stopPropagation()}
       >
         {pose && <Panda pose={pose} skin={save.pandaSkin} size={150} className="modal-panda" />}
+        {onClose && <button className="modal-x" aria-label="close" onClick={close} />}
         <div className="modal-body">
           {title && <h3 className={titleClass}>{title}</h3>}
-          {children}
+          {typeof children === 'function' ? children(leave) : children}
         </div>
       </div>
     </div>

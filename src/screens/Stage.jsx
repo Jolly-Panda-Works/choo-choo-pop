@@ -4,7 +4,7 @@ import { useT } from '../i18n.js';
 import { STAGES, stageLevels, stageBuilt, indexInStage } from '../game/stages.js';
 import { difficultyOf, nodeKind, getLevel } from '../game/levels.js';
 import { NODE_BTN, STAGE_THEMES } from '../game/mapTheme.js';
-import { STAGE_SIZE, COIN_BASE, COINS_PER_STAR } from '../config.js';
+import { STAGE_SIZE } from '../config.js';
 import { isTutorial } from '../game/tutorial.js';
 import StartPopup from '../ui/StartPopup.jsx';
 import { MAP_ART, UI_ART } from '../board/sprites.js';
@@ -89,7 +89,7 @@ export default function Stage({ stageId, onBack, onPick, onCoins, onStage }) {
   useDragScroll(gridScroll, forest);
 
   return (
-    <main className="screen levels">
+    <main className={'screen levels' + (pickedLevel ? ' paused' : '')}>
       <header className="topbar">
         <BackButton onClick={onBack} label={t('back')} />
         <span className="chip small-chip">
@@ -103,10 +103,7 @@ export default function Stage({ stageId, onBack, onPick, onCoins, onStage }) {
           <img src={`${UI_ART}arrow-left.webp`} alt="" draggable="false" />
         </button>
         <div className="pager-title" key={stageId}>
-          <h2>
-            {t('stageWord')} {t.n(stageId)}/{t.n(STAGES.length)}
-          </h2>
-          <span className="pager-sub">{t(st.nameKey)}</span>
+          <h2>{t(st.nameKey)}</h2>
         </div>
         <button className="pager-arrow next" disabled={!next || leaving} onClick={go(next)} aria-label={t('nextStage')}>
           <img src={`${UI_ART}arrow-right.webp`} alt="" draggable="false" />
@@ -164,15 +161,12 @@ export default function Stage({ stageId, onBack, onPick, onCoins, onStage }) {
       {pickedLevel && (
         <StartPopup
           key={picked}
-          level={pickedLevel}
           levelNo={picked}
           inStage={indexInStage(picked)}
           stars={save.stars[picked] || 0}
-          maxCoins={COIN_BASE[pickedLevel.difficulty] + COINS_PER_STAR * 3}
           tutorial={isTutorial(pickedLevel)}
           onPlay={(picks) => onPick(picked, picks)}
           onClose={() => setPicked(null)}
-          onCoins={onCoins}
         />
       )}
     </main>

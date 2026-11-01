@@ -1,4 +1,4 @@
-import { getState } from './store.js';
+import { getState, subscribe } from './store.js';
 
 let ctx = null;
 function ac() {
@@ -29,28 +29,94 @@ function tone(freq, dur = 0.12, type = 'sine', vol = 0.16, delay = 0, slideTo = 
   o.stop(t0 + dur + 0.02);
 }
 
+// Sound effects of the game (public/choo-choo-pop-assets/sfx, from the GUI pack). Loaded once at start.
+const SOUNDS = ['click', 'lay', 'undo', 'error', 'open', 'close', 'coins', 'hint', 'win', 'levelup', 'wheel-open', 'wheel-spin'];
+const buffers = {};
+export async function loadSounds() {
+  const c = ac();
+  if (!c) return;
+  await Promise.all(
+    SOUNDS.map(async (name) => {
+      try {
+        const res = await fetch(`${import.meta.env.BASE_URL}choo-choo-pop-assets/sfx/${name}.mp3`);
+        buffers[name] = await c.decodeAudioData(await res.arrayBuffer());
+      } catch (e) {
+        /* that one sound stays silent */
+      }
+    }),
+  );
+}
+
+function play(name, { vol = 0.7, rate = 1 } = {}) {
+  if (!getState().sound || !buffers[name]) return;
+  const c = ac();
+  const src = c.createBufferSource();
+  const g = c.createGain();
+  src.buffer = buffers[name];
+  src.playbackRate.value = rate;
+  g.gain.value = vol;
+  src.connect(g).connect(c.destination);
+  src.start();
+}
+
+// Background music: one bright loop, streamed from the file (decoding 74 s of it would hold 26 MB in memory).
+// Off in Settings and while the app is in the background.
+const MUSIC_VOL = 0.22;
+let music = null;
+function syncMusic() {
+  if (!music) return;
+  if (getState().music && !document.hidden) music.play().catch(() => {});
+  else music.pause();
+}
+function startMusic() {
+  if (music) return;
+  music = new Audio(`${import.meta.env.BASE_URL}choo-choo-pop-assets/music/loop.mp3`);
+  music.loop = true;
+  music.volume = MUSIC_VOL;
+  syncMusic();
+}
+/** Browsers only allow sound after a tap, so the music starts on the first one. */
+export function setupMusic() {
+  subscribe(syncMusic);
+  window.addEventListener('pointerdown', startMusic);
+  document.addEventListener('visibilitychange', () => {
+    syncMusic();
+    if (!ctx) return;
+    if (document.hidden) ctx.suspend();
+    else ctx.resume();
+  });
+}
+
 export function buzz(ms = 12) {
   if (getState().vibrate && navigator.vibrate) navigator.vibrate(ms);
 }
 
 export const sfx = {
   lay(n = 0) {
-    tone(440 + Math.min(n, 24) * 18, 0.08, 'triangle', 0.14);
+    play('lay', { rate: 0.9 + Math.min(n, 24) * 0.03 }); // climbs as the rail gets longer
     buzz(8);
   },
   undo() {
-    tone(300, 0.07, 'triangle', 0.1, 0, 220);
+    play('undo');
   },
   click() {
-    tone(620, 0.06, 'square', 0.06);
+    play('click');
     buzz(6);
   },
+  open() {
+    play('open');
+  },
+  close() {
+    play('close');
+  },
+  coins() {
+    play('coins');
+  },
   hint() {
-    tone(660, 0.09, 'sine', 0.14);
-    tone(990, 0.12, 'sine', 0.12, 0.08);
+    play('hint', { vol: 0.5 });
   },
   error() {
-    tone(200, 0.18, 'sawtooth', 0.08, 0, 140);
+    play('error');
     buzz(30);
   },
   whistle() {
@@ -59,7 +125,15 @@ export const sfx = {
     buzz(40);
   },
   win() {
-    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.22, 'triangle', 0.16, i * 0.13));
-    tone(1046.5, 0.5, 'sine', 0.1, 0.55);
+    play('win');
+  },
+  levelUp() {
+    play('levelup');
+  },
+  wheelOpen() {
+    play('wheel-open');
+  },
+  wheelSpin() {
+    play('wheel-spin', { rate: 1.15 }); // the wheel turns for 4.3 s
   },
 };

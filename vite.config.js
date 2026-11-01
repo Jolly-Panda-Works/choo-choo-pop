@@ -18,6 +18,9 @@ const NOT_FOR_THE_APP = [
   'README.txt',
   'asset-manifest.json',
   'version.json',
+  'choo-choo-pop-assets/art/bg/sky.png', // the sky is now home-sky.webp
+  // map tiles of stages that are not built yet
+  ...['green-2', 'green-3', 'green-4', 'green-5', 'desert-2', 'candy-2', 'cloud-1', 'gradient'].map((n) => `choo-choo-pop-assets/art/map/bg/${n}.webp`),
 ];
 const pruneDist = () => ({
   name: 'prune-non-runtime-public-files',
