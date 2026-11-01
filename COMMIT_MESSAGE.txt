@@ -1,10 +1,8 @@
-feat(home): remove foreign animals from the home art, add Map button, back button top-left
+feat(ui): settings screen in the shop popup style, shop split into tabs
 
-- home-bg.webp: paint out the pink cat, panda and chick (not characters of this game)
-  and continue the clouds / grass hill behind them; trees and balloons are untouched.
-- Home: new "Map" button under Play that opens the stage map; the Settings / Missions /
-  Shop bubbles move down to make room for it.
-- Stage (levels) screen: Back button moves from the bottom footer to the top-left
-  of the top bar, like the map and game screens.
-- Top bars are always laid out left-to-right so Back is top-left in the fa (RTL)
-  edition too; the back arrow is no longer mirrored in RTL.
+- Settings: same popup frame, panda, ribbon and blue/pink rows as the shop. Sound and
+  vibration are toggle rows; replay story, restore purchases and reset progress are
+  button rows. The reset confirmation modal is unchanged.
+- Shop: one tab per section - Boosts (free hint video, power-ups, hint packs), Trains,
+  Pandas, No ads. The list scrolls independently per tab and starts at the top on switch.
+- i18n: tab labels (en / fa).

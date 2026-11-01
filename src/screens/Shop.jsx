@@ -15,7 +15,14 @@ import { sfx } from '../audio.js';
 const O = [60, 90];
 const PITCH = 285;
 const ROW0 = 21;
-const LIST = [118, 600, 1331, 2060];
+const LIST = [118, 712, 1331, 2060];
+const TABS_Y = 606;
+const TABS = [
+  { id: 'boost', label: 'tabBoosts' },
+  { id: 'train', label: 'tabTrains' },
+  { id: 'panda', label: 'tabPandas' },
+  { id: 'ads', label: 'tabAds' },
+];
 
 function PandaFace({ skin }) {
   const src = usePandaSrc('salute', skin);
@@ -55,6 +62,7 @@ export default function Shop({ onBack, onCoins }) {
   const [gate, setGate] = useState(null);
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState('');
+  const [tab, setTab] = useState('boost');
   const timer = useRef();
   useEffect(() => {
     billing.prices().then(setPrices);
@@ -74,9 +82,10 @@ export default function Shop({ onBack, onCoins }) {
   // one entry per row: { key, icon, name, info, btn: {label, coin?, real?, on?, disabled?, run} }
   const rows = [];
   if (ads.rewardedAvailable())
-    rows.push({ key: 'vid', icon: <span style={{ fontSize: k(110) }}>▶</span>, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: async () => ((await ads.rewarded()) && (addHints(1), say(t('gotHint')))) } });
+    rows.push({ tab: 'boost', key: 'vid', icon: <span style={{ fontSize: k(110) }}>▶</span>, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: async () => ((await ads.rewarded()) && (addHints(1), say(t('gotHint')))) } });
   for (const p of POWERUPS)
     rows.push({
+      tab: 'boost',
       key: 'pw' + p.id,
       icon: <PowerIcon id={p.id} size="62%" />,
       count: save.powerups[p.id] || 0,
@@ -86,6 +95,7 @@ export default function Shop({ onBack, onCoins }) {
     });
   for (const h of HINT_PACKS)
     rows.push({
+      tab: 'boost',
       key: h.id,
       icon: <Bulb size="56%" />,
       count: h.hints,
@@ -98,6 +108,7 @@ export default function Shop({ onBack, onCoins }) {
       const has = owned.includes(s.id);
       const on = cur === s.id;
       return {
+        tab: kind,
         key: kind + s.id,
         icon: kind === 'train' ? <div style={{ width: '88%' }}><TrainPreview skin={s.id} /></div> : <PandaFace skin={s.id} />,
         name: `${t(kind === 'train' ? 'trainLooks' : 'pandaLooks')} · ${t('skin_' + s.id)}`,
@@ -116,6 +127,7 @@ export default function Shop({ onBack, onCoins }) {
   rows.push(...skinRows('train', TRAIN_SKINS, save.ownedTrain, save.trainSkin));
   rows.push(...skinRows('panda', PANDA_SKINS, save.ownedPanda, save.pandaSkin));
   rows.push({
+    tab: 'ads',
     key: 'ads',
     icon: <span style={{ fontSize: k(110) }}>🚫</span>,
     name: t('removeAds'),
@@ -131,6 +143,7 @@ export default function Shop({ onBack, onCoins }) {
     say(ok ? t('thanks') : t('purchaseFailed'));
     if (ok) sfx.win();
   };
+  const shown = rows.filter((r) => r.tab === tab);
   const owned = save.hints + Object.values(save.powerups).reduce((a, b) => a + b, 0);
 
   return (
@@ -146,9 +159,27 @@ export default function Shop({ onBack, onCoins }) {
         <button style={box('chip-coins-shop', O)} onClick={onCoins} aria-label={t('coins')} />
         <div className="ptxt" style={{ ...rect(903 - O[0], 499 - O[1], 215, 49), ...fs(44) }}>{t.n(save.coins)}</div>
 
-        <div className="pop-list" style={rect(LIST[0] - O[0], LIST[1] - O[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
-          <div style={{ position: 'relative', height: k(ROW0 + rows.length * PITCH) }}>
-            {rows.map((r, i) => {
+        <div className="ptabs" role="tablist" style={rect(LIST[0] - O[0], TABS_Y - O[1], LIST[2] - LIST[0], 84)}>
+          {TABS.map((x) => (
+            <button
+              key={x.id}
+              role="tab"
+              aria-selected={tab === x.id}
+              className={'ptab' + (tab === x.id ? ' on' : '')}
+              style={fs(36)}
+              onClick={() => {
+                sfx.click();
+                setTab(x.id);
+              }}
+            >
+              {t(x.label)}
+            </button>
+          ))}
+        </div>
+
+        <div key={tab} className="pop-list" style={rect(LIST[0] - O[0], LIST[1] - O[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
+          <div style={{ position: 'relative', height: k(ROW0 + shown.length * PITCH) }}>
+            {shown.map((r, i) => {
               const blue = i % 2 === 0;
               return (
                 <div key={r.key} className="prow" style={{ top: k(ROW0 + i * PITCH), left: k(27), width: k(1152), height: k(268) }}>
@@ -174,7 +205,7 @@ export default function Shop({ onBack, onCoins }) {
             })}
           </div>
         </div>
-        {note && <div className="pop-toast" style={{ top: k(690) }}>{note}</div>}
+        {note && <div className="pop-toast" style={{ top: k(700) }}>{note}</div>}
       </Popup>
       {gate && <ParentGate onPass={() => pay(gate)} onCancel={() => setGate(null)} />}
     </>
