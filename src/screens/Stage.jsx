@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useSave, starsInRange } from '../store.js';
 import { useT } from '../i18n.js';
 import { STAGES, stageLevels, stageBuilt } from '../game/stages.js';
@@ -8,7 +9,7 @@ import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import { usePandaSrc } from '../ui/Panda.jsx';
 import { BackButton, Coin } from '../ui/icons.jsx';
-import { Crown } from '../ui/MapKit.jsx';
+import { Crown, CloudEdges, useDragScroll } from '../ui/MapKit.jsx';
 import ForestTrack from '../ui/ForestTrack.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
 
@@ -53,6 +54,9 @@ function Stars3({ n }) {
   );
 }
 
+// how long the houses of the old stage take to fly out before the next stage is opened (ms)
+const EXIT_MS = 520;
+
 export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   const save = useSave();
   const t = useT();
@@ -63,11 +67,21 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   // the next stage can be opened with the arrow only when it exists (all its levels are built)
   const next = stageId < STAGES.length && stageBuilt(stageId + 1) ? stageId + 1 : null;
   const forest = STAGE_THEMES[stageId - 1]?.id === 'green';
+  // forest stages: the houses fly out first, then the next stage opens (its ForestTrack mounts fresh and flies in)
+  const [leavingFor, setLeavingFor] = useState(0);
+  const leaving = leavingFor === stageId;
+  const timer = useRef(0);
+  useEffect(() => () => clearTimeout(timer.current), []);
   const go = (id) => () => {
-    if (!id) return;
+    if (!id || leaving) return;
     sfx.click();
-    onStage(id);
+    if (!forest) return onStage(id);
+    setLeavingFor(stageId);
+    timer.current = setTimeout(() => onStage(id), EXIT_MS);
   };
+  // mouse drag instead of the scrollbar on the bubble grid too (the forest track does it itself)
+  const gridScroll = useRef(null);
+  useDragScroll(gridScroll, forest);
 
   return (
     <main className="screen levels">
@@ -82,24 +96,25 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
       </header>
 
       <div className="pager">
-        <button className="pager-arrow prev" disabled={!prev} onClick={go(prev)} aria-label={t('prevStage')}>
+        <button className="pager-arrow prev" disabled={!prev || leaving} onClick={go(prev)} aria-label={t('prevStage')}>
           <img src={`${UI_ART}arrow-left.webp`} alt="" draggable="false" />
         </button>
-        <div className="pager-title">
+        <div className="pager-title" key={stageId}>
           <h2>
             {t('stageWord')} {t.n(stageId)}/{t.n(STAGES.length)}
           </h2>
           <span className="pager-sub">{t(st.nameKey)}</span>
         </div>
-        <button className="pager-arrow next" disabled={!next} onClick={go(next)} aria-label={t('nextStage')}>
+        <button className="pager-arrow next" disabled={!next || leaving} onClick={go(next)} aria-label={t('nextStage')}>
           <img src={`${UI_ART}arrow-right.webp`} alt="" draggable="false" />
         </button>
       </div>
 
+      <div className="lv-view">
       {forest ? (
-        <ForestTrack levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} />
+        <ForestTrack key={stageId} leaving={leaving} levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} />
       ) : (
-      <div className="lv-scroll">
+      <div className="lv-scroll" ref={gridScroll}>
         <div className="lv-grid">
           {levels.map((n, i) => {
             const kind = nodeKind(difficultyOf(n));
@@ -140,6 +155,8 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
         </div>
       </div>
       )}
+      <CloudEdges />
+      </div>
     </main>
   );
 }

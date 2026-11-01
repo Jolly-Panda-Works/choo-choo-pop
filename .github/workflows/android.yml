@@ -93,10 +93,10 @@ jobs:
           [ -d android ] || npx cap add android
           npx cap sync android
 
-      # edition-aware applicationId / app name / version; defaults for every -P property
-      # (fixes "A problem occurred evaluating project ':app'. > Value is null" at android/app/build.gradle)
-      - name: Configure Android edition (${{ matrix.edition }})
-        run: node scripts/android-edition.mjs
+      # NOTE: android/app/build.gradle is committed and already edition-aware (-PEDITION / -PVERSION_CODE /
+      # -PVERSION_NAME with safe defaults, src/edition-<en|fa> source sets, Kotlin plugin). Do NOT rewrite it
+      # here: the old scripts/android-edition.mjs replaced the head of the file and broke the tail
+      # ("Could not get unknown property 'edition' ... DefaultDependencyHandler").
 
       # the game is portrait only
       - name: Lock portrait orientation

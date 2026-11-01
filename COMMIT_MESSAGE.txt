@@ -1,6 +1,29 @@
-feat(stage): bob the whole current house and use the stage-map pin
+feat(stage): houses fly in/out, camera glide, drag instead of scrollbar, cloud edges
 
-- The "current level" bob animation now moves the whole house together with its
-  stars, number and pin (it was only the house picture before).
-- Replace the round panda marker with the same pin-panda art used on the stage
-  map; its tip rests on the roof of the current house.
+- Changing stage (pager arrows): the houses of the old stage fly out, the new
+  stage opens and its houses fly in (bottom house first, alternating sides).
+  Respects prefers-reduced-motion.
+- Camera: the view starts on the first house and glides to the house the player
+  has to play (current level of this stage), or stays on the first house when the
+  stage has no current level. Grabbing the view (mouse, wheel, touch) stops it.
+- No scrollbar on the levels screen; the view is dragged with the mouse / pen
+  (grab cursor, inertia, the click that ends a drag is swallowed). Touch keeps
+  native scrolling. Shared hook useDragScroll in ui/MapKit.jsx.
+- Soft edges: cloud banks (art/map/ui/clouds-band.webp) cover the top and bottom
+  of the scroll area, so houses and rails fade into the sky.
+
+---
+
+fix(ci): stop rewriting android/app/build.gradle (Android build failed)
+
+The "Configure Android edition" step ran scripts/android-edition.mjs, which
+replaced the head of the committed android/app/build.gradle with its own
+(variable renamed to `editionName`, kotlin plugin and src/edition-* source sets
+dropped) but kept the tail, which still reads `edition`. Gradle then failed with:
+
+  Could not get unknown property 'edition' for object of type
+  DefaultDependencyHandler   (android/app/build.gradle line 50)
+
+build.gradle is already edition-aware and null-safe (-PEDITION, -PVERSION_CODE,
+-PVERSION_NAME all have defaults), so the script is obsolete: remove the
+workflow step and the script. Same failure for both the en and fa jobs.

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { MAP_ART } from '../board/sprites.js';
 import { difficultyOf, nodeKind } from '../game/levels.js';
 import { sfx } from '../audio.js';
-import { smoothPath, useWidth } from './MapKit.jsx';
+import { smoothPath, useWidth, useDragScroll } from './MapKit.jsx';
 
 // Forest (green) stages: every level is a little panda house on a winding railway, level 1 at the bottom -> 20 at the top.
 //   locked -> the house is shown in grey (with a padlock); unlocked -> in colour
@@ -29,7 +29,14 @@ const NodeLock = () => (
   </svg>
 );
 
-export default function ForestTrack({ levels, unlocked, stars, onPick, label, num }) {
+// camera: where the view opens, and how it glides there
+const CAM_DELAY = 280; // ms, the houses are already popping in
+const CAM_TIME = 950; // ms
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+// `leaving` -> the houses fly out (Stage.jsx waits for it, then switches the stage). The component is keyed by stage,
+// so every new stage mounts fresh: the houses fly in and the camera glides from the first house to the one to play.
+export default function ForestTrack({ levels, unlocked, stars, onPick, label, num, leaving = false }) {
   const wrap = useRef(null);
   const box = useRef(null);
   const w = useWidth(box);
@@ -42,15 +49,41 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
   const pos = (i) => [(XS[i % XS.length] / 100) * w, H - pad - nodeH / 2 - i * w * STEP];
   const pts = levels.map((_, i) => pos(i));
 
-  // open the screen at the level the player is on
-  const curIdx = Math.max(0, Math.min(total - 1, unlocked - levels[0]));
+  // the house to play: the player's current level when it is in this stage, otherwise the first house
+  const inStage = unlocked >= levels[0] && unlocked <= levels[total - 1];
+  const curIdx = inStage ? unlocked - levels[0] : 0;
+  const cam = useRef(0);
+  const stopCam = () => cancelAnimationFrame(cam.current);
   useEffect(() => {
     const sc = wrap.current;
-    if (!sc || !w) return;
-    const y = pts[curIdx][1];
-    sc.scrollTop = Math.max(0, y - sc.clientHeight * 0.55);
+    if (!sc || !w) return undefined;
+    const max = Math.max(0, sc.scrollHeight - sc.clientHeight);
+    const at = (i) => Math.max(0, Math.min(max, pts[i][1] - sc.clientHeight * 0.55));
+    const from = at(0); // level 1 is at the bottom
+    const to = at(curIdx);
+    sc.scrollTop = from;
+    if (Math.abs(to - from) < 2) return undefined;
+    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (still) {
+      sc.scrollTop = to;
+      return undefined;
+    }
+    let t0 = 0;
+    const step = (now) => {
+      if (!t0) t0 = now;
+      const k = Math.min(1, (now - t0) / CAM_TIME);
+      sc.scrollTop = from + (to - from) * ease(k);
+      if (k < 1) cam.current = requestAnimationFrame(step);
+    };
+    const id = setTimeout(() => (cam.current = requestAnimationFrame(step)), CAM_DELAY);
+    return () => {
+      clearTimeout(id);
+      stopCam();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [w > 0]);
+  // mouse drag instead of the scrollbar; taking hold of the view stops the camera glide
+  useDragScroll(wrap, 0, stopCam);
 
   const d = w ? smoothPath(pts) : '';
   const tie = Math.max(10, w * 0.09);
@@ -58,7 +91,7 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
 
   return (
     <div className="lv-scroll forest" ref={wrap}>
-      <div className="ft" ref={box} style={{ height: w ? H : 0 }}>
+      <div className={'ft' + (leaving ? ' leaving' : '')} ref={box} style={{ height: w ? H : 0 }}>
         {w > 0 && (
           <svg className="ft-rail" width={w} height={H} viewBox={`0 0 ${w} ${H}`} aria-hidden="true">
             <defs>
@@ -90,7 +123,7 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
               <div
                 key={n}
                 className={`fn k-${kind}${locked ? ' locked' : ''}${here ? ' current' : ''}`}
-                style={{ left: cx - nodeW / 2, top: cy - h / 2, width: nodeW, height: h, '--c': INK[kind], '--nw': nodeW + 'px' }}
+                style={{ left: cx - nodeW / 2, top: cy - h / 2, width: nodeW, height: h, '--c': INK[kind], '--nw': nodeW + 'px', '--i': i, '--r': total - 1 - i, '--side': i % 2 ? 1 : -1 }}
               >
                 <button
                   className="fn-btn"

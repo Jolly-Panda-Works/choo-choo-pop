@@ -18,6 +18,96 @@ export function useWidth(ref) {
   return w;
 }
 
+/**
+ * Drag-to-scroll for a scroller (mouse / pen; touch keeps its native scrolling). The scrollbar is hidden in CSS.
+ * Same behaviour as the stage map: grab cursor, inertia after a flick, and the click that ends a drag is swallowed.
+ * `onGrab` is called when the user takes hold of the scroller (so a running camera animation can stop).
+ */
+export function useDragScroll(ref, dep, onGrab) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    let id = null, startY = 0, startTop = 0, lastY = 0, lastT = 0, v = 0, moved = false, raf = 0, swallow = false;
+    const glide = () => {
+      el.scrollTop += v * 16;
+      v *= 0.94;
+      if (Math.abs(v) > 0.02) raf = requestAnimationFrame(glide);
+    };
+    const down = (e) => {
+      onGrab?.();
+      if (e.pointerType === 'touch' || e.button !== 0) return;
+      cancelAnimationFrame(raf);
+      id = e.pointerId;
+      startY = lastY = e.clientY;
+      startTop = el.scrollTop;
+      lastT = performance.now();
+      v = 0;
+      moved = false;
+    };
+    const move = (e) => {
+      if (e.pointerId !== id) return;
+      const dy = e.clientY - startY;
+      if (!moved && Math.abs(dy) > 6) {
+        moved = true;
+        el.setPointerCapture(id);
+        el.classList.add('dragging');
+      }
+      if (!moved) return;
+      el.scrollTop = startTop - dy;
+      const now = performance.now();
+      v = 0.6 * ((lastY - e.clientY) / Math.max(1, now - lastT)) + 0.4 * v;
+      lastY = e.clientY;
+      lastT = now;
+    };
+    const up = (e) => {
+      if (e.pointerId !== id) return;
+      id = null;
+      el.classList.remove('dragging');
+      if (moved) {
+        swallow = true;
+        setTimeout(() => (swallow = false), 0);
+        if (performance.now() - lastT < 80) raf = requestAnimationFrame(glide);
+      }
+    };
+    const click = (e) => {
+      if (swallow) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    };
+    const grab = () => onGrab?.();
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointermove', move);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('click', click, true);
+    el.addEventListener('wheel', grab, { passive: true });
+    el.addEventListener('touchstart', grab, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('pointerdown', down);
+      el.removeEventListener('pointermove', move);
+      el.removeEventListener('pointerup', up);
+      el.removeEventListener('pointercancel', up);
+      el.removeEventListener('click', click, true);
+      el.removeEventListener('wheel', grab);
+      el.removeEventListener('touchstart', grab);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dep]);
+}
+
+/** Two cloud banks that cover the top and the bottom of a scroll area, so content fades softly into the sky. */
+export function CloudEdges() {
+  const style = { backgroundImage: `url(${MAP_ART}ui/clouds-band.webp)` };
+  return (
+    <>
+      <div className="cloud-edge top" style={style} aria-hidden="true" />
+      <div className="cloud-edge bottom" style={style} aria-hidden="true" />
+    </>
+  );
+}
+
 /** Smooth (Catmull-Rom) path through points [[x,y],...] */
 export function smoothPath(pts) {
   if (pts.length < 2) return '';
