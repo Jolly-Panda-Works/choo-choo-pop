@@ -12,13 +12,13 @@ export const TILE = {
   end: 1319 / 1080, // clouds - always the top tile
 };
 
-// One island theme per stage (bottom -> top). Stage 1 is the only one built so far, the others are ready for when they are.
+// One island theme per built stage. All four built stages sit on green islands (see CITIES).
 // `btn` = colour of the glossy map-stage button used for the stage on the world map.
 export const STAGE_THEMES = [
   { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
-  { id: 'desert', btn: 'yellow', tiles: ['desert-1', 'desert-2', 'end'] },
-  { id: 'ice', btn: 'blue', tiles: ['ice-1', 'cloud-1', 'end'] },
-  { id: 'candy', btn: 'pink', tiles: ['candy-1', 'candy-2', 'end'] },
+  { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
+  { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
+  { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
 ];
 
 // glossy button colour per station difficulty (see game/levels.js nodeKind)
@@ -26,17 +26,25 @@ export const NODE_BTN = { easy: 'green', normal: 'blue', hard: 'orange', super: 
 
 export const stackHeight = (tiles) => tiles.reduce((h, n) => h + TILE[n], 0); // in units of the screen width
 
-// The 11 city spots of the world map, in play order (bottom -> top). Measured on the art: `x` = percent of the map width,
+// The 18 city spots of the world map, in play order (bottom -> top). Measured on the art: `x` = percent of the map width,
 // `f` = position inside its tile (0 = top, 1 = bottom). City i is stage i + 1; spots beyond the built stages stay locked and empty.
+// Name every built stage after the climate of its spot (green: spots 1-6, desert: 7-10, ice: 11-15, candy: 16-18).
 export const CITIES = [
-  { tile: 'green-start', x: 52.9, f: 0.82 },
+  { tile: 'green-start', x: 52.9, f: 0.820 },
+  { tile: 'green-start', x: 71.7, f: 0.714 },
   { tile: 'green-start', x: 55.7, f: 0.447 },
   { tile: 'green-start', x: 52.8, f: 0.326 },
+  { tile: 'green-start', x: 51.2, f: 0.151 },
+  { tile: 'green-start', x: 44.4, f: 0.052 },
   { tile: 'desert-1', x: 50.8, f: 0.898 },
   { tile: 'desert-1', x: 51.6, f: 0.715 },
+  { tile: 'desert-1', x: 57.8, f: 0.392 },
+  { tile: 'desert-1', x: 62.5, f: 0.223 },
   { tile: 'ice-1', x: 53.5, f: 0.891 },
   { tile: 'ice-1', x: 52.3, f: 0.678 },
   { tile: 'ice-1', x: 51.7, f: 0.524 },
+  { tile: 'ice-1', x: 43.1, f: 0.265 },
+  { tile: 'ice-1', x: 45.2, f: 0.100 },
   { tile: 'candy-1', x: 52.4, f: 0.787 },
   { tile: 'candy-1', x: 44.8, f: 0.605 },
   { tile: 'candy-1', x: 51.9, f: 0.177 },

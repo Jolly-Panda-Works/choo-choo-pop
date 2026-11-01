@@ -50,8 +50,8 @@ const dict = {
     lockedText: 'Fix all 20 stations of the town before this one to open it.',
     stage1Name: 'Green Village',
     stage2Name: 'Lake Town',
-    stage3Name: 'Snowy Mountains',
-    stage4Name: 'Big City',
+    stage3Name: 'Bunny Hills',
+    stage4Name: 'Waterfall Valley',
 
     // level popups
     goalLearn: 'Let me show you how to lay the rails!',
@@ -241,8 +241,8 @@ const dict = {
     lockedText: 'برای باز شدن این‌جا باید همهٔ ۲۰ ایستگاه شهر قبلی را درست کنی.',
     stage1Name: 'روستای سبز',
     stage2Name: 'شهر دریاچه',
-    stage3Name: 'کوهستان برفی',
-    stage4Name: 'شهر بزرگ',
+    stage3Name: 'تپه‌های خرگوشی',
+    stage4Name: 'دره‌ی آبشار',
 
     goalLearn: 'بیا نشانت بدهم ریل‌ها را چطور بچینی!',
     goalPlay: 'ریل‌ها را از تونل سبز تا تونل قرمز بچین. عددها می‌گویند هر خط چند ریل می‌خواهد!',
