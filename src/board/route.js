@@ -36,7 +36,7 @@ export function localCurve(a, b) {
 }
 
 /** World-space polyline (with lead-in / lead-out) used to run the train. */
-export function buildRoute(level, conns, path, gateOut = 0.17) {
+export function buildRoute(level, lane, conns, path, gateOut = 0.17) {
   const pts = [];
   const ox = (level.cols - 1) / 2;
   const oz = (level.rows - 1) / 2;
@@ -46,8 +46,8 @@ export function buildRoute(level, conns, path, gateOut = 0.17) {
 
   // lead-in
   {
-    const [r, c] = [level.entry.r, level.entry.c];
-    const [sx, sz] = SIDE_VEC[level.entry.side];
+    const [r, c] = [lane.entry.r, lane.entry.c];
+    const [sx, sz] = SIDE_VEC[lane.entry.side];
     const start = [c - ox + sx * 0.5, r - oz + sz * 0.5];
     for (let s = LEAD; s > 0.001; s -= 0.4) pts.push([start[0] + sx * s, start[1] + sz * s]);
   }
@@ -66,8 +66,8 @@ export function buildRoute(level, conns, path, gateOut = 0.17) {
   const outStart = pts.length;
   // lead-out
   {
-    const [r, c] = [level.exit.r, level.exit.c];
-    const [sx, sz] = SIDE_VEC[level.exit.side];
+    const [r, c] = [lane.exit.r, lane.exit.c];
+    const [sx, sz] = SIDE_VEC[lane.exit.side];
     const start = [c - ox + sx * 0.5, r - oz + sz * 0.5];
     for (let s = 0; s <= LEAD; s += 0.4) pts.push([start[0] + sx * s, start[1] + sz * s]);
   }

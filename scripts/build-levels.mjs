@@ -1,6 +1,9 @@
 // Dev tool: builds src/game/levelData.js (Part 1 = 20 levels, every one uniquely solvable).
 // Usage: node scripts/build-levels.mjs
 //
+// STAGE 1 (levels 1-20) is FROZEN: it is copied from the existing levelData.js so saved games stay valid.
+// STAGE 2 (21-40): one track, bigger boards, power-ups unlocked.  STAGE 3 (41-60): several tracks (2, then 3 and 4)
+// with their own entry / exit gates; some gates sit inside the board on a tree block.
 // Levels 1-5  : hand-made 3x3 tutorial (see src/game/tutorial.js for the coaching text)
 // Levels 6-20 : generated. Difficulty is measured, not guessed: we count how many search
 //               nodes the solver needs (more nodes = more dead ends a child can walk into)
@@ -8,7 +11,9 @@
 //               can only go up.
 import { writeFileSync } from 'node:fs';
 import { mulberry32, shuffle } from '../src/game/rng.js';
-import { generateCandidate } from '../src/game/generator.js';
+import { generateCandidate, generateMulti } from '../src/game/generator.js';
+import { hydrateLevel } from '../src/game/levels.js';
+import { LEVEL_DATA as OLD } from '../src/game/levelData.js';
 import { solveStats } from '../src/game/solver.js';
 
 // difficulty: 0 tutorial, 1 easy, 2 medium, 3 hard, 4 super hard (stage 1 has only the very last level like this)
@@ -67,31 +72,109 @@ function hydrate(c, given) {
   };
 }
 
-const out = [];
+const out = OLD.slice(0, 20).map((d) => ({ ...d }));
+console.log('stage 1: kept', out.length, 'levels');
 
-TUTORIAL.forEach((t, i) => {
-  const st = solveStats(hydrate(t, t.given), 2);
-  if (st.found !== 1) throw new Error(`tutorial level ${i + 1} has ${st.found} solutions`);
-  out.push({ ...t, difficulty: 0, nodes: st.nodes });
-  console.log(`level ${i + 1}: tutorial 3x3 len=${t.solution.length} stars=${t.given.length} nodes=${st.nodes}`);
-});
+// [rows, cols, ratio, maxGivenStars, minNodes, maxNodes, difficulty]
+const STAGE2 = [
+  [5, 5, 0.6, 0, 60, 300, 1],
+  [5, 5, 0.62, 0, 150, 450, 1],
+  [5, 5, 0.62, 1, 100, 400, 1],
+  [5, 5, 0.64, 1, 200, 600, 1],
+  [5, 6, 0.6, 1, 150, 600, 1],
+  [5, 6, 0.62, 1, 300, 900, 2],
+  [5, 6, 0.62, 2, 300, 1000, 2],
+  [5, 6, 0.64, 2, 500, 1300, 2],
+  [6, 6, 0.58, 2, 400, 1300, 2],
+  [6, 6, 0.6, 2, 700, 1800, 2],
+  [6, 6, 0.6, 3, 800, 2000, 2],
+  [6, 6, 0.62, 3, 1200, 2600, 3],
+  [6, 6, 0.62, 3, 1800, 3400, 3],
+  [6, 6, 0.64, 3, 2400, 4600, 3],
+  [6, 6, 0.64, 3, 3200, 6000, 3],
+  [6, 7, 0.6, 3, 2500, 6500, 3],
+  [6, 7, 0.62, 3, 3500, 8000, 3],
+  [6, 7, 0.62, 3, 5000, 12000, 3],
+  // super hard: the last two levels of the stage
+  [6, 7, 0.64, 2, 14000, 50000, 4],
+  [6, 7, 0.66, 2, 30000, 110000, 4],
+];
+// [rows, cols, lanes, ratio, interiorGateChance, minNodes, maxNodes, difficulty]
+const STAGE3 = [
+  // levels 1-10: two tracks
+  [5, 5, 2, 0.6, 0.0, 20, 90, 1],
+  [5, 5, 2, 0.62, 0.0, 40, 140, 1],
+  [5, 5, 2, 0.62, 0.3, 60, 200, 1],
+  [5, 5, 2, 0.64, 0.5, 90, 300, 1],
+  [5, 5, 2, 0.66, 0.5, 120, 420, 1],
+  [5, 6, 2, 0.6, 0.5, 150, 600, 2],
+  [5, 6, 2, 0.62, 0.5, 250, 900, 2],
+  [6, 6, 2, 0.58, 0.5, 300, 1200, 2],
+  [6, 6, 2, 0.6, 0.5, 500, 1800, 2],
+  [6, 6, 2, 0.62, 0.5, 800, 2600, 2],
+  // levels 11-18: three tracks
+  [5, 6, 3, 0.62, 0.4, 100, 500, 2],
+  [6, 6, 3, 0.58, 0.4, 150, 700, 2],
+  [6, 6, 3, 0.6, 0.5, 250, 1000, 3],
+  [6, 6, 3, 0.62, 0.5, 400, 1500, 3],
+  [6, 6, 3, 0.64, 0.5, 600, 2200, 3],
+  [6, 7, 3, 0.6, 0.5, 600, 2500, 3],
+  [6, 7, 3, 0.62, 0.5, 900, 3500, 3],
+  [6, 7, 4, 0.58, 0.5, 700, 3500, 3],
+  // super hard: the last two levels
+  [6, 7, 3, 0.64, 0.5, 4000, 30000, 4],
+  [7, 7, 4, 0.58, 0.5, 5000, 60000, 4],
+];
 
-PLAN.forEach(([rows, cols, ratio, nGiven, lo, hi, diff], idx) => {
-  const slot = TUTORIAL.length + idx + 1;
-  const rng = mulberry32(5000 + slot * 131);
-  for (let tries = 0; tries < 60000; tries++) {
-    const cand = generateCandidate(rows, cols, ratio, rng);
-    const inner = shuffle(cand.solution.slice(1, -1), rng);
-    const given = inner.slice(0, nGiven);
-    const st = solveStats(hydrate(cand, given), 2);
-    if (st.found === 1 && st.nodes >= lo && st.nodes <= hi) {
-      out.push({ ...cand, given, difficulty: diff, nodes: st.nodes });
-      console.log(`level ${slot}: ${rows}x${cols} len=${cand.solution.length} stars=${given.length} nodes=${st.nodes} (try ${tries})`);
-      return;
-    }
+const withGivens = (cand, rng, maxGiven, cap) => {
+  const all = cand.lanes.flatMap((l) => l.solution);
+  const ends = new Set(cand.lanes.flatMap((l) => [l.solution[0], l.solution[l.solution.length - 1]]));
+  const pool = all.filter((x) => !ends.has(x));
+  let given = [];
+  for (;;) {
+    const st = solveStats(hydrateLevel({ ...cand, given, difficulty: 1 }), 2, cap);
+    if (st.capped) return null;
+    if (st.found === 1) return { given, st };
+    if (given.length >= maxGiven) return null;
+    given = [...given, pool.splice(Math.floor(rng() * pool.length), 1)[0]];
   }
-  throw new Error('no level found for slot ' + slot);
-});
+};
+
+function build(stage, slot, make, lo, hi, diff, maxGiven) {
+  const rng = mulberry32(9000 + stage * 100003 + slot * 131);
+  const num = (stage - 1) * 20 + slot + 1;
+  for (let tries = 0; tries < 40000; tries++) {
+    const cand = make(rng);
+    if (!cand) continue;
+    const r = withGivens(cand, rng, maxGiven, hi * 2 + 1000);
+    if (!r || r.st.nodes < lo || r.st.nodes > hi) continue;
+    const lanes = cand.lanes;
+    const entry = {
+      rows: cand.rows,
+      cols: cand.cols,
+      ...(lanes.length === 1 && !cand.blocks.length
+        ? { entry: lanes[0].entry, exit: lanes[0].exit, solution: lanes[0].solution }
+        : { lanes, blocks: cand.blocks }),
+      given: r.given,
+      difficulty: diff,
+      nodes: r.st.nodes,
+    };
+    out.push(entry);
+    console.log(`level ${num}: ${cand.rows}x${cand.cols} lanes=${lanes.length} blocks=${cand.blocks.length} stars=${r.given.length} nodes=${r.st.nodes} (try ${tries})`);
+    return;
+  }
+  throw new Error('no level found for ' + num);
+}
+
+STAGE2.forEach(([rows, cols, ratio, nGiven, lo, hi, diff], slot) =>
+  build(2, slot, (rng) => {
+    const c = generateCandidate(rows, cols, ratio, rng);
+    return { rows, cols, lanes: [{ entry: c.entry, exit: c.exit, solution: c.solution }], blocks: [] };
+  }, lo, hi, diff, nGiven),
+);
+STAGE3.forEach(([rows, cols, K, ratio, inter, lo, hi, diff], slot) =>
+  build(3, slot, (rng) => generateMulti(rows, cols, K, ratio, rng, inter), lo, hi, diff, 3),
+);
 
 writeFileSync(
   new URL('../src/game/levelData.js', import.meta.url),

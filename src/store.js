@@ -6,7 +6,11 @@ import {
   COIN_BASE,
   COINS_PER_STAR,
   AD_EVERY,
+  START_POWERUPS,
+  POWERUPS,
+  DAILY_GIFT_COINS,
 } from './config.js';
+import { dayKey, syncMissions, bumpMissions } from './game/missions.js';
 import { levelCount } from './game/levels.js';
 
 const KEY = 'choochoopop.save.v3';
@@ -29,12 +33,18 @@ const defaults = () => ({
   pandaSkin: 'classic',
   ownedTrain: ['classic'],
   ownedPanda: ['classic'],
+  powerups: { star: START_POWERUPS, eraser: START_POWERUPS, peek: START_POWERUPS },
+  mis: null, // missions, see game/missions.js
+  lastGift: '', // day of the last free daily gift
 });
 
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) return { ...defaults(), ...JSON.parse(raw) };
+    if (raw) {
+      const o = JSON.parse(raw);
+      return { ...defaults(), ...o, powerups: { ...defaults().powerups, ...(o.powerups || {}) } };
+    }
     // migrate the old single-stage save (levels, stars, hints, settings)
     const old = localStorage.getItem(OLD_KEY);
     if (old) {
@@ -96,6 +106,57 @@ export function completeLevel(level, stars, difficulty = 1) {
     };
   });
   return res;
+}
+
+export const spendPowerup = (id) => {
+  if ((state.powerups[id] || 0) <= 0) return false;
+  update((s) => ({ powerups: { ...s.powerups, [id]: s.powerups[id] - 1 } }));
+  return true;
+};
+export const addPowerup = (id, n = 1) => update((s) => ({ powerups: { ...s.powerups, [id]: (s.powerups[id] || 0) + n } }));
+export function buyPowerup(id) {
+  const def = POWERUPS.find((p) => p.id === id);
+  if (!def || !spendCoins(def.price * 3)) return false;
+  addPowerup(id, 3);
+  return true;
+}
+
+// ---- free daily gift of the coin shop
+export const giftReady = (s = state) => s.lastGift !== dayKey();
+export function claimGift() {
+  if (!giftReady()) return 0;
+  update((s) => ({ lastGift: dayKey(), coins: s.coins + DAILY_GIFT_COINS }));
+  return DAILY_GIFT_COINS;
+}
+
+// ---- missions
+/** Make sure today's / this week's missions exist and count today as a visit. Safe to call any time. */
+export function refreshMissions() {
+  const today = dayKey();
+  const synced = syncMissions(state.mis, today, state.unlocked);
+  const next = bumpMissions(synced, 'visit', 1, today);
+  if (next !== state.mis) update({ mis: next });
+}
+/** ev: win | stars | perfect | nohint | nomistake | coins | powerup */
+export function trackMission(ev, amount = 1) {
+  if (amount <= 0) return;
+  const today = dayKey();
+  const synced = syncMissions(state.mis, today, state.unlocked);
+  update({ mis: bumpMissions(synced, ev, amount, today) });
+}
+/** list: 'daily' | 'weekly'. Pays the reward of one finished mission. Returns the reward or null. */
+export function claimMission(list, id) {
+  const m = state.mis;
+  const item = m?.[list].find((x) => x.id === id);
+  if (!item || item.claimed || item.p < item.target) return null;
+  const r = item.reward;
+  update((s) => ({
+    coins: s.coins + (r.coins || 0),
+    hints: s.hints + (r.hints || 0),
+    powerups: r.powerup ? { ...s.powerups, [r.powerup]: (s.powerups[r.powerup] || 0) + 1 } : s.powerups,
+    mis: { ...s.mis, [list]: s.mis[list].map((x) => (x.id === id ? { ...x, claimed: true } : x)) },
+  }));
+  return r;
 }
 
 export const spendHint = () => update((s) => ({ hints: Math.max(0, s.hints - 1) }));

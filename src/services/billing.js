@@ -24,7 +24,7 @@ export function registerBillingProvider(p) {
 }
 
 const mock = {
-  getPrices: async () => ({ coins_small: '$0.99', coins_medium: '$2.99', coins_large: '$5.99', remove_ads: '$3.99' }),
+  getPrices: async () => ({ coins_small: '$0.99', coins_medium: '$2.99', coins_large: '$5.99', coins_giant: '$9.99', remove_ads: '$3.99' }),
   purchase: () => new Promise((r) => setTimeout(() => r(true), 500)),
   restore: async () => [],
 };

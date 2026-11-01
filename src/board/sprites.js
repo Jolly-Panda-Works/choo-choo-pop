@@ -10,6 +10,9 @@ export const ART = `${import.meta.env.BASE_URL}choo-choo-pop-assets/art/`;
 export const MAP_ART = ART + 'map/';
 // v4 UI kit (art/ui/*.webp, converted from the delivered popup.zip): pill + round buttons, arrows, popup frame, home scene, ...
 export const UI_ART = ART + 'ui/';
+// v5 UI kit (art/v5/*.webp): popups, rows, buttons and the home scene cut out of the new PSD mockups
+export const V5_ART = ART + 'v5/';
+export const MISSION_ART = ART + 'missions/';
 
 const FILES = {
   straight: 'track/straight.png',

@@ -22,11 +22,27 @@ export const HINT_PACKS = [
 ];
 
 // Coin packs, bought with real money. Prices come from the store provider (src/services/billing.js).
+// `extra` = the "% extra" sticker of the coin shop; the bonus coins shown are the extra part of `coins`.
 export const COIN_PACKS = [
-  { id: 'coins_small', coins: 200 },
-  { id: 'coins_medium', coins: 700, bonus: true },
-  { id: 'coins_large', coins: 1600, bonus: true },
+  { id: 'coins_giant', coins: 4000, extra: 40, name: 'giantPack', tag: 'bestDeal' },
+  { id: 'coins_large', coins: 1600, extra: 20, name: 'wildPack' },
+  { id: 'coins_medium', coins: 700, extra: 15, name: 'happyPack', tag: 'usersChoice' },
+  { id: 'coins_small', coins: 200, extra: 5, name: 'pandaPack' },
 ];
+export const packBonus = (p) => Math.round((p.coins * p.extra) / (100 + p.extra));
+// coins from the optional rewarded video / the once-a-day gift of the coin shop
+export const VIDEO_COINS = 100;
+export const DAILY_GIFT_COINS = 50;
+
+// Power-ups: unlocked from stage 2 on. Bought with coins in the shop, also given by missions.
+export const START_POWERUPS = 2; // of each kind
+export const PEEK_MS = 3200;
+export const POWERUPS = [
+  { id: 'star', price: 40 }, // lays one gold star tile (a sure rail)
+  { id: 'eraser', price: 40 }, // wipes every wrong rail
+  { id: 'peek', price: 60 }, // shows the whole answer for a few seconds
+];
+export const POWERUP_PACK = 3; // the shop sells them 3 at a time
 export const REMOVE_ADS_ID = 'remove_ads';
 
 // A skippable ad after every 4th or 5th finished level (never in the tutorial, never after removing ads)

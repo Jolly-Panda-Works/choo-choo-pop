@@ -4,23 +4,29 @@ import { loadSprites } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
 import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
-import { Stars, Heart, Coin, Bulb, BackButton } from '../ui/icons.jsx';
-import { useSave, completeLevel, spendHint, addHints, tickAdCounter } from '../store.js';
+import { Stars, Coin, Bulb, BackButton, PowerIcon } from '../ui/icons.jsx';
+import StartPopup from '../ui/StartPopup.jsx';
+import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission } from '../store.js';
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
-import { startPath, evaluate, applyHint } from '../game/logic.js';
+import { startPaths, evaluate, applyHint, eraseWrong } from '../game/logic.js';
 import { isTutorial, coachFor, tutorialIdleMs } from '../game/tutorial.js';
 import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
-import { TUTORIAL_LEVELS, MAX_MISTAKES, COIN_BASE, COINS_PER_STAR, STAGE_SIZE } from '../config.js';
+import { TUTORIAL_LEVELS, COIN_BASE, COINS_PER_STAR, STAGE_SIZE, POWERUPS, POWERUP_STAGE, PEEK_MS } from '../config.js';
 
-export default function Game({ levelNo, onMap, onNext, onShop }) {
-  const level = useMemo(() => getLevel(levelNo), [levelNo]);
+export default function Game({ levelNo, onMap, onNext, onShop, onCoins }) {
+  const baseLevel = useMemo(() => getLevel(levelNo), [levelNo]);
+  const [bonusGiven, setBonusGiven] = useState([]); // gold stars laid by the star power-up
+  const level = useMemo(() => (bonusGiven.length ? { ...baseLevel, given: [...baseLevel.given, ...bonusGiven] } : baseLevel), [baseLevel, bonusGiven]);
   const save = useSave();
   const t = useT();
   const [ready, setReady] = useState(false);
-  const [path, setPath] = useState(() => startPath(level));
+  const [paths, setPaths] = useState(() => startPaths(baseLevel));
+  const [powerUsed, setPowerUsed] = useState(0);
+  const [peekUntil, setPeekUntil] = useState(0);
+  const [noPower, setNoPower] = useState(null);
   // intro (start popup) | play | run | won | lost
   const [phase, setPhase] = useState('intro');
   const [hintsUsed, setHintsUsed] = useState(0);
@@ -30,7 +36,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
   const [reward, setReward] = useState({ coins: 0 });
   const [noHints, setNoHints] = useState(false);
   const [idle, setIdle] = useState(false);
-  const pathRef = useRef(path);
+  const pathRef = useRef(paths);
   const toastTimer = useRef();
   const adDue = useRef(false);
   const tutorial = isTutorial(level);
@@ -41,7 +47,8 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
     loadSprites().then(() => setReady(true));
   }, []);
 
-  const result = useMemo(() => evaluate(level, path), [level, path]);
+  const result = useMemo(() => evaluate(level, paths), [level, paths]);
+  const path = paths[0];
   const playing = phase === 'play';
 
   // tutorial coach: after a moment without a move the finger shows what to do next
@@ -50,8 +57,8 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
     setIdle(false);
     const timer = setTimeout(() => setIdle(true), tutorialIdleMs(level));
     return () => clearTimeout(timer);
-  }, [tutorial, playing, path, level]);
-  const coach = useMemo(() => (tutorial && playing ? coachFor(level, path, idle) : null), [tutorial, playing, level, path, idle]);
+  }, [tutorial, playing, paths, level]);
+  const coach = useMemo(() => (tutorial && playing ? coachFor(level, paths[0], idle) : null), [tutorial, playing, level, paths, idle]);
 
   const say = useCallback((msg) => {
     setToast(msg);
@@ -62,37 +69,34 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
 
   const commit = useCallback((next) => {
     pathRef.current = next;
-    setPath(next);
+    setPaths(next);
   }, []);
 
   const onPath = useCallback((next) => {
     const prev = pathRef.current;
     pathRef.current = next;
-    setPath(next);
-    if (next.length > prev.length) sfx.lay(next.length);
+    setPaths(next);
+    const n = next.flat().length;
+    if (n > prev.flat().length) sfx.lay(n);
     else sfx.undo();
   }, []);
 
   // solved -> train runs
   useEffect(() => {
     if (playing && result.solved) {
-      const penalty = hintsUsed + mistakes;
+      const penalty = hintsUsed + mistakes + powerUsed;
       setStars(tutorial || penalty === 0 ? 3 : penalty <= 2 ? 2 : 1);
       setPhase('run');
       sfx.whistle();
     }
-  }, [result.solved, playing, hintsUsed, mistakes, tutorial]);
+  }, [result.solved, playing, hintsUsed, mistakes, powerUsed, tutorial]);
 
-  // reached the exit but the numbers do not match: the station check fails (a heart is lost)
+  // every train reached its exit but the numbers do not match: a mistake (no lives - it only costs a star)
   useEffect(() => {
     if (playing && !tutorial && result.reachedExit && !result.solved) {
       sfx.error();
-      const m = mistakes + 1;
-      setMistakes(m);
-      if (m >= MAX_MISTAKES) {
-        setTimeout(() => setPhase('lost'), 650);
-        setPhase('checking');
-      } else say(t('countsOff'));
+      setMistakes((m) => m + 1);
+      say(t('countsOff'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.reachedExit, result.solved]);
@@ -103,17 +107,28 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
     const res = completeLevel(levelNo, stars, level.difficulty);
     setReward(res);
     adDue.current = tickAdCounter(levelNo);
-  }, [levelNo, stars, level.difficulty]);
+    if (levelNo > TUTORIAL_LEVELS) {
+      trackMission('win');
+      trackMission('stars', stars);
+      if (stars === 3) trackMission('perfect');
+      if (hintsUsed === 0) trackMission('nohint');
+      if (mistakes === 0) trackMission('nomistake');
+      trackMission('coins', res.coins);
+    }
+  }, [levelNo, stars, level.difficulty, hintsUsed, mistakes]);
 
   const undo = () => {
-    if (!playing || path.length <= 1) return;
+    if (!playing) return;
+    // take back the last rail laid (the longest lane that has more than its entry tile)
+    const li = paths.reduce((best, p, i) => (p.length > 1 && (best === -1 || p.length >= paths[best].length) ? i : best), -1);
+    if (li === -1) return;
     sfx.undo();
-    commit(path.slice(0, -1));
+    commit(paths.map((p, i) => (i === li ? p.slice(0, -1) : p)));
   };
   const restart = () => {
     if (!playing) return;
     sfx.click();
-    commit(startPath(level));
+    commit(startPaths(baseLevel));
   };
   const hint = () => {
     if (!playing) return;
@@ -127,8 +142,65 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
       spendHint(); // hints are free while learning
       setHintsUsed((n) => n + 1);
     }
-    commit(applyHint(level, path));
+    commit(applyHint(level, paths));
   };
+
+  // ---- power-ups (stage 2 and later)
+  const usePower = (id, free = false) => {
+    if (!playing) return false;
+    const cur = pathRef.current;
+    if (id === 'eraser' && eraseWrong(level, cur).every((p, i) => p.length === cur[i].length)) {
+      say(t('nothingWrong'));
+      return false;
+    }
+    if (id === 'star') {
+      const skip = new Set([...level.given, ...level.lanes.flatMap((l) => [l.solution[0], l.solution[l.solution.length - 1]])]);
+      const pool = level.allSolution.filter((c) => !skip.has(c));
+      if (!pool.length) {
+        say(t('nothingWrong'));
+        return false;
+      }
+      if (!free && !spendPowerup(id)) return setNoPower(id), false;
+      setBonusGiven((b) => [...b, pool[Math.floor(Math.random() * pool.length)]]);
+    } else {
+      if (!free && !spendPowerup(id)) return setNoPower(id), false;
+      if (id === 'eraser') commit(eraseWrong(level, cur));
+      else setPeekUntil(performance.now() + PEEK_MS);
+    }
+    sfx.hint();
+    setPowerUsed((n) => n + 1);
+    trackMission('powerup');
+    return true;
+  };
+
+  const begin = (picks = []) => {
+    sfx.click();
+    setPhase('play');
+    // boosters chosen in the start popup: spend one of each and apply it right away
+    setTimeout(() => {
+      for (const id of picks) {
+        if (id === 'hint') {
+          if (save.hints > 0) {
+            spendHint();
+            setHintsUsed((n) => n + 1);
+            commit(applyHint(level, pathRef.current));
+          }
+        } else {
+          pendingPick.current = [...(pendingPick.current || []), id];
+        }
+      }
+      setPickTick((n) => n + 1);
+    }, 0);
+  };
+  const pendingPick = useRef([]);
+  const [pickTick, setPickTick] = useState(0);
+  useEffect(() => {
+    if (!playing || !pendingPick.current.length) return;
+    const list = pendingPick.current;
+    pendingPick.current = [];
+    list.forEach((id) => usePower(id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickTick, playing]);
 
   const watchForHint = async () => {
     const ok = await ads.rewarded();
@@ -137,14 +209,6 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
       addHints(1);
       say(t('gotHint'));
     }
-  };
-
-  const retry = () => {
-    sfx.click();
-    setHintsUsed(0);
-    setMistakes(0);
-    commit(startPath(level));
-    setPhase('play');
   };
 
   // an ad may follow a finished level (skippable); never blocks the game
@@ -174,25 +238,19 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
           </h2>
           <span className="sub-row">
             <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
-            {!tutorial && (
-              <span className="hearts" aria-label="lives">
-                {Array.from({ length: MAX_MISTAKES }, (_, i) => (
-                  <Heart key={i} on={i >= mistakes} size={18} />
-                ))}
-              </span>
-            )}
           </span>
         </div>
-        <button className="chip coin-chip" onClick={onShop} aria-label={t('shop')}>
-          <Coin size={20} /> {t.n(save.coins)}
+        <button className="chip coin-chip" onClick={onCoins} aria-label={t('coins')}>
+          <Coin size={22} /> {t.n(save.coins)} <b className="plus">+</b>
         </button>
       </header>
 
       <div className="board-wrap">
         <BoardCanvas
           level={level}
-          path={path}
+          paths={paths}
           pathRef={pathRef}
+          peekUntil={peekUntil}
           evalResult={result}
           phase={phase === 'play' || phase === 'run' || phase === 'won' ? phase : 'locked'}
           coach={coach}
@@ -210,8 +268,19 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
         {toast && <div className="toast">{toast}</div>}
       </div>
 
+      {stage >= POWERUP_STAGE && (
+        <div className="powers">
+          {POWERUPS.map((p) => (
+            <button key={p.id} className="power" onClick={() => usePower(p.id)} disabled={!playing} aria-label={t('pw_' + p.id)}>
+              <PowerIcon id={p.id} size={34} />
+              <span>{t('pw_' + p.id)}</span>
+              <i className="badge">{t.n(save.powerups[p.id] || 0)}</i>
+            </button>
+          ))}
+        </div>
+      )}
       <footer className="controls">
-        <button className="ctl" onClick={undo} disabled={!playing || path.length <= 1}>
+        <button className="ctl" onClick={undo} disabled={!playing || paths.every((p) => p.length <= 1)}>
           <svg viewBox="0 0 24 24" width="26" height="26">
             <path d="M9 7L4 12l5 5M4 12h10a6 6 0 010 12" transform="translate(0 -4)" />
           </svg>
@@ -232,31 +301,7 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
 
       {/* ---- start of level ---- */}
       {phase === 'intro' && (
-        <Modal pose="point" title={`${t('station')} ${t.n(inStage)}`}>
-          <p className="small stage-line">
-            {t(STAGES[stage - 1].nameKey)} · <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
-          </p>
-          <p className="goal">{t(tutorial ? 'goalLearn' : kind === 'super' ? 'goalSuper' : 'goalPlay')}</p>
-          {!tutorial && (
-            <p className="small reward-line">
-              <Coin size={18} /> {t('upTo', { n: t.n(maxCoins) })}
-            </p>
-          )}
-          <div className="modal-actions col">
-            <button
-              className="btn big yellow"
-              onClick={() => {
-                sfx.click();
-                setPhase('play');
-              }}
-            >
-              {t('letsGo')}
-            </button>
-            <button className="btn" onClick={onMap}>
-              {t('back')}
-            </button>
-          </div>
-        </Modal>
+        <StartPopup level={level} levelNo={levelNo} inStage={inStage} stars={save.stars[levelNo] || 0} maxCoins={maxCoins} tutorial={tutorial} onPlay={begin} onClose={onMap} onCoins={onCoins} />
       )}
 
       {/* ---- level cleared ---- */}
@@ -293,7 +338,9 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
                   leave(() => {
                     setHintsUsed(0);
                     setMistakes(0);
-                    commit(startPath(level));
+                    commit(startPaths(baseLevel));
+                    setBonusGiven([]);
+                    setPowerUsed(0);
                     setPhase('play');
                   })
                 }
@@ -310,16 +357,16 @@ export default function Game({ levelNo, onMap, onNext, onShop }) {
         </Modal>
       )}
 
-      {/* ---- the station check failed three times ---- */}
-      {phase === 'lost' && (
-        <Modal pose="salute" title={t('lostTitle')} titleClass={ua('lose-popup-failed-text-failed-text-enter')}>
-          <p className="goal">{t('lostText')}</p>
+      {/* ---- no power-up left ---- */}
+      {noPower && (
+        <Modal pose="lever" title={t('noPowerTitle')} onClose={() => setNoPower(null)}>
+          <p className="goal">{t('noPower')}</p>
           <div className="modal-actions col">
-            <button className="btn big yellow" onClick={retry}>
-              {t('tryAgain')}
+            <button className="btn big blue" onClick={onShop}>
+              {t('shop')}
             </button>
-            <button className="btn" onClick={onMap}>
-              {t('map')}
+            <button className="btn" onClick={() => setNoPower(null)}>
+              {t('cancel')}
             </button>
           </div>
         </Modal>

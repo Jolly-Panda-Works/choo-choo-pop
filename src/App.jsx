@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSave, update } from './store.js';
+import { useSave, update, refreshMissions } from './store.js';
 import { useT } from './i18n.js';
 import { levelCount } from './game/levels.js';
 import { stageOfLevel } from './game/stages.js';
@@ -12,6 +12,8 @@ import Game from './screens/Game.jsx';
 import Settings from './screens/Settings.jsx';
 import Shop from './screens/Shop.jsx';
 import Story from './screens/Story.jsx';
+import CoinShop from './screens/CoinShop.jsx';
+import Missions from './screens/Missions.jsx';
 import AdHost from './ui/AdHost.jsx';
 import { IconDefs } from './ui/icons.jsx';
 import HomeScene from './ui/HomeScene.jsx';
@@ -62,6 +64,10 @@ export default function App() {
     setScreen(prev || fallback);
   };
 
+  useEffect(() => {
+    refreshMissions();
+  }, []);
+
   const nextLevel = Math.min(save.unlocked, levelCount);
   const stageOf = (n) => stageOfLevel(n);
 
@@ -97,7 +103,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sky = !GRASS.has(screen.name);
+  const sky = !GRASS.has(screen.name) && screen.name !== 'home';
   return (
     <div className={'app on-' + screen.name} style={{ '--grass': `url(${ART}tiles/grass-b.png)` }}>
       <IconDefs />
@@ -105,9 +111,9 @@ export default function App() {
       <div className="rotate-hint">↻ {t('portraitOnly')}</div>
       {screen.name === 'home' && (
         <Home
-          hasProgress={save.unlocked > 1}
           onPlay={() => replace('game', { level: nextLevel, stage: stageOf(nextLevel) })}
-          onMap={() => replace('map')}
+          onCoins={() => go('coins')}
+          onMissions={() => go('missions')}
           onShop={() => go('shop')}
           onSettings={() => go('settings')}
         />
@@ -131,9 +137,12 @@ export default function App() {
           onMap={() => replace('stage', { stage: stageOf(screen.level) })}
           onNext={() => replace('game', { level: Math.min(levelCount, screen.level + 1) })}
           onShop={() => go('shop')}
+          onCoins={() => go('coins')}
         />
       )}
-      {screen.name === 'shop' && <Shop onBack={() => back({ name: 'home' })} />}
+      {screen.name === 'shop' && <Shop onBack={() => back({ name: 'home' })} onCoins={() => go('coins')} />}
+      {screen.name === 'coins' && <CoinShop onBack={() => back({ name: 'home' })} />}
+      {screen.name === 'missions' && <Missions onBack={() => back({ name: 'home' })} />}
       {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
       {screen.name === 'story' && <Story onDone={finishStory} />}
       {MOCK_SERVICES && <AdHost />}

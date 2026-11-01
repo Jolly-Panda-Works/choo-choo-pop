@@ -107,3 +107,11 @@ npm run cap:sync:fa && (cd android && ./gradlew assembleDebug -PEDITION=fa)
   - نوع افزایش از پیام کامیت‌ها: `feat…` ← minor، `BREAKING CHANGE` یا `type!:` ← major، بقیه ← patch. در اجرای دستی (Run workflow) می‌توانی `patch/minor/major` را خودت انتخاب کنی.
   - اولین ریلیز (وقتی هنوز تگی نیست) همان نسخهٔ `package.json` است. PRها فقط بیلد و تست می‌شوند.
   - اگر شاخهٔ main محافظت‌شده باشد و push بات رد شود، ریلیز باز هم ساخته می‌شود و تگ روی کامیت بیلدشده می‌نشیند.
+
+
+## v5 changes
+- **No lives / health.** Wrong "station checks" only cost a star now.
+- **Stages 2 and 3 are built** (levels 21-60). Stage 2: single track, bigger boards, **power-ups unlocked** (star tile, eraser, peek; bought with coins, given by missions). Stage 3: **several tracks** - the first 10 levels have 2 entries/exits, then 3 and 4. Gates can sit on the board edge or *inside* the board next to a tree block. Level data format: `lanes: [{entry, exit, solution}]`, `blocks: [cells]` (see `src/game/levels.js`). `node scripts/build-levels.mjs` keeps stage 1 frozen and regenerates stages 2-3; `node scripts/test-levels.mjs` checks every level has exactly one solution.
+- **New UI kit from the PSDs** (`public/choo-choo-pop-assets/art/v5/`): Home, Coins shop (panda), Shop, Missions (daily + weekly), Start-level popup. Popups are laid out in PSD design pixels (`src/ui/v5.jsx`).
+- **Missions:** `src/game/missions.js`; icons to produce: `docs/MISSION_ICONS.md`.
+- The game is portrait only and Home / Game never scroll.

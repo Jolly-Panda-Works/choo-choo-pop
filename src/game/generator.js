@@ -112,3 +112,111 @@ export function generateCandidate(rows, cols, ratio, rng) {
   }
   throw new Error('generation failed');
 }
+
+
+function findPathAvoid(rows, cols, start, goal, minLen, rng, cap, used) {
+  const visited = Uint8Array.from(used);
+  const path = [start];
+  visited[start] = 1;
+  const stack = [shuffle(neighbors(rows, cols, start), rng)];
+  let steps = 0;
+  while (path.length) {
+    if (++steps > cap) return null;
+    const head = path[path.length - 1];
+    if (head === goal) return path;
+    const opts = stack[stack.length - 1];
+    let advanced = false;
+    while (opts.length) {
+      const nb = opts.pop();
+      if (visited[nb]) continue;
+      if (nb === goal && path.length + 1 < minLen) continue;
+      path.push(nb);
+      visited[nb] = 1;
+      if (nb !== goal && !reachable(rows, cols, nb, goal, visited)) {
+        path.pop();
+        visited[nb] = 0;
+        continue;
+      }
+      stack.push(shuffle(neighbors(rows, cols, nb), rng));
+      advanced = true;
+      break;
+    }
+    if (!advanced) {
+      visited[head] = 0;
+      path.pop();
+      stack.pop();
+    }
+  }
+  return null;
+}
+
+/**
+ * Random multi-track candidate: K disjoint tracks, each with its own entry and exit gate.
+ * A gate sits outside the board edge, or (probability `interior`) on a "block" cell inside the board next to the track end.
+ * Returns { rows, cols, lanes:[{entry:[r,c,side], exit:[r,c,side], solution}], blocks:[cells] } or null.
+ */
+export function generateMulti(rows, cols, K, ratio, rng, interior = 0.35) {
+  const N = rows * cols;
+  for (let attempt = 0; attempt < 80; attempt++) {
+    const used = new Uint8Array(N);
+    const paths = [];
+    const perLane = Math.max(3, Math.floor((N * ratio) / K) - 1);
+    let ok = true;
+    for (let k = 0; k < K && ok; k++) {
+      ok = false;
+      for (let t = 0; t < 40; t++) {
+        const free = [];
+        for (let i = 0; i < N; i++) if (!used[i]) free.push(i);
+        const s = free[Math.floor(rng() * free.length)];
+        const g = free[Math.floor(rng() * free.length)];
+        if (s === g) continue;
+        const dist = Math.abs(Math.floor(s / cols) - Math.floor(g / cols)) + Math.abs((s % cols) - (g % cols));
+        if (dist < 2) continue;
+        const path = findPathAvoid(rows, cols, s, g, perLane, rng, 3000, used);
+        if (!path) continue;
+        for (const c of path) used[c] = 1;
+        paths.push(path);
+        ok = true;
+        break;
+      }
+    }
+    if (!ok) continue;
+    // gates
+    const blocks = [];
+    const gateFor = (cell) => {
+      const r = Math.floor(cell / cols);
+      const c = cell % cols;
+      const outer = outerSides(rows, cols, r, c);
+      const inner = [];
+      for (let d = 0; d < 4; d++) {
+        const nr = r + DR[d];
+        const nc = c + DC[d];
+        if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
+        if (!used[nr * cols + nc]) inner.push(d);
+      }
+      const useInner = inner.length && (!outer.length || rng() < interior);
+      if (useInner) {
+        const d = inner[Math.floor(rng() * inner.length)];
+        const b = (r + DR[d]) * cols + (c + DC[d]);
+        used[b] = 1;
+        blocks.push(b);
+        return [r, c, d];
+      }
+      if (outer.length) return [r, c, outer[Math.floor(rng() * outer.length)]];
+      return null;
+    };
+    const lanes = [];
+    for (const p of paths) {
+      const entry = gateFor(p[0]);
+      const exit = entry && gateFor(p[p.length - 1]);
+      if (!entry || !exit) {
+        ok = false;
+        break;
+      }
+      lanes.push({ entry, exit, solution: p });
+    }
+    if (!ok) continue;
+    return { rows, cols, lanes, blocks: blocks.sort((a, b) => a - b) };
+  }
+  return null;
+}

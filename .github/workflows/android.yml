@@ -77,7 +77,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Test levels (20 levels, solvable + unique + difficulty curve)
+      - name: Test levels (60 levels, solvable + unique + difficulty curve)
         run: npm run test:levels
 
       # the app shows this number (vite reads package.json), so set it before building
@@ -89,6 +89,12 @@ jobs:
 
       - name: Sync Capacitor
         run: npx cap sync android
+
+      # the game is portrait only
+      - name: Lock portrait orientation
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          grep -q screenOrientation $M || sed -i 's#<activity#<activity android:screenOrientation="portrait"#' $M
 
       - name: Build debug APK
         working-directory: android
