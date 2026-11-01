@@ -1,3 +1,12 @@
+fix(android): build failed with "Value is null" on versionCode in app/build.gradle
+
+Groovy read `versionCode (x).toInteger()` as `versionCode(x).toInteger()`: the
+String went to the versionCode method and toInteger() ran on its null result.
+Use `versionCode = ...` and `versionName = ...`, so both are set as properties.
+Same failure for the en and fa jobs.
+
+---
+
 refactor(ui): one coin counter chip on every screen, like Home
 
 Home, the stage map, the levels screen and the game now share one CoinChip component
