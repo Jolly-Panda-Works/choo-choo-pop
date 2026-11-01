@@ -9,19 +9,19 @@
 | `en` | Choo Choo Pop | `com.jollypanda.choochoopop` | فقط انگلیسی |
 | `fa` | هو هو چی چی | `com.jollypanda.choochoopop.fa` | فقط فارسی (فونت وزیرمتن داخل اپ، رقم‌های فارسی، راست‌به‌چپ) |
 
-نسخه موقع بیلد انتخاب می‌شود (`VITE_EDITION`)؛ دکمه‌ی تغییر زبان وجود ندارد.
+هر دو زبان در هر بیلد هستند و بازیکن زبان را در تنظیمات عوض می‌کند. بیلد عمومی با انگلیسی و بیلد بازار با فارسی شروع می‌شود (`VITE_STORE=bazaar`). راهنمای بازار: `docs/BAZAAR.fa.md`.
 
 ```bash
 npm install
 npm run dev            # مرورگر، انگلیسی
-npm run dev:fa         # مرورگر، فارسی
+npm run dev:bazaar     # مرورگر، پیش‌فرض فارسی
 npm run test:levels    # هر ۲۰ مرحله: حل‌پذیر + جواب یکتا + منحنی سختی + قانون super hard + آموزش
 
 # اندروید (بعد از هر بار بیلد وب، همان نسخه را سینک کن)
-npm run cap:sync:en && (cd android && ./gradlew assembleDebug -PEDITION=en)
-npm run cap:sync:fa && (cd android && ./gradlew assembleDebug -PEDITION=fa)
+npm run cap:sync && (cd android && ./gradlew assembleDebug -PEDITION=en)
+npm run cap:sync:bazaar && (cd android && ./gradlew assembleDebug -PEDITION=fa)
 ```
-در GitHub Actions هر دو نسخه با هم (matrix) ساخته می‌شوند و دو آرتیفکت جدا می‌دهند. برای APK/AAB امضاشده چهار Secret بساز:
+در GitHub Actions شاخه‌ی `main` بیلد عمومی و شاخه‌ی `bazaar` بیلد بازار را می‌سازد. برای APK/AAB امضاشده چهار Secret بساز:
 `KEYSTORE_BASE64`، `KEYSTORE_PASSWORD`، `KEY_ALIAS`، `KEY_PASSWORD`.
 
 ## ساختار بازی (نسخهٔ ۱.۲)
@@ -53,7 +53,7 @@ npm run cap:sync:fa && (cd android && ./gradlew assembleDebug -PEDITION=fa)
 زیرساخت آماده است و فقط در نسخهٔ `fa` اندروید فعال می‌شود (SDK رسمی بازار: Poolakey):
 - **سمت JS:** `src/services/bazaar.js` (ارائه‌دهندهٔ `billing`) و ثبت آن در `src/main.jsx`. اتصال تنبل (هنگام اولین استفاده) است؛ اگر بازار نصب نباشد خرید بدون خطای بازی شکست می‌خورد.
 - **سمت اندروید:** `android/app/src/edition-fa/kotlin/.../BazaarBillingPlugin.kt` (پلاگین Capacitor به نام `BazaarBilling`) و وابستگی Poolakey فقط وقتی `-PEDITION=fa`. نسخهٔ پیش‌فرض `2.2.0` است؛ آخرین نسخه را از ریلیزهای Poolakey بررسی و در صورت نیاز با `-PPOOLAKEY_VERSION=x.y.z` عوض کن. در نسخهٔ `en` پلاگین خالی است.
-- **راه‌اندازی:** ۱) در پنل توسعه‌دهندگان بازار محصولات درون‌برنامه‌ای را با همین شناسه‌ها بساز: `coins_small`، `coins_medium`، `coins_large`، `coins_giant` (مصرفی) و `remove_ads` (غیرمصرفی). ۲) کلید RSA برنامه را در `.env.local` بگذار (`VITE_BAZAAR_RSA_KEY`، نمونه در `.env.example`). ۳) `npm run cap:sync:fa` و بعد بیلد `./gradlew assembleRelease -PEDITION=fa`.
+- **راه‌اندازی:** ۱) در پنل توسعه‌دهندگان بازار محصولات درون‌برنامه‌ای را با همین شناسه‌ها بساز: `coins_small`، `coins_medium`، `coins_large`، `coins_giant` (مصرفی) و `remove_ads` (غیرمصرفی). ۲) کلید RSA برنامه را در `.env.local` بگذار (`VITE_BAZAAR_RSA_KEY`، نمونه در `.env.example`). ۳) `npm run cap:sync:bazaar` و بعد بیلد `./gradlew assembleRelease -PEDITION=fa`.
 - **جریان خرید سکه:** خرید ← اعطای سکه ← مصرف‌کردن (consume) خرید در بازار تا دوباره قابل خرید باشد. اگر برنامه وسط کار بسته شود، `billing.recover()` در شروع بعدی خرید ناتمام را اعطا و مصرف می‌کند (توکن‌های اعطاشده برای جلوگیری از اعطای دوباره نگه داشته می‌شوند).
 - **قیمت‌ها** از خود بازار می‌آیند و با همان متن محلی (تومان/ریال) نمایش داده می‌شوند.
 

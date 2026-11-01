@@ -1,18 +1,18 @@
-// Cafe Bazaar in-app billing (Persian edition, Android). Plugs into src/services/billing.js as a provider.
+// Cafe Bazaar in-app billing (Bazaar build, Android). Plugs into src/services/billing.js as a provider.
 // Native side: android/app/src/edition-fa/kotlin/.../BazaarBillingPlugin.kt (Poolakey).
 //
 // Setup, once:
 //   1. Cafe Bazaar developer panel -> your app -> in-app products: create the product ids of BAZAAR_PRODUCTS below
 //      (type "consumable" for coin packs, "non-consumable" for remove_ads).
 //   2. Same panel -> "کلید RSA": copy the key into  VITE_BAZAAR_RSA_KEY  (see .env.example). It is a PUBLIC key.
-//   3. npm run cap:sync:fa, then build the fa edition (see README).
+//   3. npm run cap:sync:bazaar, then build with -PEDITION=fa (see docs/BAZAAR.fa.md).
 //
 // Flow of a coin pack: purchase -> billing.js grants the coins -> finish() consumes the purchase on Bazaar so it can be
 // bought again. If the app dies in between, recover() grants + consumes it on the next start.
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { COIN_PACKS, REMOVE_ADS_ID } from '../config.js';
 
-const Bazaar = registerPlugin('BazaarBilling');
+export const Bazaar = registerPlugin('BazaarBilling');
 const RSA_KEY = import.meta.env.VITE_BAZAAR_RSA_KEY || '';
 
 /** Product ids that must exist in the Bazaar panel (same ids as config.js). */

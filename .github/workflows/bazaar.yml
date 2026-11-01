@@ -1,0 +1,197 @@
+# Cafe Bazaar build: the game starting in Persian (هو هو چی چی), with Bazaar in-app billing, sign in and updates.
+# Runs on the `bazaar` branch (and on demand). Step by step setup: docs/BAZAAR.fa.md.
+#
+# Keep the branch up to date with main (`git checkout bazaar && git merge main && git push`);
+# each push builds the APK/AAB with the version from package.json and publishes it as a GitHub
+# pre-release tagged bazaar-vX.Y.Z.
+#
+# Settings (repository variables): BAZAAR_RSA_KEY (the in-app billing key, public),
+# BAZAAR_DEVELOPER_ID (More games). Signing uses the KEYSTORE_* / KEY_* secrets of android.yml.
+#
+# Automatic release in Cafe Bazaar (Pishkhan API): with the secret BAZAAR_PISHKHAN_TOKEN set, every
+# successful build of the bazaar branch sends the signed APK to Bazaar.
+#   BAZAAR_CHANNEL: "alpha" (default, the game has no stable version yet): the APK is uploaded as a
+#     draft; in the panel pick the alpha group and send it for review (the API can't choose the group).
+#     "public": sent for review for everyone. Run workflow can pick the channel for one build.
+#   BAZAAR_AUTO_PUBLISH: "false" (default): you publish in the panel; "true": published once approved.
+#
+# Release notes are required (checked before anything is built; the build fails without them):
+#   - a push: bazaar-release-notes.json with "version" = the version being built and "fa" / "en"
+#     filled in. Edit it on the bazaar branch (after merging main), commit, push. After a successful
+#     release the file is emptied (a [skip ci] commit on bazaar), so the next version needs its own.
+#   - Run workflow: the two notes fields of the form (they take the place of the file).
+
+name: Bazaar
+
+on:
+  push:
+    branches: [bazaar]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+  workflow_dispatch:
+    inputs:
+      notes_fa:
+        description: "What's new, in Persian (required; \\n for a new line)"
+        type: string
+        required: true
+      notes_en:
+        description: "What's new, in English (required; \\n for a new line)"
+        type: string
+        required: true
+      channel:
+        description: "Cafe Bazaar release (alpha: a draft for your alpha group; public: sent for review)"
+        type: choice
+        options: [default, alpha, public]
+        default: default
+
+concurrency:
+  group: bazaar-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    name: Android (Cafe Bazaar)
+    runs-on: ubuntu-latest
+    env:
+      VITE_STORE: bazaar
+      VITE_BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
+      VITE_BAZAAR_DEVELOPER_ID: ${{ vars.BAZAAR_DEVELOPER_ID }}
+      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
+      HAS_PISHKHAN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          IFS=. read -r MA MI PA <<< "${VERSION%%-*}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "code=$((MA * 1000000 + MI * 1000 + PA))" >> "$GITHUB_OUTPUT"
+          echo "Bazaar build $VERSION"
+
+      # Before anything is built: no release without its notes.
+      - name: Release notes (required)
+        id: notes
+        env:
+          NOTES_FA: ${{ inputs.notes_fa }}
+          NOTES_EN: ${{ inputs.notes_en }}
+        run: node scripts/bazaar-notes.mjs check "$RUNNER_TEMP/bazaar-notes.json"
+
+      - name: Install
+        run: npm ci
+
+      - name: Test levels
+        run: npm run test:levels
+
+      - name: Build web (Bazaar)
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PEDITION=fa -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }}
+
+      - name: Build signed release (APK + AAB)
+        if: env.HAS_KEYSTORE == 'true'
+        working-directory: android
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > "$RUNNER_TEMP/release.keystore"
+          ./gradlew assembleRelease bundleRelease --no-daemon \
+            -PEDITION=fa -PVERSION_CODE=${{ steps.version.outputs.code }} -PVERSION_NAME=${{ steps.version.outputs.version }} \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
+
+      - name: Collect outputs
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          mkdir -p out
+          OUTPUTS=android/app/build/outputs
+          cp "$OUTPUTS/apk/debug/app-debug.apk" "out/ChooChooPop-$VERSION-Bazaar-debug.apk"
+          if [ "$HAS_KEYSTORE" = "true" ]; then
+            cp "$OUTPUTS/apk/release/app-release.apk" "out/ChooChooPop-$VERSION-Bazaar.apk"
+            cp "$OUTPUTS/bundle/release/app-release.aab" "out/ChooChooPop-$VERSION-Bazaar.aab"
+          fi
+          (cd out && sha256sum * > SHA256SUMS.txt)
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        # The release below has the files; this copy is optional (it must not stop the release).
+        continue-on-error: true
+        with:
+          name: choo-choo-pop-bazaar
+          path: out/*
+          retention-days: 1
+
+      # Only the bazaar branch publishes; a manual run on another branch is a test build.
+      - name: Publish release
+        if: github.ref == 'refs/heads/bazaar'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="bazaar-v${{ steps.version.outputs.version }}"
+          NOTES="Cafe Bazaar build of Choo Choo Pop ${{ steps.version.outputs.version }}.
+
+          ### What's new
+          $(node -p "require(process.env.RUNNER_TEMP + '/bazaar-notes.json').en")
+
+          $(node -p "require(process.env.RUNNER_TEMP + '/bazaar-notes.json').fa")"
+          shopt -s nullglob
+          ANDROID_FILES=(out/*.apk out/*.aab)
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" "${ANDROID_FILES[@]}" --clobber
+          else
+            gh release create "$TAG" "${ANDROID_FILES[@]}" --target "$GITHUB_SHA" --title "Choo Choo Pop ${{ steps.version.outputs.version }} (Cafe Bazaar)" --notes "$NOTES" --prerelease --latest=false
+          fi
+
+      # Cafe Bazaar: send the signed APK (only the bazaar branch, and only with the API token;
+      # skipped when Bazaar already has this versionCode).
+      - name: Release in Cafe Bazaar
+        id: pishkhan
+        if: github.ref == 'refs/heads/bazaar' && env.HAS_KEYSTORE == 'true' && env.HAS_PISHKHAN == 'true'
+        env:
+          BAZAAR_PISHKHAN_TOKEN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN }}
+          BAZAAR_AUTO_PUBLISH: ${{ vars.BAZAAR_AUTO_PUBLISH || 'false' }}
+          BAZAAR_CHANNEL: ${{ (inputs.channel != '' && inputs.channel != 'default') && inputs.channel || vars.BAZAAR_CHANNEL || 'alpha' }}
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          node scripts/pishkhan-release.mjs "out/ChooChooPop-$VERSION-Bazaar.apk" --version "$VERSION" --code ${{ steps.version.outputs.code }} --changelog "$RUNNER_TEMP/bazaar-notes.json"
+
+      # The notes in the file went to Bazaar: empty it, so the next version needs its own.
+      - name: Empty the release notes for the next version
+        if: steps.pishkhan.conclusion == 'success' && steps.notes.outputs.source == 'file'
+        run: |
+          node scripts/bazaar-notes.mjs clear
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -qm "chore(bazaar): release notes for v${{ steps.version.outputs.version }} used [skip ci]" -- bazaar-release-notes.json
+          for attempt in 1 2 3; do
+            if git push --quiet origin HEAD:bazaar; then break; fi
+            if [ $attempt = 3 ]; then echo "::warning::Couldn't empty the release notes on bazaar; empty them by hand."; exit 0; fi
+            git pull --rebase --quiet origin bazaar
+          done

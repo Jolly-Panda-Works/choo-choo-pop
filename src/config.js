@@ -1,8 +1,11 @@
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.0.0';
 
-// Two builds from one code base: "en" (Choo Choo Pop) and "fa" (هو هو چی چی).
-// Chosen at build time:  VITE_EDITION=fa npm run build   (see package.json scripts)
-export const EDITION = import.meta.env.VITE_EDITION === 'fa' ? 'fa' : 'en';
+// One game in two languages; the player switches in the settings.
+// The Cafe Bazaar build (VITE_STORE=bazaar, see package.json scripts) adds Bazaar's services and starts in Persian.
+export const STORE = import.meta.env.VITE_STORE === 'bazaar' ? 'bazaar' : 'global';
+export const DEFAULT_LANG = STORE === 'bazaar' ? 'fa' : 'en';
+
+export const CREDITS = { author: 'Usef Farahmand', website: 'https://www.useffarahmand.com' };
 
 // Test services (fake ads, free fake purchases) are only on in dev builds, or when you build with VITE_MOCK_SERVICES=1.
 // A production build with no real ad/billing provider registered shows no ads and sells nothing (see src/services).

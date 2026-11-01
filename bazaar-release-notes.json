@@ -1,0 +1,6 @@
+{
+  "$comment": "What's new in Cafe Bazaar for the next version (required: a Bazaar build fails without it). Set version to the version being released (package.json) and write fa and en, on the bazaar branch. Emptied automatically after a release.",
+  "version": "1.2.0",
+  "fa": "نسخه‌ی آزمایشی اول هو هو چی چی برای کافه‌بازار.",
+  "en": "First test build of Choo Choo Pop for Cafe Bazaar."
+}

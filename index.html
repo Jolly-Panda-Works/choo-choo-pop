@@ -4,9 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#009dfe" />
+    <meta name="author" content="Usef Farahmand" />
     <title>Choo Choo Pop</title>
+    <style>
+      /* The Jolly Panda studio card: fades in, holds, fades out (2.4 s), always on launch.
+         Inline so it shows before the app's CSS and JavaScript arrive. */
+      #studio {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: #ffffff;
+        animation: studio-out 0.5s ease 1.9s forwards;
+      }
+      #studio img {
+        width: min(62vmin, 360px);
+        height: auto;
+        opacity: 0;
+        animation: studio-in 0.6s ease 0.15s forwards;
+      }
+      @keyframes studio-in {
+        from {
+          opacity: 0;
+          transform: scale(0.94);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes studio-out {
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="studio">
+      <img src="./boot/jolly-panda.webp" alt="Jolly Panda Studio" width="720" height="568" />
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

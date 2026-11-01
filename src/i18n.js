@@ -1,6 +1,6 @@
-import { EDITION } from './config.js';
+import { currentLang, useSave } from './store.js';
 
-// The English build only ships English, the Persian build only Persian (see EDITION).
+// Both languages ship in every build; the player's choice is in the save (see store.js, lang).
 const dict = {
   en: {
     title: 'Choo Choo Pop',
@@ -40,6 +40,21 @@ const dict = {
     resetConfirm: 'Erase all your stars and stations?',
     resetKeeps: 'Your coins, hints and looks stay.',
     version: 'Version',
+    language: 'Language',
+    gameBy: 'A game by',
+    bazaarSignIn: 'Sign in with Bazaar',
+    bazaarSignOut: 'Signed in: tap to sign out',
+    bazaarSignedIn: 'Signed in with Bazaar',
+    bazaarCancelled: 'Sign in was cancelled',
+    bazaarNeedsLogin: 'Log in to Bazaar, then come back',
+    bazaarFailed: 'Could not sign in. Try again later.',
+    rateGame: 'Rate and review',
+    moreGames: 'More games',
+    autoUpdate: 'Turn on auto-update',
+    updateTitle: 'New version!',
+    updateBody: 'A new version is out in Cafe Bazaar. Update now?',
+    updateNow: 'Update',
+    updateLater: 'Later',
     portraitOnly: 'Please hold your phone upright',
 
     // map & stages
@@ -246,6 +261,21 @@ const dict = {
     resetConfirm: 'همهٔ ستاره‌ها و ایستگاه‌ها پاک شود؟',
     resetKeeps: 'سکه‌ها، راهنماها و ظاهرها می‌مانند.',
     version: 'نسخه',
+    language: 'زبان',
+    gameBy: 'ساختهٔ',
+    bazaarSignIn: 'ورود با بازار',
+    bazaarSignOut: 'وارد شدی؛ برای خروج بزن',
+    bazaarSignedIn: 'با بازار وارد شدی',
+    bazaarCancelled: 'ورود لغو شد',
+    bazaarNeedsLogin: 'اول وارد بازار شو و برگرد',
+    bazaarFailed: 'ورود انجام نشد. بعداً دوباره امتحان کن.',
+    rateGame: 'نظر و امتیاز',
+    moreGames: 'بازی‌های دیگر',
+    autoUpdate: 'روشن کردن به‌روزرسانی خودکار',
+    updateTitle: 'نسخهٔ جدید!',
+    updateBody: 'نسخهٔ جدید بازی در کافه‌بازار آمده. الان به‌روز می‌کنی؟',
+    updateNow: 'به‌روزرسانی',
+    updateLater: 'بعداً',
     portraitOnly: 'لطفاً گوشی را عمودی نگه دار',
 
     soon: 'به‌زودی',
@@ -412,17 +442,21 @@ const dict = {
 
 const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 
+const digits = (lang, x) => (lang === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+
 export function useT() {
+  useSave(); // re-render when the language changes
+  const lang = currentLang();
   const t = (key, vars) => {
-    let s = dict[EDITION][key] ?? dict.en[key] ?? key;
+    let s = dict[lang][key] ?? dict.en[key] ?? key;
     if (vars) for (const k in vars) s = s.replace(`{${k}}`, vars[k]);
     return s;
   };
-  t.lang = EDITION;
-  t.dir = EDITION === 'fa' ? 'rtl' : 'ltr';
-  /** Numbers shown to the child (Persian digits in the Persian edition). */
-  t.n = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+  t.lang = lang;
+  t.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  /** Numbers shown to the child (Persian digits in Persian). */
+  t.n = (x) => digits(lang, x);
   return t;
 }
 
-export const formatNumber = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+export const formatNumber = (x) => digits(currentLang(), x);

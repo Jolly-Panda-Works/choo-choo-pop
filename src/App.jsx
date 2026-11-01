@@ -5,6 +5,7 @@ import { levelCount } from './game/levels.js';
 import { stageOfLevel } from './game/stages.js';
 import { loadSprites, ART } from './board/sprites.js';
 import { MOCK_SERVICES } from './config.js';
+import { putOffBazaarUpdate, updateFromBazaar, useBazaarUpdate } from './services/bazaarApp.js';
 import Home from './screens/Home.jsx';
 import StageMap from './screens/StageMap.jsx';
 import Stage from './screens/Stage.jsx';
@@ -15,6 +16,7 @@ import Story from './screens/Story.jsx';
 import CoinShop from './screens/CoinShop.jsx';
 import Missions from './screens/Missions.jsx';
 import AdHost from './ui/AdHost.jsx';
+import Modal from './ui/Modal.jsx';
 import { IconDefs } from './ui/icons.jsx';
 import HomeScene from './ui/HomeScene.jsx';
 import CloudWipe, { CLOSE_MS, OPEN_MS } from './ui/CloudWipe.jsx';
@@ -28,6 +30,7 @@ const SCENE_DECOR = new Set(['home', 'stage']);
 export default function App() {
   const save = useSave();
   const t = useT();
+  const [bazaarUpdate, closeBazaarUpdate] = useBazaarUpdate();
   // first launch: the story, then straight into level 1
   const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story', then: 'game' }));
   const screenRef = useRef(screen);
@@ -41,7 +44,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = t.lang;
     document.documentElement.dir = t.dir;
-    document.documentElement.classList.add('ed-' + t.lang);
+    document.documentElement.classList.toggle('ed-fa', t.lang === 'fa');
     document.title = t('title');
     loadSprites().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -186,6 +189,38 @@ export default function App() {
       {overlay === 'coins' && <CoinShop onBack={() => setOverlay(null)} />}
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
+      {bazaarUpdate && (
+        <Modal
+          pose="salute"
+          title={t('updateTitle')}
+          onClose={() => {
+            putOffBazaarUpdate(bazaarUpdate);
+            closeBazaarUpdate();
+          }}
+        >
+          <p className="small">{t('updateBody')}</p>
+          <div className="modal-actions">
+            <button
+              className="btn"
+              onClick={() => {
+                putOffBazaarUpdate(bazaarUpdate);
+                closeBazaarUpdate();
+              }}
+            >
+              {t('updateLater')}
+            </button>
+            <button
+              className="btn"
+              onClick={() => {
+                updateFromBazaar();
+                closeBazaarUpdate();
+              }}
+            >
+              {t('updateNow')}
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

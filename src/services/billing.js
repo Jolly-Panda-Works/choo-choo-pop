@@ -8,7 +8,7 @@
 //     finish?(productId, token): Promise<void>,             // optional: after the goods were granted (e.g. consume a coin pack)
 //     pending?(): Promise<{ productId, token }[]>,          // optional: paid but not yet granted/consumed (app died mid-purchase)
 //   })
-// The Cafe Bazaar provider of the Persian edition lives in bazaar.js and is registered in main.jsx.
+// The Cafe Bazaar provider of the Bazaar build lives in bazaar.js and is registered in main.jsx.
 //
 // Product ids are in config.js (COIN_PACKS, REMOVE_ADS_ID). Consumables (coins) are granted here, right after a
 // successful purchase; "remove ads" sets save.adsRemoved.

@@ -9,6 +9,7 @@ import {
   START_POWERUPS,
   POWERUPS,
   DAILY_GIFT_COINS,
+  DEFAULT_LANG,
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions } from './game/missions.js';
 import { levelCount } from './game/levels.js';
@@ -36,6 +37,7 @@ const defaults = () => ({
   powerups: { star: START_POWERUPS, eraser: START_POWERUPS, peek: START_POWERUPS },
   mis: null, // missions, see game/missions.js
   lastGift: '', // day of the last free daily gift
+  lang: null, // 'en' | 'fa', null = the default of this build
 });
 
 function load() {
@@ -69,6 +71,11 @@ function persist() {
 }
 
 export const getState = () => state;
+export const currentLang = () => state.lang || DEFAULT_LANG;
+export const subscribe = (l) => {
+  listeners.add(l);
+  return () => listeners.delete(l);
+};
 export function update(patch) {
   state = { ...state, ...(typeof patch === 'function' ? patch(state) : patch) };
   persist();

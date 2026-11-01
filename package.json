@@ -2,18 +2,21 @@
   "name": "choo-choo-pop",
   "private": true,
   "version": "1.2.0",
+  "author": {
+    "name": "Usef Farahmand",
+    "url": "https://www.useffarahmand.com"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:fa": "VITE_EDITION=fa vite",
+    "dev:bazaar": "VITE_STORE=bazaar vite",
     "build": "vite build",
-    "build:en": "VITE_EDITION=en vite build",
-    "build:fa": "VITE_EDITION=fa vite build",
+    "build:bazaar": "VITE_STORE=bazaar vite build",
     "preview": "vite preview",
     "levels:build": "node scripts/build-levels.mjs",
     "test:levels": "node scripts/test-levels.mjs",
-    "cap:sync:en": "npm run build:en && cap sync android",
-    "cap:sync:fa": "npm run build:fa && cap sync android"
+    "cap:sync": "npm run build && cap sync android",
+    "cap:sync:bazaar": "npm run build:bazaar && cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",
