@@ -106,10 +106,7 @@ export default function CoinShop({ onBack }) {
                 {icon ? (
                   <img className="v5pic" alt="" draggable="false" src={`${ART}v5/${icon[0]}.webp`} style={rel(icon[0], icon[1])} />
                 ) : (
-                  <>
-                    <img className="v5pic" alt="" draggable="false" src={`${ART}v5/pack-happy.webp`} style={rect(30, 96, 190, 160)} />
-                    <PandaPeekIcon skin={save.pandaSkin} />
-                  </>
+                  <img className="v5pic" alt="" draggable="false" src={`${ART}v5/pack-happy.webp`} style={rect(30, 96, 190, 160)} />
                 )}
                 <img className="v5pic" alt="" draggable="false" src={`${ART}v5/burst.webp`} style={rect(218, 52, 115, 115)} />
                 <div className="ptxt" style={{ ...rect(218, 52, 115, 115), ...fs(27), color: '#1f5662', flexDirection: 'column', transform: 'rotate(-12deg)' }}>
@@ -119,7 +116,7 @@ export default function CoinShop({ onBack }) {
                 {p.tag && (
                   <>
                     <img className="v5pic" alt="" draggable="false" src={`${ART}v5/${p.tag === 'bestDeal' ? 'tag-pink' : 'tag-green'}.webp`} style={rect(-76, p.tag === 'bestDeal' ? -3 : -3, 193, 273)} />
-                    <div className="ptxt" style={{ ...rect(-62, 70, 170, 120), ...fs(36), color: '#fff', transform: 'rotate(-34deg)', whiteSpace: 'normal', textShadow: '0 2px 0 rgba(0,0,0,.25)' }}>
+                    <div className="ptxt" style={{ ...rect(-77, 89, 170, 120), ...fs(36), color: '#fff', transform: 'rotate(28deg)', whiteSpace: 'normal', textShadow: '0 2px 0 rgba(0,0,0,.25)' }}>
                       {t(p.tag)}
                     </div>
                   </>
@@ -154,17 +151,4 @@ export default function CoinShop({ onBack }) {
     {gate && <ParentGate onPass={() => pay(gate)} onCancel={() => setGate(null)} />}
     </>
   );
-}
-
-function PandaPeekIcon({ skin }) {
-  return (
-    <div style={{ ...rect(70, 18, 160, 130), overflow: 'hidden', position: 'absolute' }}>
-      <PandaImg skin={skin} />
-    </div>
-  );
-}
-import { usePandaSrc } from '../ui/Panda.jsx';
-function PandaImg({ skin }) {
-  const src = usePandaSrc('wave', skin);
-  return <img src={src} alt="" draggable="false" style={{ width: '100%', display: 'block' }} />;
 }

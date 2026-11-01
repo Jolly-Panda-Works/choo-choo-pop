@@ -14,3 +14,6 @@ android/.idea
 *.jks
 
 public/choo-choo-pop-assets/_work/vite-cache
+
+.env.local
+.env.*.local

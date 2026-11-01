@@ -1,5 +1,17 @@
-fix(home): move Play and the round buttons lower so they no longer touch the logo
+feat(fa): Cafe Bazaar in-app billing infrastructure; fix coin shop tags and Panda pack
 
-The Play button's white ring overlapped the bottom of the logotype. Play and the
-Settings / Map / Missions / Shop row are now shifted down by DY (105 design px of the
-1440x2280 stage) in Home.jsx; the free space at the bottom of the scene absorbs it.
+Coin shop
+- "Best deal" / "Users' choice" labels now follow the tilt of the tag art
+  (rotate +28deg instead of -34deg) and are centred on the tag body.
+- Remove the panda picture from the Panda pack row (only the coin pile stays).
+
+Cafe Bazaar billing (Persian edition, Android)
+- Add Capacitor plugin BazaarBilling (Kotlin, Poolakey) in src/edition-fa;
+  the en edition gets an empty EditionPlugins, MainActivity registers them.
+- Gradle: Kotlin plugin, JitPack repo, Poolakey dependency for EDITION=fa only
+  (override with -PPOOLAKEY_VERSION). Manifest: Bazaar <queries> + PAY_THROUGH_BAZAAR.
+- JS: src/services/bazaar.js provider (prices from Bazaar, purchase, consume,
+  restore, pending), registered in main.jsx when VITE_EDITION=fa on Android.
+- billing.js: purchase may return { token }; optional finish()/pending() hooks and
+  billing.recover() grant + consume interrupted purchases without double grants.
+- .env.example for VITE_BAZAAR_RSA_KEY, README section with the setup steps.

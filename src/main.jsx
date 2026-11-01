@@ -2,8 +2,15 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles.css';
 import './anim/ua.js';
+import { registerBillingProvider, billing } from './services/billing.js';
+import { bazaarProvider, bazaarSupported } from './services/bazaar.js';
 
 async function start() {
+  // Persian edition on Android: Cafe Bazaar in-app billing (needs VITE_BAZAAR_RSA_KEY, see .env.example)
+  if (import.meta.env.VITE_EDITION === 'fa' && bazaarSupported()) {
+    registerBillingProvider(bazaarProvider);
+    billing.recover(); // finish purchases interrupted last time
+  }
   if (import.meta.env.VITE_EDITION === 'fa') {
     // bundled font: the game works offline and every phone shows the same Persian letters/digits
     // (Merkin and Cabin have no Arabic letters, so Persian text and digits come from Vazirmatn)

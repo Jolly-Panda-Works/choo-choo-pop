@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 // Two editions are built from the same project:
 //   ./gradlew assembleRelease -PEDITION=en   -> "Choo Choo Pop"   (com.jollypanda.choochoopop)
@@ -15,6 +16,8 @@ android {
     sourceSets {
         // edition-specific app name lives in src/edition-<en|fa>/res/values/app_name.xml
         main.res.srcDirs += "src/edition-${edition}/res"
+        // edition-specific native code: src/edition-fa has the Cafe Bazaar billing plugin, src/edition-en an empty list
+        main.java.srcDirs += "src/edition-${edition}/kotlin"
     }
     defaultConfig {
         applicationId "com.jollypanda.choochoopop" + (edition == 'fa' ? '.fa' : '')
@@ -53,6 +56,11 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+    // Cafe Bazaar in-app billing - Persian edition only. Check the latest release at
+    // https://github.com/cafebazaar/Poolakey/releases and override with -PPOOLAKEY_VERSION=x.y.z
+    if (edition == 'fa') {
+        implementation "com.github.cafebazaar.Poolakey:poolakey:${project.findProperty('POOLAKEY_VERSION') ?: '2.2.0'}"
+    }
 }
 
 apply from: 'capacitor.build.gradle'
