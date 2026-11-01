@@ -1,9 +1,5 @@
-feat(map): name all 18 villages, show stars on every one, "coming soon" popup on unbuilt ones
+fix(home): move Play and the round buttons lower so they no longer touch the logo
 
-- i18n: stage5Name..stage18Name (en + fa), named after the climate of the island the spot is on
-  (green 1-6, desert 7-10, ice 11-15, candy 16-18).
-- Every spot is now a normal village button with its name and "★ 0/60" (no more "Coming soon"
-  under the name). Only the built, unlocked stages open; tapping any other village shows the
-  "Coming soon!" popup.
-- The popup now renders above the village buttons (it was drawn behind them).
-- Slightly smaller buttons on narrow screens so neighbouring labels overlap less.
+The Play button's white ring overlapped the bottom of the logotype. Play and the
+Settings / Map / Missions / Shop row are now shifted down by DY (105 design px of the
+1440x2280 stage) in Home.jsx; the free space at the bottom of the scene absorbs it.
