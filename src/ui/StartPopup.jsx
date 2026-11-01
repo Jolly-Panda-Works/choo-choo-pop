@@ -1,112 +1,111 @@
 import { useState } from 'react';
-import { Popup, PandaPeek, Ribbon, Pic, rect, k, fs, box, man } from './v5.jsx';
+import { Popup, rect, fs } from './v5.jsx';
 import { PowerIcon, Bulb } from './icons.jsx';
 import { useT } from '../i18n.js';
-import { useSave } from '../store.js';
+import { useSave, markTaught } from '../store.js';
+import Modal from './Modal.jsx';
 import { ART } from '../board/sprites.js';
-import { POWERUP_STAGE, VIDEO_COINS } from '../config.js';
-import { stageOfLevel } from '../game/stages.js';
-import { ads } from '../services/ads.js';
-import { addCoins } from '../store.js';
+import { POWERUP_TEACH } from '../config.js';
 import { sfx } from '../audio.js';
 
-const O = [10, 130];
-const STAR_BOX = [
-  [244, 426, 304],
-  [615, 463, 241],
-  [924, 426, 303],
-];
-// booster slots (x of the left edge, PSD coordinates)
-const SLOT_X = [406, 625, 844];
+// the station frame, in its own pixels
+const DW = 1145;
+const DH = 1122;
+const CENTER_X = 553; // the panel is not in the middle of the art
+const STAR = 120;
+const STAR_GAP = 121;
+const STAR_Y = 440;
+const SLOT_W = 140;
+const SLOT_H = 125;
+const SLOT_GAP = 30;
+const SLOT_Y = 566;
 const SLOTS = ['star', 'peek', 'hint'];
 
-/** "Level #" popup shown before a station starts (v5 mockup 09): stars, goal chips, boosters, Play. */
-export default function StartPopup({ level, levelNo, inStage, stars, maxCoins, tutorial, onPlay, onClose, onCoins }) {
+/** "Level #" popup shown before a station starts: name, stars, the boosters taught so far, Play and Back. */
+export default function StartPopup({ levelNo, inStage, stars, tutorial, onPlay, onClose }) {
   const t = useT();
   const save = useSave();
   const [picks, setPicks] = useState([]);
   const [note, setNote] = useState('');
-  const stage = stageOfLevel(levelNo);
-  const unlockedPw = stage >= POWERUP_STAGE;
-  const lanes = level.lanes.length;
+  // the first power-up due here that the player has not been taught yet
+  const lesson = Object.keys(POWERUP_TEACH).find((id) => levelNo >= POWERUP_TEACH[id] && !save.taught[id]);
   const toggle = (id, ok, count) => {
     sfx.click();
-    if (!ok) return setNote(t('boosterLocked', { n: t.n(POWERUP_STAGE) }));
+    if (!ok) return setNote(t('boosterLocked'));
     if (count <= 0) return setNote(t('noPower'));
     setNote('');
     setPicks((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   };
-  const free = async () => {
-    if (await ads.rewarded()) addCoins(VIDEO_COINS);
-  };
   const slotCount = (id) => (id === 'hint' ? save.hints : save.powerups[id] || 0);
-  const chips = [
-    { ico: '🚂', txt: `×${t.n(lanes)}`, key: 'lanes' },
-    { ico: '▦', txt: `${t.n(level.rows)}×${t.n(level.cols)}`, key: 'size' },
-    { ico: '★', txt: `×${t.n(level.given.length)}`, key: 'stars', hide: !level.given.length },
-  ].filter((c) => !c.hide);
-  const cw = 818 / Math.max(1, chips.length);
+  const firstX = CENTER_X - (SLOTS.length * SLOT_W + (SLOTS.length - 1) * SLOT_GAP) / 2;
   return (
-    <Popup dw={1430} dh={2000} o={O} bg="start-popup" close={[1220, 467, 1356, 610]} onClose={onClose}>
-      <PandaPeek skin={save.pandaSkin} cx={721 - 10} by={310 - 130} w={320} h={205} pose="wave" />
-      <Ribbon x={721 - 10} y={362 - 130}>
-        {t('station')} {t.n(inStage)}
-      </Ribbon>
-      {STAR_BOX.map(([x, y, w], i) => (
-        <img key={i} className="v5pic" alt="" draggable="false" src={`${ART}map/ui/star-${i < stars ? 'gold' : 'grey'}.webp`} style={{ ...rect(x - O[0], y - O[1], w, w * 0.95), objectFit: 'contain' }} />
-      ))}
-      <div className="ptxt" style={{ ...rect(515 - O[0], 750 - O[1], 400, 67), ...fs(58), color: '#1f5662' }}>
-        {t('levelGoal')}
-      </div>
-      <Pic name="target-bg" o={O} />
-      <div style={{ ...box('target-bg', O), display: 'flex' }}>
-        {chips.map((c) => (
-          <div key={c.key} className="ptxt" style={{ position: 'relative', flex: 1, ...fs(54), color: '#fff', gap: k(12) }}>
-            <span style={{ fontSize: k(60) }}>{c.ico}</span>
-            {c.txt}
-          </div>
+    <>
+      <Popup dw={DW} dh={DH} o={[0, 0]} bg="station-frame">
+        <div className="ptxt" style={{ ...rect(CENTER_X - 356, 344, 712, 90), ...fs(66), color: '#1f5662' }}>
+          {t('station')} {t.n(inStage)}
+        </div>
+        {[0, 1, 2].map((i) => (
+          <img key={i} className="v5pic" alt="" draggable="false" src={`${ART}map/ui/star-${i < stars ? 'gold' : 'grey'}.webp`} style={{ ...rect(CENTER_X - STAR / 2 + (i - 1) * STAR_GAP, STAR_Y - (i === 1 ? 10 : 0), STAR, STAR * 0.95), objectFit: 'contain' }} />
         ))}
-      </div>
-      {SLOTS.map((id, i) => {
-        const ok = id === 'hint' ? !tutorial : unlockedPw;
-        const on = picks.includes(id);
-        const x = SLOT_X[i] - O[0];
-        const y = 1057 - O[1];
-        return (
-          <button key={id} className={'slotbtn' + (ok && slotCount(id) <= 0 ? ' off' : '')} style={rect(x, y, 169, 150)} onClick={() => toggle(id, ok, slotCount(id))} aria-label={t(id === 'hint' ? 'hint' : 'pw_' + id)}>
-            <img className="v5pic" alt="" draggable="false" src={`${ART}v5/${ok ? 'slot-blue' : 'slot-pink'}.webp`} style={rect(0, 0, 169, 150)} />
-            <div className="ptxt" style={rect(0, 8, 169, 130)}>
-              {id === 'hint' ? <Bulb size={52} /> : <PowerIcon id={id} size={52} />}
-            </div>
-            {ok && <span className="badge2" style={{ left: k(-14), bottom: k(-14) }}>{t.n(slotCount(id))}</span>}
-            {ok && on && <img className="v5pic" alt="" draggable="false" src={`${ART}v5/checkbox.webp`} style={rect(100, -34, 80, 76)} />}
-            {!ok && <img className="v5pic" alt="" draggable="false" src={`${ART}v5/lock-s.webp`} style={rect(98, 62, 66, 82)} />}
-          </button>
-        );
-      })}
-      <button className="pbtn" style={box('btn-play', O)} onClick={() => onPlay(picks)}>
-        <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-play.webp`} style={rect(0, 0, 436, 179)} />
-        <span style={{ ...rect(0, 0, 436, 150), display: 'grid', placeItems: 'center', ...fs(86) }}>{t('letsGo2')}</span>
-      </button>
-      {note && <div className="pop-toast" style={{ top: k(1480 - O[1] - 70) }}>{note}</div>}
-      <div className="ptxt" style={{ ...box('target-bg', O), top: k(1560 - O[1]), left: k(150 - O[0]), width: k(1120), height: k(210), flexDirection: 'column', gap: k(14), whiteSpace: 'normal', ...fs(46) }}>
-        {!tutorial ? (
-          <span>
-            {t('upTo', { n: t.n(maxCoins) })} <img className="pcoin" alt="" src={`${ART}v5/coin-gold.webp`} />
-          </span>
-        ) : (
-          <span>{t('goalLearn')}</span>
-        )}
-        {lanes > 1 && <small style={{ ...fs(36), opacity: 0.85 }}>{t('goalLanes')}</small>}
-      </div>
-      {ads.rewardedAvailable() && (
-        <button className="pbtn" style={box('btn-free', O)} onClick={free}>
-          <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-free.webp`} style={rect(0, 0, 700, 176)} />
-          <span style={{ ...rect(240, 40, 440, 100), display: 'grid', placeItems: 'center', ...fs(58) }}>
-            {t('freeCoins')} +{t.n(VIDEO_COINS)}
-          </span>
+        {SLOTS.map((id, i) => {
+          // locked until taught: hints after the tutorial, power-ups by their lesson
+          const ok = id === 'hint' ? !tutorial : !!save.taught[id];
+          const on = picks.includes(id);
+          return (
+            <button key={id} className={'slotbtn' + (ok && slotCount(id) <= 0 ? ' empty' : '')} style={rect(firstX + i * (SLOT_W + SLOT_GAP), SLOT_Y, SLOT_W, SLOT_H)} onClick={() => toggle(id, ok, slotCount(id))} aria-label={t(id === 'hint' ? 'hint' : 'pw_' + id)}>
+              <img className="v5pic" alt="" draggable="false" src={`${ART}v5/slot-blue.webp`} style={rect(0, 0, SLOT_W, SLOT_H)} />
+              <div className="ptxt" style={rect(22, 14, 96, 96)}>
+                {!ok ? (
+                  <img src={`${ART}v5/lock-m.webp`} alt="" draggable="false" style={{ width: '70%', height: '90%', objectFit: 'contain' }} />
+                ) : id === 'hint' ? (
+                  <Bulb size="100%" />
+                ) : (
+                  <PowerIcon id={id} size="100%" />
+                )}
+              </div>
+              {ok && <span className="ptxt count-badge pink" style={{ ...rect(88, 73, 50, 50), ...fs(26) }}>{t.n(slotCount(id))}</span>}
+              {ok && on && <img className="v5pic pick-mark" alt="" draggable="false" src={`${ART}v5/checkbox.webp`} style={rect(3, 3, 50, 47)} />}
+            </button>
+          );
+        })}
+        <button className="pbtn start-play" style={rect(CENTER_X - 210, 702, 420, 172)} onClick={() => onPlay(picks)}>
+          <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-play-green.webp`} style={rect(0, 0, 420, 172)} />
+          <span style={{ ...rect(0, 0, 420, 146), display: 'grid', placeItems: 'center', ...fs(74) }}>{t('letsGo2')}</span>
         </button>
+        <button
+          className="pbtn"
+          style={rect(CENTER_X - 120, 876, 240, 96)}
+          onClick={() => {
+            sfx.close();
+            onClose();
+          }}
+        >
+          <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-red.webp`} style={rect(0, 0, 240, 96)} />
+          <span style={{ ...rect(0, 0, 240, 85), display: 'grid', placeItems: 'center', ...fs(40) }}>{t('goBack')}</span>
+        </button>
+        {note && <div className="pop-toast" style={{ top: `${(1010 / DH) * 100}%` }}>{note}</div>}
+      </Popup>
+      {lesson && (
+        <Modal key={lesson} pose="point" title={t('pw_' + lesson)}>
+          {(leave) => (
+            <>
+              <PowerIcon id={lesson} size={96} />
+              <p className="goal">{t('pwi_' + lesson)}</p>
+              <div className="modal-actions">
+                <button
+                  className="btn big yellow"
+                  onClick={() => {
+                    sfx.hint();
+                    leave(() => markTaught(lesson));
+                  }}
+                >
+                  {t('gotIt')}
+                </button>
+              </div>
+            </>
+          )}
+        </Modal>
       )}
-    </Popup>
+    </>
   );
 }

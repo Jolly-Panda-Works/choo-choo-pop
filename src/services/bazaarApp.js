@@ -16,7 +16,7 @@ const OFF_KEY = 'ccp.bazaarLoginOff';
 const LATER_KEY = 'ccp.bazaarUpdateLater';
 const SAVE_DELAY = 3000;
 // settings of this phone: they stay when a save comes back from Bazaar
-const LOCAL_ONLY = ['sound', 'vibrate', 'lang', 'adCount', 'adTarget'];
+const LOCAL_ONLY = ['sound', 'music', 'vibrate', 'lang', 'adCount', 'adTarget'];
 
 export const bazaarAppAvailable = () => Capacitor.getPlatform() === 'android';
 export const moreGamesAvailable = () => bazaarAppAvailable() && !!DEVELOPER_ID;

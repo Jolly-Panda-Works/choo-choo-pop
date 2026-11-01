@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MAP_ART } from '../board/sprites.js';
-import { TILE } from '../game/mapTheme.js';
+import { END_OVERLAP, TILE } from '../game/mapTheme.js';
 import { ua, uaDelay } from '../anim/ua.js';
 
 /** Width (px) of an element, kept up to date. */
@@ -124,12 +124,50 @@ export function smoothPath(pts) {
   return d;
 }
 
+/** True while `ref` is within half a screen of the view of its scroller. */
+function useNear(ref, scroller) {
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setNear(e.isIntersecting), { root: ref.current.closest(scroller), rootMargin: '50% 0px' });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [ref, scroller]);
+  return near;
+}
+
+/** Elements matching `selector` get the class `off` while out of view: their animations stop (see styles.css). */
+export function usePauseOffscreen(ref, selector, deps = [], threshold = 0) {
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return undefined;
+    const io = new IntersectionObserver((list) => list.forEach((e) => e.target.classList.toggle('off', !e.isIntersecting)), { root, threshold });
+    root.querySelectorAll(selector).forEach((el) => io.observe(el));
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}
+
+/** One island tile: the picture exists only near the view, so far tiles use no memory. */
+function Tile({ name }) {
+  const ref = useRef(null);
+  const near = useNear(ref, '.stage-scroll');
+  const end = name === 'end';
+  const style = end
+    ? { aspectRatio: `1080 / ${Math.round((TILE[name] + END_OVERLAP) * 1080)}`, marginBottom: `${-END_OVERLAP * 100}%`, position: 'relative', zIndex: 1 }
+    : { aspectRatio: `1080 / ${Math.round(TILE[name] * 1080)}` };
+  return (
+    <div ref={ref} style={style}>
+      {near && <img src={`${MAP_ART}bg/${name}.webp`} alt="" draggable="false" decoding="async" />}
+    </div>
+  );
+}
+
 /** The island tiles of a theme, stacked (tiles are listed bottom -> top). */
 export function TileStack({ tiles }) {
   return (
     <div className="tile-stack" aria-hidden="true">
       {[...tiles].reverse().map((n, i) => (
-        <img key={n + i} src={`${MAP_ART}bg/${n}.webp`} alt="" draggable="false" style={{ aspectRatio: `1080 / ${Math.round(TILE[n] * 1080)}` }} />
+        <Tile key={n + i} name={n} />
       ))}
     </div>
   );

@@ -3,9 +3,12 @@ import App from './App.jsx';
 import './styles.css';
 import './anim/ua.js';
 import { startPlatform } from './services/platform.jsx';
+import { loadSounds, setupMusic } from './audio.js';
 
 async function start() {
   startPlatform();
+  loadSounds();
+  setupMusic();
   // bundled font: the game works offline and every phone shows the same Persian letters/digits
   // (Merkin and Cabin have no Arabic letters, so Persian text and digits come from Vazirmatn)
   await import('@fontsource-variable/vazirmatn/wght.css');

@@ -1,6 +1,7 @@
 // Cafe Bazaar build: this file replaces the empty hooks of main (see there), everything Bazaar plugs in here.
 import { useEffect, useState } from 'react';
 import Modal from '../ui/Modal.jsx';
+import { Icon } from '../ui/icons.jsx';
 import { useT } from '../i18n.js';
 import { registerBillingProvider, billing } from './billing.js';
 import { bazaarProvider, bazaarSupported } from './bazaar.js';
@@ -59,6 +60,7 @@ export function startPlatform() {
   if (bazaarSupported()) {
     registerBillingProvider(bazaarProvider);
     billing.recover(); // finish purchases interrupted last time
+    billing.restore(); // a reinstall gets remove_ads back on its own
   }
   startBazaarApp();
 }
@@ -79,7 +81,7 @@ export function usePlatformRows(t, say) {
       key: 'bazaarLogin',
       name: connected ? text.signOut : text.signIn,
       btn: {
-        label: connected ? '✓' : '→',
+        label: <Icon name={connected ? 'tick' : 'play'} />,
         run: async () => {
           if (connected) return signOutOfBazaar();
           const message = text[await signInWithBazaar()];
@@ -87,15 +89,14 @@ export function usePlatformRows(t, say) {
         },
       },
     },
-    { key: 'rate', name: text.rate, btn: { label: '★', run: rateOnBazaar } },
+    { key: 'rate', name: text.rate, btn: { label: <Icon name="star" />, run: rateOnBazaar } },
   ];
-  if (moreGamesAvailable()) rows.push({ key: 'more', name: text.more, btn: { label: '→', run: openMoreGames } });
   if (autoUpdate === 'disabled') {
     rows.push({
       key: 'autoUpdate',
       name: text.autoUpdate,
       btn: {
-        label: '↻',
+        label: <Icon name="repeat" />,
         run: () => {
           enableBazaarAutoUpdate();
           // Bazaar asks the player; check again when they come back
@@ -106,6 +107,9 @@ export function usePlatformRows(t, say) {
   }
   return rows;
 }
+
+/** The developer page of Bazaar, in the About popup. */
+export const usePlatformLinks = (t) => (moreGamesAvailable() ? [{ key: 'more', label: TEXT[t.lang].more, run: openMoreGames }] : []);
 
 export function PlatformOverlay() {
   const t = useT();

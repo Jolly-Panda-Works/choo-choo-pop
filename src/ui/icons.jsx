@@ -16,23 +16,32 @@ export function IconDefs() {
   );
 }
 
+/** White icon (art/icons), as tall as the text around it. */
+export const Icon = ({ name }) => <img className="gi" src={`${ART}icons/${name}.webp`} alt="" draggable="false" />;
+
 export function Coin({ size = 22 }) {
   return <img className="coin-ico" src={`${V5_ART}coin-gold.webp`} width={size} height={size} alt="" draggable="false" />;
 }
 
-/** Coin counter chip (coin + amount + green plus) - the same on every screen; it opens the coin popup. */
+/** Coin counter chip (coin + green plus + amount) - the same on every screen; it opens the coin popup. */
 export function CoinChip({ amount, onClick, label, className = '' }) {
   return (
     <button className={'chip coin-chip ' + className} onClick={onClick} aria-label={label}>
-      <Coin size={24} /> {amount} <b className="plus">+</b>
+      <span className="coin-mark">
+        <Coin size={44} />
+        <img className="coin-plus" src={`${V5_ART}circle-green.webp`} alt="" draggable="false" />
+        <img className="coin-plus cross" src={`${V5_ART}plus-white.webp`} alt="" draggable="false" />
+      </span>
+      <span className="coin-amount">{amount}</span>
     </button>
   );
 }
 
 // `size` is a number of px, or a CSS size string like '60%' (inside the scaled v5 popups)
 const dim = (size) => (typeof size === 'string' ? { style: { width: size, height: 'auto' } } : { width: size, height: size });
+const fit = (size) => ({ ...dim(size), style: { ...dim(size).style, objectFit: 'contain' } });
 export function Bulb({ size = 26 }) {
-  return <img src={`${ART}ui/bulb.png`} {...dim(size)} alt="" draggable="false" />;
+  return <img src={`${V5_ART}icon-hint.webp`} {...fit(size)} alt="" draggable="false" />;
 }
 
 /**
@@ -70,32 +79,14 @@ export const BackIcon = () => (
 export function BackButton({ onClick, label, className = '' }) {
   return (
     <button className={'back-btn ' + className} onClick={onClick} aria-label={label}>
-      <img src={`${UI_ART}round-orange.webp`} alt="" draggable="false" />
-      <svg viewBox="0 0 32 32" aria-hidden="true">
-        <path d="M12.5 8.5L6 15l6.5 6.5" />
-        <path d="M6.5 15H19a6.2 6.2 0 010 12.4h-4" />
-      </svg>
+      <img src={`${V5_ART}back-btn.webp`} alt="" draggable="false" />
+      <img className="back-arrow" src={`${V5_ART}back-arrow.webp`} alt="" draggable="false" />
     </button>
   );
 }
 
 /** Power-up icons: star tile, eraser, eye (peek). */
 export function PowerIcon({ id, size = 40 }) {
-  if (id === 'star') return <img src={`${ART}map/ui/star-gold.webp`} {...dim(size)} alt="" draggable="false" />;
-  if (id === 'eraser')
-    return (
-      <svg viewBox="0 0 40 40" {...dim(size)} aria-hidden="true">
-        <rect x="5" y="15" width="30" height="16" rx="5" transform="rotate(-25 20 23)" fill="#ff8fa8" stroke="#fff" strokeWidth="2.5" />
-        <rect x="5" y="15" width="13" height="16" rx="5" transform="rotate(-25 20 23)" fill="#fff" opacity=".85" />
-        <path d="M8 35h24" stroke="#c93a5e" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    );
-  return (
-    <svg viewBox="0 0 40 40" {...dim(size)} aria-hidden="true">
-      <path d="M3 20C9 9 31 9 37 20 31 31 9 31 3 20z" fill="#fff" stroke="#1f9bb0" strokeWidth="3" strokeLinejoin="round" />
-      <circle cx="20" cy="20" r="7.5" fill="#3fd6e0" stroke="#1f9bb0" strokeWidth="2" />
-      <circle cx="20" cy="20" r="3.2" fill="#134a55" />
-      <circle cx="22.5" cy="17.5" r="1.6" fill="#fff" />
-    </svg>
-  );
+  const src = id === 'star' ? 'map/ui/star-gold.webp' : `v5/icon-${id}.webp`;
+  return <img src={ART + src} {...fit(size)} alt="" draggable="false" />;
 }

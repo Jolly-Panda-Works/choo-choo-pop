@@ -7,3 +7,5 @@ export const START_HINTS = 5;
 export const START_COINS = 0;
 // Power-ups are unlocked from this stage on.
 export const POWERUP_STAGE = 2;
+// the level whose start popup teaches a power-up; it stays locked until that lesson was seen
+export const POWERUP_TEACH = { star: 21, eraser: 26, peek: 31 };

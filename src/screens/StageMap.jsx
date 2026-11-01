@@ -8,7 +8,7 @@ import { MAP_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import Modal from '../ui/Modal.jsx';
 import { BackButton, CoinChip } from '../ui/icons.jsx';
-import { TileStack, SeaDecor, useWidth } from '../ui/MapKit.jsx';
+import { TileStack, SeaDecor, useWidth, usePauseOffscreen } from '../ui/MapKit.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
 
 // World map: one island tile per stage, stacked bottom -> top (stage 1 = the start island).
@@ -23,6 +23,13 @@ export default function StageMap({ onBack, onOpen, onCoins }) {
   const board = useRef(null);
   const W = useWidth(board);
   const H = stackHeight(WORLD) * W;
+  usePauseOffscreen(scroller, '.stage-node, .sea-decor > *', [W], 0.3);
+  // the first opening is staggered; after that an item plays its entrance as soon as it scrolls into view
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setSettled(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
   const currentStage = Math.min(STAGES.length, Math.ceil(Math.min(save.unlocked, STAGES.length * STAGE_SIZE) / STAGE_SIZE));
 
   // top y (in widths) of each tile, tiles are drawn top -> bottom in reverse order
@@ -125,7 +132,7 @@ export default function StageMap({ onBack, onOpen, onCoins }) {
         <CoinChip amount={t.n(save.coins)} onClick={() => { sfx.click(); onCoins(); }} label={t('coins')} />
       </header>
 
-      <div className="stage-scroll" ref={scroller}>
+      <div className={'stage-scroll' + (settled ? ' settled' : '')} ref={scroller}>
         <div className="stage-board" ref={board} style={{ height: W ? H : undefined }}>
           <TileStack tiles={WORLD} />
           <SeaDecor />
@@ -143,11 +150,13 @@ export default function StageMap({ onBack, onOpen, onCoins }) {
                 <button key={id} className={'stage-node' + (open ? '' : ' locked') + (here ? ' current' : '')} style={style} onClick={() => tap(id)}>
                   {here && <i className={'node-shine ' + ua('level-scene-shine-shine-idle')} />}
                   <span className={'node-face ' + ua('buttons-bubbles-enter' + Math.min(id, 4))} style={{ width: size, height: size * 0.97, ...uaDelay(0.1 + Math.min(i, 8) * 0.12) }}>
-                    <img className="node-btn" src={`${MAP_ART}ui/btn-${open ? th.btn : 'greykeyhole'}.webp`} alt="" draggable="false" />
-                    {open && <b className="node-n big">{t.n(id)}</b>}
+                    <span className="node-bob">
+                      <img className="node-btn" src={`${MAP_ART}ui/btn-${open ? th.btn : 'greykeyhole'}.webp`} alt="" draggable="false" />
+                      {open && <b className="node-n big">{t.n(id)}</b>}
+                    </span>
                   </span>
-                  {here && <img className="map-pin" src={`${MAP_ART}ui/pin-panda.webp`} alt="" draggable="false" style={{ width: size * 0.7 }} />}
-                  <span className="ribbon">
+                  {here && <img className="map-pin" src={`${MAP_ART}ui/pin-panda.webp`} alt="" draggable="false" style={{ width: size * 0.7, animationDelay: `${0.65 + Math.min(i, 8) * 0.12}s, 0s` }} />}
+                  <span className="ribbon" style={uaDelay(0.65 + Math.min(i, 8) * 0.12)}>
                     <b>{t('stage' + id + 'Name')}</b>
                     <small>{`★ ${t.n(got)}/${t.n(STAGE_SIZE * 3)}`}</small>
                   </span>

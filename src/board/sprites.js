@@ -2,8 +2,8 @@
 //  - curve: the delivered curve.png does not meet the tile edges exactly, so we bend the (perfectly aligned)
 //    straight.png around a quarter circle instead. Same look, guaranteed seams.
 //  - train skins: recoloured copies of engine / wagons.
-import { recolorToCanvas } from './recolor.js';
-import { TRAIN_SKINS, skinById } from '../game/skins.js';
+import { recolorToCanvas, tintToCanvas } from './recolor.js';
+import { TRAIN_SKINS, RAIL_SKINS, skinById } from '../game/skins.js';
 
 export const ART = `${import.meta.env.BASE_URL}choo-choo-pop-assets/art/`;
 
@@ -22,7 +22,6 @@ const FILES = {
   exit: 'gates/exit.png',
   grassA: 'tiles/grass-a.png',
   grassB: 'tiles/grass-b.png',
-  ground: 'tiles/ground-laid.png',
   // glossy map-stage art: given-star tiles and number badges
   starGold: 'map/ui/star-gold.webp',
   starShadow: 'map/ui/star-shadow.webp',
@@ -34,11 +33,10 @@ const FILES = {
   wagonYellow: 'train/wagon-yellow.png',
   wagonGreen: 'train/wagon-green.png',
   smoke: 'train/smoke.png',
-  tree: 'deco/tree.png',
+  hand: 'ui/move-hand.webp',
+  tree: 'ui/tree-rose.webp',
+  treeYellow: 'ui/tree-yellow.webp',
   bush: 'deco/bush.png',
-  // decorative flowers (soft shadow is baked in)
-  flowerPink: 'deco/flower-pink.webp',
-  flowerYellow: 'deco/flower-yellow.webp',
 };
 
 function loadImage(url) {
@@ -150,6 +148,7 @@ function halfStraight(straight) {
 let spritesPromise = null;
 let sprites = null;
 const trainSets = new Map();
+const railSets = new Map();
 
 export function loadSprites() {
   if (!spritesPromise) {
@@ -171,6 +170,37 @@ export function loadSprites() {
 }
 
 export const getSprites = () => sprites;
+
+// The sprites live only while a screen holds them (the game, Customize); a short wait keeps them between two levels.
+let holders = 0;
+let releaseTimer = 0;
+const RELEASE_MS = 4000;
+export function holdSprites() {
+  holders += 1;
+  clearTimeout(releaseTimer);
+  return () => {
+    holders -= 1;
+    if (holders > 0) return;
+    releaseTimer = setTimeout(() => {
+      sprites = null;
+      spritesPromise = null;
+      trainSets.clear();
+      railSets.clear();
+    }, RELEASE_MS);
+  };
+}
+
+/** { straight, curve, half } for a rail look (cached). */
+export function getRailSet(skinId) {
+  const s = sprites;
+  if (!s) return null;
+  const skin = skinById(RAIL_SKINS, skinId);
+  if (railSets.has(skin.id)) return railSets.get(skin.id);
+  const make = (img) => (skin.hue == null ? img : tintToCanvas(img, skin.hue));
+  const set = { straight: make(s.straight), curve: make(s.curve), half: make(s.half) };
+  railSets.set(skin.id, set);
+  return set;
+}
 
 /** { engine, wagons: [blue, yellow, green] } for a train skin (cached). */
 export function getTrainSet(skinId) {

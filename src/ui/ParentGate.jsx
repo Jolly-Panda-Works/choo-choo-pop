@@ -15,22 +15,26 @@ export default function ParentGate({ onPass, onCancel }) {
   }, []);
   return (
     <Modal pose="salute" title={t('gateTitle')} onClose={onCancel}>
-      <p className="small">{t('gateText')}</p>
-      <p className="gate-q">
-        {t.n(q.a)} × {t.n(q.b)} = ?
-      </p>
-      <div className="modal-actions">
-        {q.options.map((o) => (
-          <button key={o} className="btn big blue" onClick={() => (o === q.right ? onPass() : onCancel())}>
-            {t.n(o)}
-          </button>
-        ))}
-      </div>
-      <div className="modal-actions">
-        <button className="btn" onClick={onCancel}>
-          {t('cancel')}
-        </button>
-      </div>
+      {(leave) => (
+        <>
+          <p className="small">{t('gateText')}</p>
+          <p className="gate-q">
+            {t.n(q.a)} × {t.n(q.b)} = ?
+          </p>
+          <div className="modal-actions">
+            {q.options.map((o) => (
+              <button key={o} className="btn big blue" onClick={() => leave(o === q.right ? onPass : onCancel)}>
+                {t.n(o)}
+              </button>
+            ))}
+          </div>
+          <div className="modal-actions">
+            <button className="btn" onClick={() => leave(onCancel)}>
+              {t('cancel')}
+            </button>
+          </div>
+        </>
+      )}
     </Modal>
   );
 }

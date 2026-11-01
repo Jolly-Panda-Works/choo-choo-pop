@@ -54,3 +54,33 @@ export function coachFor(level, path, idle) {
 
   return { text, ghost, clues: !!cfg.clues, star: !!cfg.star };
 }
+
+/**
+ * Idle hint of a normal station: the finger drags from the last rail toward the exit, along the row or column
+ * with the longer way to go. It points the way only, it does not give the answer away.
+ * @returns {null | { ghost: { kind: 'next', cells: number[] } }}
+ */
+export function idleCoach(level, paths) {
+  const { rows, cols } = level;
+  const taken = new Set([...paths.flat(), ...level.blocks]);
+  const open = (r, c) => r >= 0 && c >= 0 && r < rows && c < cols && !taken.has(r * cols + c);
+  const lanes = paths
+    .map((p, li) => ({ p, exit: level.lanes[li].exit }))
+    .filter(({ p, exit }) => p[p.length - 1] !== exit.r * cols + exit.c)
+    .sort((a, b) => b.p.length - a.p.length);
+  for (const { p, exit } of lanes) {
+    const last = p[p.length - 1];
+    const r = Math.floor(last / cols);
+    const c = last % cols;
+    const dr = exit.r - r;
+    const dc = exit.c - c;
+    const steps = [[0, Math.sign(dc)], [Math.sign(dr), 0]].filter(([a, b]) => a || b);
+    if (Math.abs(dr) > Math.abs(dc)) steps.reverse();
+    for (const [a, b] of steps) {
+      const cells = [last];
+      for (let n = 1; n <= 2 && open(r + a * n, c + b * n); n++) cells.push((r + a * n) * cols + c + b * n);
+      if (cells.length > 1) return { ghost: { kind: 'next', cells } };
+    }
+  }
+  return null;
+}
