@@ -107,15 +107,15 @@ export default function StageMap({ onBack, onOpen, onShop }) {
     };
   }, []);
 
-  const tap = (st) => {
+  // every spot can be tapped: only the built, unlocked stages open, all the others show the "coming soon" message
+  const tap = (id) => {
     sfx.click();
-    const open = save.unlocked >= st.first;
-    if (!stageBuilt(st.id)) setMsg('soon');
-    else if (!open) setMsg('locked');
-    else onOpen(st.id);
+    const st = STAGES[id - 1];
+    if (!st || !stageBuilt(id)) setMsg('soon');
+    else if (save.unlocked < st.first) setMsg('locked');
+    else onOpen(id);
   };
-  // city spots on the same island are close together, so the buttons are sized to the circles marked on the art
-  const size = Math.max(64, Math.min(100, W * 0.2));
+  const size = Math.max(56, Math.min(100, W * 0.17));
 
   return (
     <main className="screen map">
@@ -133,34 +133,25 @@ export default function StageMap({ onBack, onOpen, onShop }) {
           <SeaDecor />
           {W > 0 &&
             CITIES.map((c, i) => {
+              const id = i + 1;
               const st = STAGES[i];
               const th = TILE_BTN[c.tile];
               const style = { left: pts[i][0], top: pts[i][1], width: size, '--c': th.ink, '--s': size + 'px', zIndex: 2 + CITIES.length - i };
-              // spots without a built-in stage: just a locked button, no label, nothing to tap
-              if (!st) {
-                return (
-                  <span key={'lock' + i} className="stage-node locked idle" style={style}>
-                    <span className="node-face">
-                      <img className="node-btn" src={`${MAP_ART}ui/btn-greykeyhole.webp`} alt="" draggable="false" />
-                    </span>
-                  </span>
-                );
-              }
-              const built = stageBuilt(st.id);
+              const built = !!st && stageBuilt(id);
               const open = built && save.unlocked >= st.first;
-              const got = starsInRange(save, st.first, st.last);
-              const here = st.id === currentStage && open;
+              const got = st ? starsInRange(save, st.first, st.last) : 0;
+              const here = id === currentStage && open;
               return (
-                <button key={st.id} className={'stage-node' + (open ? '' : ' locked') + (here ? ' current' : '')} style={style} onClick={() => tap(st)}>
+                <button key={id} className={'stage-node' + (open ? '' : ' locked') + (here ? ' current' : '')} style={style} onClick={() => tap(id)}>
                   {here && <i className={'node-shine ' + ua('level-scene-shine-shine-idle')} />}
-                  <span className={'node-face ' + ua('buttons-bubbles-enter' + Math.min(i + 1, 4))} style={{ width: size, height: size * 0.97, ...uaDelay(0.1 + i * 0.12) }}>
+                  <span className={'node-face ' + ua('buttons-bubbles-enter' + Math.min(id, 4))} style={{ width: size, height: size * 0.97, ...uaDelay(0.1 + Math.min(i, 8) * 0.12) }}>
                     <img className="node-btn" src={`${MAP_ART}ui/btn-${open ? th.btn : 'greykeyhole'}.webp`} alt="" draggable="false" />
-                    {open && <b className="node-n big">{t.n(st.id)}</b>}
+                    {open && <b className="node-n big">{t.n(id)}</b>}
                   </span>
                   {here && <img className="map-pin" src={`${MAP_ART}ui/pin-panda.webp`} alt="" draggable="false" style={{ width: size * 0.7 }} />}
                   <span className="ribbon">
-                    <b>{t(st.nameKey)}</b>
-                    <small>{built ? `★ ${t.n(got)}/${t.n(STAGE_SIZE * 3)}` : t('soon')}</small>
+                    <b>{t('stage' + id + 'Name')}</b>
+                    <small>{`★ ${t.n(got)}/${t.n(STAGE_SIZE * 3)}`}</small>
                   </span>
                 </button>
               );

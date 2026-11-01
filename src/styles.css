@@ -175,6 +175,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .screen.map .topbar > * { pointer-events: auto; }
 .screen.map .stage-scroll { position: absolute; inset: 0; margin: 0; scrollbar-width: none; -ms-overflow-style: none; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .screen.map .stage-scroll::-webkit-scrollbar { display: none; }
+.screen.map .modal-back { z-index: 60; }
 .screen.map .stage-scroll.dragging { cursor: grabbing; }
 .stage-board { position: relative; width: 100%; overflow: hidden; }
 .tile-stack { position: absolute; inset: 0; display: flex; flex-direction: column; }
@@ -211,7 +212,6 @@ button:disabled { opacity: 0.5; cursor: default; }
 .btn-row .btn { flex: 1; min-width: 0; --h: 50px; --cap: 25px; font-size: 18px; }
 
 .stage-node { display: block; }
-.stage-node.idle { pointer-events: none; }
 .stage-node.current { z-index: 30 !important; }
 .stage-node .node-face { height: auto; aspect-ratio: 380 / 370; }
 .stage-node.locked .node-btn { opacity: 0.95; }
