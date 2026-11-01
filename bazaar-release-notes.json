@@ -1,6 +1,6 @@
 {
   "$comment": "What's new in Cafe Bazaar for the next version (required: a Bazaar build fails without it). Set version to the version being released (package.json) and write fa and en, on the bazaar branch. Emptied automatically after a release.",
-  "version": "1.4.0",
-  "fa": "ظاهر تازه‌ی پنجره‌ها و دکمه‌ها، گردونه‌ی شانس، شخصی‌سازی قطار و ریل با ستاره، داستان مصور و اجرای سبک‌تر روی گوشی.",
-  "en": "New look for popups and buttons, a lucky wheel, train and rail colours bought with stars, a comic story and a lighter game on phones."
+  "version": "1.4.1",
+  "fa": "آیکون تازه‌ی بازی.",
+  "en": "A new app icon."
 }
