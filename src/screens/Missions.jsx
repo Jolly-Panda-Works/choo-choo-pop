@@ -4,6 +4,7 @@ import BluePopup, { LIST, ROW_X, inPopup, RowBg, rowLook, tabColors } from '../u
 import PopList from '../ui/PopList.jsx';
 import { useT } from '../i18n.js';
 import { useSave, claimMission, refreshMissions } from '../store.js';
+import { earnedReward } from '../game/missions.js';
 import { MISSION_ART, ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 
@@ -64,7 +65,7 @@ export default function Missions({ onBack }) {
           {sorted.map((x, i) => {
             const ready = x.p >= x.target && !x.claimed;
             const p = Math.min(1, x.p / x.target);
-            const gift = giftIcon(x.reward);
+            const gift = giftIcon(earnedReward(x.reward, save.taught));
             const look = rowLook('missions', i);
             return (
               <div key={x.id} className="prow" style={{ top: k(10 + i * PITCH), left: k(ROW_X), width: k(1152), height: k(ROW_H) }}>

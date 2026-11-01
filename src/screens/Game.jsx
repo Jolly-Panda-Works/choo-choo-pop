@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BoardCanvas from '../board/BoardCanvas.jsx';
-import { loadSprites, holdSprites, UI_ART } from '../board/sprites.js';
+import { loadSprites, loadLook, holdSprites, UI_ART } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
 import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
@@ -46,7 +46,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
 
   useEffect(() => {
     const release = holdSprites();
-    loadSprites().then(() => setReady(true));
+    Promise.all([loadSprites(), loadLook('train', save.trainSkin), loadLook('rail', save.railSkin)]).then(() => setReady(true));
     return release;
   }, []);
 

@@ -9,6 +9,7 @@ const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 
 // so they are removed from dist/ to keep the APK small.
 const NOT_FOR_THE_APP = [
   'choo-choo-pop-assets/_work',
+  ...['sky', 'rose', 'lime', 'grape'].flatMap((look) => [`choo-choo-pop-assets/art/track/${look}/curve.png`, `choo-choo-pop-assets/art/track/${look}/stub.png`]),
   'choo-choo-pop-assets/store',
   'choo-choo-pop-assets/resources',
   'preview-en.png',

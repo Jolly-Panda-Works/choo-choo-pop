@@ -1,7 +1,7 @@
 // Loads the top-down art once and prepares derived sprites:
 //  - curve: the delivered curve.png does not meet the tile edges exactly, so we bend the (perfectly aligned)
 //    straight.png around a quarter circle instead. Same look, guaranteed seams.
-//  - train skins: recoloured copies of engine / wagons.
+//  - custom skins: dedicated PNG sets, with recolouring as a fallback.
 import { recolorToCanvas, tintToCanvas } from './recolor.js';
 import { TRAIN_SKINS, RAIL_SKINS, skinById } from '../game/skins.js';
 
@@ -150,6 +150,27 @@ let sprites = null;
 const trainSets = new Map();
 const railSets = new Map();
 
+// Dedicated looks load one at a time, so only what the screen shows is in memory.
+// A set that does not load keeps the recoloured fallback.
+const looks = new Map();
+const RAIL_FOLDER = { railSky: 'sky', railRose: 'rose', railLime: 'lime', railGrape: 'grape' };
+export async function loadLook(kind, id) {
+  const key = `${kind}:${id}`;
+  if (id === 'classic' || looks.has(key)) return;
+  try {
+    if (kind === 'train') {
+      const [engine, ...wagons] = await Promise.all(['engine', 'wagon-1', 'wagon-2', 'wagon-3'].map((file) => loadImage(`${ART}train/${id}/${file}.png`)));
+      looks.set(key, { engine, wagons });
+    } else {
+      // curve and half come from the straight tile, the same seam guarantee as classic
+      const straight = await loadImage(`${ART}track/${RAIL_FOLDER[id]}/straight.png`);
+      looks.set(key, { straight, curve: warpCurve(straight), half: halfStraight(straight) });
+    }
+  } catch (e) {
+    /* the recolour stands in */
+  }
+}
+
 export function loadSprites() {
   if (!spritesPromise) {
     spritesPromise = Promise.all(Object.entries(FILES).map(([k, f]) => loadImage(ART + f).then((im) => [k, im]))).then(
@@ -186,6 +207,7 @@ export function holdSprites() {
       spritesPromise = null;
       trainSets.clear();
       railSets.clear();
+      looks.clear();
     }, RELEASE_MS);
   };
 }
@@ -195,6 +217,7 @@ export function getRailSet(skinId) {
   const s = sprites;
   if (!s) return null;
   const skin = skinById(RAIL_SKINS, skinId);
+  if (looks.has('rail:' + skin.id)) return looks.get('rail:' + skin.id);
   if (railSets.has(skin.id)) return railSets.get(skin.id);
   const make = (img) => (skin.hue == null ? img : tintToCanvas(img, skin.hue));
   const set = { straight: make(s.straight), curve: make(s.curve), half: make(s.half) };
@@ -207,6 +230,7 @@ export function getTrainSet(skinId) {
   const s = sprites;
   if (!s) return null;
   const skin = skinById(TRAIN_SKINS, skinId);
+  if (looks.has('train:' + skin.id)) return looks.get('train:' + skin.id);
   if (trainSets.has(skin.id)) return trainSets.get(skin.id);
   const make = (img) => (skin.hue == null ? img : recolorToCanvas(img, skin.hue));
   const set = {

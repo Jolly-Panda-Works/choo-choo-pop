@@ -1,0 +1,125 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "dest": "train/cherry/engine.png",
+      "prompt": "Edit reference image only by recoloring blue body and cab glossy cherry red with deep crimson shading. Preserve exact top-down right-facing locomotive geometry, placement, scale, gold trim and dark navy outlines. Fully transparent background, no ground shadow, no text. Output single square 512x512 game sprite."
+    },
+    {
+      "dest": "train/cherry/wagon-1.png",
+      "ref": "train/wagon-blue.png",
+      "prompt": "Change only body and cab color to glossy bright red. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/cherry/wagon-2.png",
+      "ref": "train/wagon-yellow.png",
+      "prompt": "Change only body and cab color to glossy rose pink. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/cherry/wagon-3.png",
+      "ref": "train/wagon-green.png",
+      "prompt": "Change only body and cab color to glossy warm cream. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/violet/engine.png",
+      "ref": "train/engine.png",
+      "prompt": "Change only body and cab color to glossy royal violet with deep purple shading. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/violet/wagon-1.png",
+      "ref": "train/wagon-blue.png",
+      "prompt": "Change only body and cab color to glossy violet. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/violet/wagon-2.png",
+      "ref": "train/wagon-yellow.png",
+      "prompt": "Change only body and cab color to glossy lilac. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/violet/wagon-3.png",
+      "ref": "train/wagon-green.png",
+      "prompt": "Change only body and cab color to glossy soft sky blue. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/mint/engine.png",
+      "ref": "train/engine.png",
+      "prompt": "Change only body and cab color to glossy fresh mint green with deep teal shading. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/mint/wagon-1.png",
+      "ref": "train/wagon-blue.png",
+      "prompt": "Change only body and cab color to glossy mint green. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/mint/wagon-2.png",
+      "ref": "train/wagon-yellow.png",
+      "prompt": "Change only body and cab color to glossy turquoise. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "train/mint/wagon-3.png",
+      "ref": "train/wagon-green.png",
+      "prompt": "Change only body and cab color to glossy lemon yellow. Keep polished gold trim, bands, plate, navy outlines, exact reference shape, size, position and proportions. Top-down right-facing game train sprite, fully transparent background, no ground shadow, no text. Single square 512x512 image."
+    },
+    {
+      "dest": "track/sky/straight.png",
+      "ref": "track/straight.png",
+      "prompt": "Recolor this reference railway tile only: Light sky blue metal rails with white highlights on soft blue-grey sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/sky/curve.png",
+      "ref": "track/curve.png",
+      "prompt": "Recolor this reference railway tile only: Light sky blue metal rails with white highlights on soft blue-grey sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/sky/stub.png",
+      "ref": "track/stub.png",
+      "prompt": "Recolor this reference railway tile only: Light sky blue metal rails with white highlights on soft blue-grey sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/rose/straight.png",
+      "ref": "track/straight.png",
+      "prompt": "Recolor this reference railway tile only: Pink rose-gold metal rails with white highlights on warm dusty pink sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/rose/curve.png",
+      "ref": "track/curve.png",
+      "prompt": "Recolor this reference railway tile only: Pink rose-gold metal rails with white highlights on warm dusty pink sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/rose/stub.png",
+      "ref": "track/stub.png",
+      "prompt": "Recolor this reference railway tile only: Pink rose-gold metal rails with white highlights on warm dusty pink sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/lime/straight.png",
+      "ref": "track/straight.png",
+      "prompt": "Recolor this reference railway tile only: Bright lime green metal rails with white highlights on warm olive sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/lime/curve.png",
+      "ref": "track/curve.png",
+      "prompt": "Recolor this reference railway tile only: Bright lime green metal rails with white highlights on warm olive sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/lime/stub.png",
+      "ref": "track/stub.png",
+      "prompt": "Recolor this reference railway tile only: Bright lime green metal rails with white highlights on warm olive sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/grape/straight.png",
+      "ref": "track/straight.png",
+      "prompt": "Recolor this reference railway tile only: Purple metal rails with white highlights on deep plum sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/grape/curve.png",
+      "ref": "track/curve.png",
+      "prompt": "Recolor this reference railway tile only: Purple metal rails with white highlights on deep plum sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    },
+    {
+      "dest": "track/grape/stub.png",
+      "ref": "track/stub.png",
+      "prompt": "Recolor this reference railway tile only: Purple metal rails with white highlights on deep plum sleepers. Keep exact pixel geometry, spacing, positions, scale and tile edge connection points. Do not redraw or recenter. Fully transparent background, no ground shadow, no text. Top down glossy cartoon game tile. Single square 256x256 image."
+    }
+  ]
+}

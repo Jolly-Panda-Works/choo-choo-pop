@@ -1,5 +1,5 @@
-// Cosmetic looks, bought in Customize with stars earned from stations (`stars` = price). A look recolours the art
-// (see board/recolor.js), so no extra images are needed.
+// Cosmetic looks, bought in Customize with stars earned from stations (`stars` = price).
+// Dedicated train/rail sprites are loaded by board/sprites.js; hue is the fallback for incomplete sets.
 export const TRAIN_SKINS = [
   { id: 'classic', hue: null, stars: 0 },
   { id: 'cherry', hue: 352, stars: 15 },

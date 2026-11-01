@@ -10,7 +10,7 @@ import {
   POWERUPS,
   DEFAULT_LANG,
 } from './config.js';
-import { dayKey, syncMissions, bumpMissions } from './game/missions.js';
+import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
 import { levelCount } from './game/levels.js';
 
 const KEY = 'choochoopop.save.v3';
@@ -156,7 +156,7 @@ export function claimMission(list, id) {
   const m = state.mis;
   const item = m?.[list].find((x) => x.id === id);
   if (!item || item.claimed || item.p < item.target) return null;
-  const r = item.reward;
+  const r = earnedReward(item.reward, state.taught);
   update((s) => ({
     coins: s.coins + (r.coins || 0),
     hints: s.hints + (r.hints || 0),

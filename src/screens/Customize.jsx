@@ -6,7 +6,7 @@ import { Icon } from '../ui/icons.jsx';
 import { useSave, starBalance, buyLook, equipLook } from '../store.js';
 import { useT } from '../i18n.js';
 import { TRAIN_SKINS, RAIL_SKINS } from '../game/skins.js';
-import { loadSprites, holdSprites, getTrainSet, getRailSet, getSprites, ART } from '../board/sprites.js';
+import { loadSprites, loadLook, holdSprites, getTrainSet, getRailSet, getSprites, ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 
 // Train and rail colours, bought only with the stars earned by solving stations.
@@ -24,7 +24,7 @@ function Preview({ kind, skin }) {
   const ref = useRef(null);
   useEffect(() => {
     let live = true;
-    loadSprites().then(() => {
+    Promise.all([loadSprites(), loadLook(kind, skin)]).then(() => {
       if (!live || !ref.current) return;
       const g = ref.current.getContext('2d');
       g.clearRect(0, 0, 200, 100);
