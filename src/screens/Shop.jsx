@@ -15,8 +15,8 @@ import { sfx } from '../audio.js';
 const O = [60, 90];
 const PITCH = 285;
 const ROW0 = 21;
-const LIST = [118, 712, 1331, 2060];
-const TABS_Y = 606;
+const LIST = [118, 760, 1331, 2060];
+const TABS_Y = 652;
 const TABS = [
   { id: 'boost', label: 'tabBoosts' },
   { id: 'train', label: 'tabTrains' },
@@ -109,6 +109,7 @@ export default function Shop({ onBack, onCoins }) {
       const on = cur === s.id;
       return {
         tab: kind,
+        state: on ? 'on' : has ? 'own' : 'buy',
         key: kind + s.id,
         icon: kind === 'train' ? <div style={{ width: '88%' }}><TrainPreview skin={s.id} /></div> : <PandaFace skin={s.id} />,
         name: `${t(kind === 'train' ? 'trainLooks' : 'pandaLooks')} · ${t('skin_' + s.id)}`,
@@ -128,6 +129,7 @@ export default function Shop({ onBack, onCoins }) {
   rows.push(...skinRows('panda', PANDA_SKINS, save.ownedPanda, save.pandaSkin));
   rows.push({
     tab: 'ads',
+    state: save.adsRemoved ? 'on' : 'buy',
     key: 'ads',
     icon: <span style={{ fontSize: k(110) }}>🚫</span>,
     name: t('removeAds'),
@@ -144,7 +146,6 @@ export default function Shop({ onBack, onCoins }) {
     if (ok) sfx.win();
   };
   const shown = rows.filter((r) => r.tab === tab);
-  const owned = save.hints + Object.values(save.powerups).reduce((a, b) => a + b, 0);
 
   return (
     <>
@@ -153,13 +154,11 @@ export default function Shop({ onBack, onCoins }) {
         <Ribbon x={730 - O[0]} y={395 - O[1]}>
           {t('shop')}
         </Ribbon>
-        <Pic name="chip-items" o={O} />
-        <div className="ptxt" style={{ ...rect(398 - O[0], 500 - O[1], 90, 48), ...fs(44) }}>{t.n(owned)}</div>
         <Pic name="chip-coins-shop" o={O} />
         <button style={box('chip-coins-shop', O)} onClick={onCoins} aria-label={t('coins')} />
         <div className="ptxt" style={{ ...rect(903 - O[0], 499 - O[1], 215, 49), ...fs(44) }}>{t.n(save.coins)}</div>
 
-        <div className="ptabs" role="tablist" style={rect(LIST[0] - O[0], TABS_Y - O[1], LIST[2] - LIST[0], 84)}>
+        <div className="ptabs" role="tablist" style={rect(145 - O[0], TABS_Y - O[1], 1152, 84)}>
           {TABS.map((x) => (
             <button
               key={x.id}
@@ -180,10 +179,13 @@ export default function Shop({ onBack, onCoins }) {
         <div key={tab} className="pop-list" style={rect(LIST[0] - O[0], LIST[1] - O[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
           <div style={{ position: 'relative', height: k(ROW0 + shown.length * PITCH) }}>
             {shown.map((r, i) => {
-              const blue = i % 2 === 0;
+              // buy = blue (can be bought), own = pink (owned), on = green (equipped / active)
+              const st = r.state || 'buy';
+              const rowArt = { buy: 'blue', own: 'pink', on: 'green' }[st];
+              const blue = st !== 'own';
               return (
                 <div key={r.key} className="prow" style={{ top: k(ROW0 + i * PITCH), left: k(27), width: k(1152), height: k(268) }}>
-                  <img className="v5pic" alt="" draggable="false" src={`${ART}v5/shop-row-${blue ? 'blue' : 'pink'}.webp`} style={rect(0, 0, 1152, 268)} />
+                  <img className="v5pic" alt="" draggable="false" src={`${ART}v5/shop-row-${rowArt}.webp`} style={rect(0, 0, 1152, 268)} />
                   <div className="ptxt" style={rect(24, 24, 240, 220)}>{r.icon}</div>
                   {r.count != null && (
                     <span className="ptxt" style={{ ...rect(200, 170, 72, 72), ...fs(36), background: 'linear-gradient(#ff9fb4,#ff7a96)', border: `${k(5)} solid #fff`, borderRadius: '50%', color: '#fff' }}>
@@ -191,9 +193,9 @@ export default function Shop({ onBack, onCoins }) {
                     </span>
                   )}
                   <div className="ptxt" style={{ ...rect(300, 36, 470, 70), ...fs(r.name.length > 20 ? 38 : 48), color: blue ? '#fff' : '#1f5662', justifyContent: 'flex-start' }}>{r.name}</div>
-                  <div className="ptxt" style={{ ...rect(300, 112, 470, 120), ...fs(34), color: blue ? '#a8e8f7' : '#c2476c', justifyContent: 'flex-start', whiteSpace: 'normal', textAlign: 'start' }}>{r.info}</div>
-                  <button className="pbtn" disabled={r.btn.disabled} style={rect(790, 66, 302, 129)} onClick={r.btn.run}>
-                    <img className="v5pic" alt="" draggable="false" src={`${ART}v5/sbtn-${r.btn.real ? 'orange' : blue ? 'orange' : 'pink'}.webp`} style={rect(0, 0, 302, 129)} />
+                  <div className="ptxt" style={{ ...rect(300, 112, 470, 120), ...fs(34), color: st === 'own' ? '#c2476c' : st === 'on' ? '#d9ffd0' : '#a8e8f7', justifyContent: 'flex-start', whiteSpace: 'normal', textAlign: 'start' }}>{r.info}</div>
+                  <button className={'pbtn' + (st === 'on' ? ' done' : '')} disabled={r.btn.disabled || st === 'on'} style={rect(790, 66, 302, 129)} onClick={r.btn.run}>
+                    <img className="v5pic" alt="" draggable="false" src={`${ART}v5/sbtn-${st === 'on' ? 'green' : st === 'own' ? 'pink' : 'orange'}.webp`} style={rect(0, 0, 302, 129)} />
                     <span style={{ ...rect(0, 0, 302, 118), display: 'flex', alignItems: 'center', justifyContent: 'center', gap: k(8), ...fs(r.btn.label.length > 7 ? 34 : 46) }}>
                       {r.btn.plus ? <small style={fs(30)}>×{t.n(r.btn.plus)}</small> : null}
                       {r.btn.coin && <img className="pcoin" alt="" src={`${ART}v5/coin-gold.webp`} />}

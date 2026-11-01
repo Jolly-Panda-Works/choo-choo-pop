@@ -328,6 +328,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .pbtn { position: absolute; display: grid; place-items: center; color: #fff; text-shadow: 0 calc(var(--k) * 4) 0 rgba(150, 70, 0, 0.55); }
 .pbtn:active:not(:disabled) { transform: translateY(calc(var(--k) * 5)) scale(0.97); }
 .pbtn:disabled { opacity: 0.55; }
+.pbtn.done:disabled { opacity: 1; }
 .pop-toast { position: absolute; left: 50%; transform: translateX(-50%); z-index: 8; background: linear-gradient(#ff9fb4, var(--coral)); color: #fff; border-radius: 999px; padding: calc(var(--k) * 14) calc(var(--k) * 40); font-size: calc(var(--k) * 40); white-space: nowrap; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
 .tabs { position: absolute; display: flex; gap: calc(var(--k) * 24); justify-content: center; }
 .tabs button { flex: 1; border-radius: 999px; font-family: var(--font-display); font-weight: var(--fw-display); font-size: calc(var(--k) * 46); color: #1f5662; background: rgba(255, 255, 255, 0.7); box-shadow: 0 calc(var(--k) * 6) 0 #9fd3df; }

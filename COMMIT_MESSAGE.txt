@@ -1,5 +1,6 @@
-feat(home): Map becomes a round bubble in the button row
+feat(shop): tabs inside the frame, distinct row backgrounds per item state, remove items chip
 
-- New round "Map" bubble (art/v5/h-map.webp, same style as settings / missions / shop).
-- Home: settings, map, missions and shop sit in one arc under Play; the pill-shaped Map
-  button is removed.
+- Tabs now sit inside the white panel (same width as the rows) instead of on its border.
+- Skin / ads rows have three looks: blue = can be bought, pink = owned, green = equipped
+  (with a green, non-dimmed "In use" button). New art: shop-row-green, sbtn-green.
+- Remove the items-count chip (crate icon + number) from the shop header.
