@@ -10,6 +10,8 @@ import { sfx } from '../audio.js';
 
 // The lucky wheel: one free spin a day, more with a rewarded video. Slices run clockwise from the top.
 const PRIZES = [{ coins: 20 }, { hints: 1 }, { coins: 50 }, { power: 'star' }, { coins: 10 }, { power: 'eraser' }, { coins: 100 }, { power: 'peek' }];
+// a power-up the player has not been taught yet gives this instead
+const BEFORE_LESSON = { star: { hints: 1 }, eraser: { coins: 30 }, peek: { coins: 40 } };
 const SLICE = 360 / PRIZES.length;
 const TURNS = 5;
 const SPIN_MS = 4300;
@@ -45,16 +47,17 @@ export default function SpinWheel({ onBack }) {
     timers.current.push(setTimeout(() => setNote(''), 2400));
   };
   const label = (p) => (p.coins ? t.n(p.coins) : '+' + t.n(1));
+  const prizes = PRIZES.map((p) => (p.power && !save.taught[p.power] ? BEFORE_LESSON[p.power] : p));
 
   const spin = () => {
-    const i = Math.floor(Math.random() * PRIZES.length);
+    const i = Math.floor(Math.random() * prizes.length);
     const stop = 360 - i * SLICE;
     setBusy(true);
     sfx.wheelSpin();
     setAngle((a) => a - (a % 360) + TURNS * 360 + stop);
     timers.current.push(
       setTimeout(() => {
-        give(PRIZES[i]);
+        give(prizes[i]);
         setBusy(false);
         sfx.coins();
         say(t('thanks'));
@@ -75,7 +78,7 @@ export default function SpinWheel({ onBack }) {
     <BluePopup frame="spin" quiet title={t('spinWheel')} onClose={busy ? undefined : onBack}>
       <div className="spin-wheel" style={{ ...inPopup(WHEEL_X, WHEEL_Y + 60, WHEEL, WHEEL), transform: `rotate(${angle}deg)` }}>
         <img src={`${ART}spin/wheel.webp`} alt="" draggable="false" />
-        {PRIZES.map((p, i) => (
+        {prizes.map((p, i) => (
           <div key={i} className="spin-prize" style={{ transform: `rotate(${i * SLICE}deg) translateY(-96%)` }}>
             <PrizeIcon prize={p} />
             {label(p)}

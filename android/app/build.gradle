@@ -14,7 +14,7 @@ android {
         main.aidl.srcDirs += 'src/bazaar/aidl'
     }
     defaultConfig {
-        applicationId "com.jollypanda.choochoopop.fa"
+        applicationId "com.jollypanda.choochoopop"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // "=" is required: without it Groovy reads `versionCode (x).toInteger()` as `versionCode(x).toInteger()`

@@ -127,3 +127,6 @@ export function bumpMissions(mis, ev, amount, today) {
 }
 
 export const missionDone = (x) => x.p >= x.target;
+
+/** A power-up gift waits for its lesson: until then the mission pays a hint instead. */
+export const earnedReward = (reward, taught) => (reward.powerup && !taught[reward.powerup] ? { coins: reward.coins, hints: 1 } : reward);

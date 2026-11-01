@@ -127,5 +127,5 @@ p6-2: Close-up of gloved panda hands tightening the last rail joint with a big w
 ```
 
 ```text
-p6-3: Celebration wide shot. The panda stands on top of the locomotive, jumping with both arms up, as the train with colourful wagons drives along a perfect railway through the green village, little animals waving, confetti, a big bright sky. The panda and train fill the left and lower part of the image. Empty area: the top right is plain sky.
+p6-3: Celebration wide shot. The panda stands on top of the locomotive, jumping with both arms up, as the train with colourful wagons drives along a perfect railway through the green village, confetti, a big bright sky. The panda and train fill the left and lower part of the image. Empty area: the top right is plain sky.
 ```
