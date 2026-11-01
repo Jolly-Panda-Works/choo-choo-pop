@@ -43,7 +43,10 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
     <main className="screen home5">
       <div className="home5-stage">
         <img src={`${V5_ART}home-bg.webp`} alt="" draggable="false" style={{ left: 0, top: 0 }} />
-        <div className="home5-logo" style={{ left: '15%', top: '3.5%', width: '70%', height: '20%' }}>
+      </div>
+      {/* the background covers the screen and may be cropped on tall phones; the buttons always fit inside it */}
+      <div className="home5-ui">
+        <div className="home5-logo" style={{ left: '18%', top: 'max(6.5%, calc(58px + env(safe-area-inset-top)))', width: '64%', height: '20%' }}>
           <Logotype className="bob" />
         </div>
         {btn('h-play', onPlay, t('play'), 'h5play')}

@@ -1,26 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
-
-// Two editions are built from the same project:
-//   ./gradlew assembleRelease -PEDITION=en   -> "Choo Choo Pop"   (com.jollypanda.choochoopop)
-//   ./gradlew assembleRelease -PEDITION=fa   -> "هو هو چی چی"      (com.jollypanda.choochoopop.fa)
-// The web bundle must be built for the same edition first (npm run cap:sync:en / cap:sync:fa).
-def edition = (project.findProperty('EDITION') ?: 'en').toString()
-if (!['en', 'fa'].contains(edition)) {
-    throw new GradleException("EDITION must be 'en' or 'fa' (got '${edition}')")
-}
 
 android {
     namespace = "com.jollypanda.choochoopop"
     compileSdk = rootProject.ext.compileSdkVersion
-    sourceSets {
-        // edition-specific app name lives in src/edition-<en|fa>/res/values/app_name.xml
-        main.res.srcDirs += "src/edition-${edition}/res"
-        // edition-specific native code: src/edition-fa has the Cafe Bazaar billing plugin, src/edition-en an empty list
-        main.java.srcDirs += "src/edition-${edition}/kotlin"
-    }
     defaultConfig {
-        applicationId "com.jollypanda.choochoopop" + (edition == 'fa' ? '.fa' : '')
+        applicationId "com.jollypanda.choochoopop"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // "=" is required: without it Groovy reads `versionCode (x).toInteger()` as `versionCode(x).toInteger()`
@@ -57,11 +41,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-    // Cafe Bazaar in-app billing - Persian edition only. Check the latest release at
-    // https://github.com/cafebazaar/Poolakey/releases and override with -PPOOLAKEY_VERSION=x.y.z
-    if (edition == 'fa') {
-        implementation "com.github.cafebazaar.Poolakey:poolakey:${project.findProperty('POOLAKEY_VERSION') ?: '2.2.0'}"
-    }
 }
 
 apply from: 'capacitor.build.gradle'

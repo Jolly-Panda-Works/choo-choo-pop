@@ -1,6 +1,6 @@
-import { EDITION } from './config.js';
+import { currentLang, useSave } from './store.js';
 
-// The English build only ships English, the Persian build only Persian (see EDITION).
+// Both languages ship in every build; the player's choice is in the save (see store.js, lang).
 const dict = {
   en: {
     title: 'Choo Choo Pop',
@@ -40,6 +40,8 @@ const dict = {
     resetConfirm: 'Erase all your stars and stations?',
     resetKeeps: 'Your coins, hints and looks stay.',
     version: 'Version',
+    language: 'Language',
+    gameBy: 'A game by',
     portraitOnly: 'Please hold your phone upright',
 
     // map & stages
@@ -209,7 +211,7 @@ const dict = {
     tut5: 'Gold star tiles must be on your track. Go through the star!',
   },
   fa: {
-    title: 'هو هو چی چی',
+    title: 'Choo Choo Pop',
     play: 'شروع بازی',
     continue: 'ادامه',
     map: 'نقشه',
@@ -246,6 +248,8 @@ const dict = {
     resetConfirm: 'همهٔ ستاره‌ها و ایستگاه‌ها پاک شود؟',
     resetKeeps: 'سکه‌ها، راهنماها و ظاهرها می‌مانند.',
     version: 'نسخه',
+    language: 'زبان',
+    gameBy: 'ساختهٔ',
     portraitOnly: 'لطفاً گوشی را عمودی نگه دار',
 
     soon: 'به‌زودی',
@@ -412,17 +416,21 @@ const dict = {
 
 const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 
+const digits = (lang, x) => (lang === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+
 export function useT() {
+  useSave(); // re-render when the language changes
+  const lang = currentLang();
   const t = (key, vars) => {
-    let s = dict[EDITION][key] ?? dict.en[key] ?? key;
+    let s = dict[lang][key] ?? dict.en[key] ?? key;
     if (vars) for (const k in vars) s = s.replace(`{${k}}`, vars[k]);
     return s;
   };
-  t.lang = EDITION;
-  t.dir = EDITION === 'fa' ? 'rtl' : 'ltr';
-  /** Numbers shown to the child (Persian digits in the Persian edition). */
-  t.n = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+  t.lang = lang;
+  t.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  /** Numbers shown to the child (Persian digits in Persian). */
+  t.n = (x) => digits(lang, x);
   return t;
 }
 
-export const formatNumber = (x) => (EDITION === 'fa' ? String(x).replace(/\d/g, (d) => FA_DIGITS[d]) : String(x));
+export const formatNumber = (x) => digits(currentLang(), x);

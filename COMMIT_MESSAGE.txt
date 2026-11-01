@@ -1,3 +1,15 @@
+feat: one game with a language setting, studio splash, phone layout fixes
+
+- one game: both languages in one build, Settings switches language (save.lang); no more
+  en/fa editions. The app's name and logo are always English.
+- Jolly Panda studio card on launch; "A game by Usef Farahmand" in Settings.
+- phones: Home buttons stay on screen on tall phones, coin chip clear of the logo, map title
+  above the nodes, game top bar and tools fit 320 px, coins shown in Settings.
+- Cafe Bazaar code moves to the bazaar branch; src/services/platform.jsx is the one file that
+  branch replaces, so merging main into it stays clean.
+
+---
+
 fix(android): build failed with "Value is null" on versionCode in app/build.gradle
 
 Groovy read `versionCode (x).toInteger()` as `versionCode(x).toInteger()`: the

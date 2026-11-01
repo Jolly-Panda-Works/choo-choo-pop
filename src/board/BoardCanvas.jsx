@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { EDITION } from '../config.js';
+import { currentLang } from '../store.js';
 import { formatNumber } from '../i18n.js';
 import { SIDE_VEC, pathConnections, stepOnto, laneForCell, gateIsOuter } from '../game/logic.js';
 import { mulberry32 } from '../game/rng.js';
@@ -10,11 +10,10 @@ import { getSprites, getTrainSet } from './sprites.js';
 // World units: 1 = one cell, x = east, y = south, origin = board centre.
 
 // Merkin (display) / Vazirmatn (Persian glyphs, the new fonts have no Arabic letters). Merkin only has a regular weight.
-const FONT =
-  EDITION === 'fa'
-    ? '"Merkin", "Vazirmatn Variable", system-ui, sans-serif'
-    : '"Merkin", "Cabin", "Trebuchet MS", system-ui, sans-serif';
-const FONT_W = EDITION === 'fa' ? 900 : 400;
+const boardFont = (size) =>
+  currentLang() === 'fa'
+    ? `900 ${size}px "Merkin", "Vazirmatn Variable", system-ui, sans-serif`
+    : `400 ${size}px "Merkin", "Cabin", "Trebuchet MS", system-ui, sans-serif`;
 
 // Tunnel gates: a capsule lying across the track just outside the board edge.
 const GATE_W = 1.06; // length of the capsule across the track (cells)
@@ -200,7 +199,7 @@ function draw(R, now) {
       g.strokeStyle = '#fff';
       g.stroke();
       g.fillStyle = '#fff';
-      g.font = `${FONT_W} ${S * 0.26}px ${FONT}`;
+      g.font = boardFont(S * 0.26);
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       g.fillText(formatNumber(gt.li + 1), bx, by + S * 0.01);
@@ -362,7 +361,7 @@ function draw(R, now) {
     const w = rad * 2 * 1.36; // the sprite includes its white rim and base plate
     const h = w * (370 / 380);
     g.drawImage(img, x - w / 2, y - h * 0.46, w, h);
-    g.font = `${FONT_W} ${S * 0.4}px ${FONT}`;
+    g.font = boardFont(S * 0.4);
     g.textAlign = 'center';
     g.textBaseline = 'middle';
     g.lineJoin = 'round';

@@ -5,6 +5,7 @@ import { levelCount } from './game/levels.js';
 import { stageOfLevel } from './game/stages.js';
 import { loadSprites, ART } from './board/sprites.js';
 import { MOCK_SERVICES } from './config.js';
+import { PlatformOverlay } from './services/platform.jsx';
 import Home from './screens/Home.jsx';
 import StageMap from './screens/StageMap.jsx';
 import Stage from './screens/Stage.jsx';
@@ -41,7 +42,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = t.lang;
     document.documentElement.dir = t.dir;
-    document.documentElement.classList.add('ed-' + t.lang);
+    document.documentElement.classList.toggle('ed-fa', t.lang === 'fa');
     document.title = t('title');
     loadSprites().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -180,12 +181,13 @@ export default function App() {
         />
       )}
       {screen.name === 'missions' && <Missions onBack={() => back({ name: 'home' })} />}
-      {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
+      {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} onCoins={() => setOverlay('coins')} />}
       {screen.name === 'story' && <Story onDone={finishStory} />}
       {overlay === 'shop' && <Shop onBack={() => setOverlay(null)} onCoins={() => setOverlay('coins')} />}
       {overlay === 'coins' && <CoinShop onBack={() => setOverlay(null)} />}
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
+      <PlatformOverlay />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { EDITION } from '../config.js';
+import { currentLang } from '../store.js';
 import { formatNumber } from '../i18n.js';
 
-const FONT = EDITION === 'fa' ? '"Vazirmatn Variable", system-ui, sans-serif' : '"Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif';
+const font = () => currentLang() === 'fa' ? '"Vazirmatn Variable", system-ui, sans-serif' : '"Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif';
 
 const cache = new Map();
 
@@ -36,7 +36,7 @@ export function clueTexture(n, state) {
     g.strokeStyle = st.ring;
     g.stroke();
     g.fillStyle = st.fg;
-    g.font = `900 ${s * 0.6}px ${FONT}`;
+    g.font = `900 ${s * 0.6}px ${font()}`;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
     g.fillText(formatNumber(n), s / 2, s / 2 + s * 0.04);

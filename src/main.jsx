@@ -2,24 +2,20 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles.css';
 import './anim/ua.js';
-import { registerBillingProvider, billing } from './services/billing.js';
-import { bazaarProvider, bazaarSupported } from './services/bazaar.js';
+import { startPlatform } from './services/platform.jsx';
 
 async function start() {
-  // Persian edition on Android: Cafe Bazaar in-app billing (needs VITE_BAZAAR_RSA_KEY, see .env.example)
-  if (import.meta.env.VITE_EDITION === 'fa' && bazaarSupported()) {
-    registerBillingProvider(bazaarProvider);
-    billing.recover(); // finish purchases interrupted last time
-  }
-  if (import.meta.env.VITE_EDITION === 'fa') {
-    // bundled font: the game works offline and every phone shows the same Persian letters/digits
-    // (Merkin and Cabin have no Arabic letters, so Persian text and digits come from Vazirmatn)
-    await import('@fontsource-variable/vazirmatn/wght.css');
-  }
+  startPlatform();
+  // bundled font: the game works offline and every phone shows the same Persian letters/digits
+  // (Merkin and Cabin have no Arabic letters, so Persian text and digits come from Vazirmatn)
+  await import('@fontsource-variable/vazirmatn/wght.css');
   try {
-    const loads = [document.fonts.load('400 64px "Merkin"'), document.fonts.load('700 18px "Cabin"')];
-    if (import.meta.env.VITE_EDITION === 'fa') loads.push(document.fonts.load('900 64px "Vazirmatn Variable"'), document.fonts.load('700 18px "Vazirmatn Variable"'));
-    await Promise.all(loads);
+    await Promise.all([
+      document.fonts.load('400 64px "Merkin"'),
+      document.fonts.load('700 18px "Cabin"'),
+      document.fonts.load('900 64px "Vazirmatn Variable"'),
+      document.fonts.load('700 18px "Vazirmatn Variable"'),
+    ]);
   } catch (e) {
     /* fall back to the system font */
   }

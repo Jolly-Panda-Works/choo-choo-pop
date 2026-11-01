@@ -1,6 +1,6 @@
 name: Build Android
 
-# push to main/master  -> build both editions; if everything succeeds: bump the version, tag it and publish a GitHub Release
+# push to main/master  -> build the game; if everything succeeds: bump the version, tag it and publish a GitHub Release
 # pull_request         -> build + test only (no version bump, no release)
 # manual run           -> same as push; you can pick the bump (auto / patch / minor / major)
 on:
@@ -43,14 +43,14 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "### Version $VERSION" >> "$GITHUB_STEP_SUMMARY"
 
-  # ---- 2. build both editions -------------------------------------------------------------------
+  # ---- 2. build the game ------------------------------------------------------------------------
   build:
     needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        edition: [en, fa] # en = Choo Choo Pop, fa = هو هو چی چی
+        edition: [en]
     env:
       EDITION: ${{ matrix.edition }}
       VERSION_NAME: ${{ needs.prepare.outputs.version }}
@@ -84,8 +84,8 @@ jobs:
       - name: Set version ${{ needs.prepare.outputs.version }}
         run: npm version "$VERSION_NAME" --no-git-tag-version --allow-same-version
 
-      - name: Build web (${{ matrix.edition }})
-        run: VITE_EDITION=$EDITION npm run build
+      - name: Build web
+        run: npm run build
 
       # the android/ project is created here if it is not committed
       - name: Sync Capacitor
@@ -93,8 +93,7 @@ jobs:
           [ -d android ] || npx cap add android
           npx cap sync android
 
-      # NOTE: android/app/build.gradle is committed and already edition-aware (-PEDITION / -PVERSION_CODE /
-      # -PVERSION_NAME with safe defaults, src/edition-<en|fa> source sets, Kotlin plugin). Do NOT rewrite it
+      # NOTE: android/app/build.gradle is committed (-PVERSION_CODE / -PVERSION_NAME with safe defaults). Do NOT rewrite it
       # here: the old scripts/android-edition.mjs replaced the head of the file and broke the tail
       # ("Could not get unknown property 'edition' ... DefaultDependencyHandler").
 
@@ -106,7 +105,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
 
       - uses: actions/upload-artifact@v4
         with:
@@ -119,7 +118,7 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
           ./gradlew assembleRelease bundleRelease --no-daemon \
-            -PEDITION=$EDITION -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
+            -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
             -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
@@ -133,7 +132,7 @@ jobs:
             android/app/build/outputs/apk/release/*.apk
             android/app/build/outputs/bundle/release/*.aab
 
-  # ---- 3. only when BOTH editions built fine: commit the new version, tag it, publish the release ----
+  # ---- 3. only when the build is fine: commit the new version, tag it, publish the release ----
   release:
     needs: [prepare, build]
     if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
@@ -159,7 +158,7 @@ jobs:
       - name: Collect files
         run: |
           mkdir -p out
-          for ed in en fa; do
+          for ed in en; do
             for f in artifacts/choo-choo-pop-$ed-debug-apk/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION-debug.apk"; done
             if ls artifacts/choo-choo-pop-$ed-release/*.apk >/dev/null 2>&1; then
               for f in artifacts/choo-choo-pop-$ed-release/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.apk"; done
@@ -190,7 +189,7 @@ jobs:
 
       - name: Create tag and GitHub Release
         run: |
-          NOTE="Choo Choo Pop (en) and هو هو چی چی (fa), version $VERSION."
+          NOTE="Choo Choo Pop, version $VERSION."
           if ! ls out/*.aab >/dev/null 2>&1; then
             NOTE="$NOTE"$'\n\n'"Debug APKs only (no signing secrets configured). Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD to also get signed APK + AAB."
           fi
