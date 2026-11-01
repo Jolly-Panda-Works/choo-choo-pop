@@ -29,7 +29,7 @@ const NodeLock = () => (
   </svg>
 );
 
-export default function ForestTrack({ levels, unlocked, stars, onPick, label, num, Marker, pandaSkin }) {
+export default function ForestTrack({ levels, unlocked, stars, onPick, label, num }) {
   const wrap = useRef(null);
   const box = useRef(null);
   const w = useWidth(box);
@@ -102,7 +102,7 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
                   }}
                 >
                   {here && <i className="node-shine" />}
-                  {here && <Marker skin={pandaSkin} />}
+                  {here && <img className="fn-pin" src={`${MAP_ART}ui/pin-panda.webp`} alt="" draggable="false" />}
                   <img className="fn-house" src={`${MAP_ART}node/${house}.webp`} alt="" draggable="false" />
                   <b className="fn-n">{num(i + 1)}</b>
                   {locked && <NodeLock />}

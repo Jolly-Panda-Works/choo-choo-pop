@@ -1,5 +1,6 @@
-fix(stage): same star size on every panda house
+feat(stage): bob the whole current house and use the stage-map pin
 
-Stars on the house plaques were sized from each plaque's height, so the station
-(taller plaque) showed bigger stars than the other houses. They now share one
-size (13% of the house width) and only their centre follows the plaque.
+- The "current level" bob animation now moves the whole house together with its
+  stars, number and pin (it was only the house picture before).
+- Replace the round panda marker with the same pin-panda art used on the stage
+  map; its tip rests on the roof of the current house.

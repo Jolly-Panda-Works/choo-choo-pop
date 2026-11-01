@@ -97,7 +97,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
       </div>
 
       {forest ? (
-        <ForestTrack levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} Marker={Marker} pandaSkin={save.pandaSkin} />
+        <ForestTrack levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} />
       ) : (
       <div className="lv-scroll">
         <div className="lv-grid">

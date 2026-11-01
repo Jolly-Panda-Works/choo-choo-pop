@@ -392,12 +392,14 @@ button:disabled { opacity: 0.5; cursor: default; }
 .fn-house { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 3px rgba(10, 60, 30, 0.35)); transition: transform 0.08s; }
 .fn-btn:active:not(:disabled) .fn-house { transform: translateY(3px) scale(0.96); }
 .fn.locked .fn-house { filter: grayscale(1) brightness(0.93) contrast(0.95) drop-shadow(0 5px 3px rgba(10, 40, 30, 0.3)); }
-.fn.current .fn-house { animation: fn-bob 1.6s ease-in-out infinite; }
-@keyframes fn-bob { 50% { transform: translateY(-4px) scale(1.03); } }
+/* the whole house (stars, number, pin) bobs together */
+.fn.current { animation: fn-bob 1.6s ease-in-out infinite; }
+@keyframes fn-bob { 50% { transform: translateY(-5px) scale(1.03); } }
 .fn-n { position: absolute; left: 3%; top: 1%; width: calc(var(--nw) * 0.25); height: calc(var(--nw) * 0.25); display: grid; place-items: center; border-radius: 50%; background: #fff; border: calc(var(--nw) * 0.022) solid var(--c); box-shadow: 0 2px 0 rgba(10, 50, 30, 0.35); font-family: var(--font-display); font-weight: var(--fw-display); font-size: calc(var(--nw) * 0.13); line-height: 1; color: var(--c); z-index: 2; }
 .fn.locked .fn-n { --c: #7b8895; background: #eef1f3; }
 .fn-lock { position: absolute; right: 6%; bottom: 24%; width: calc(var(--nw) * 0.2); height: auto; filter: drop-shadow(0 2px 2px rgba(10, 40, 30, 0.35)); pointer-events: none; z-index: 2; }
 .fn-stars { position: absolute; height: calc(var(--nw) * 0.13); transform: translateY(-50%); display: flex; align-items: center; justify-content: center; gap: 3%; pointer-events: none; z-index: 2; }
 .fn-stars img { flex: none; height: 100%; width: auto; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(10, 40, 30, 0.35)); }
 .fn .node-shine { z-index: 0; }
-.fn .lv-marker { top: calc(var(--nw) * -0.2); z-index: 4; }
+/* same map pin as on the stage map (StageMap .map-pin): its tip rests on the roof of the current house */
+.fn-pin { position: absolute; left: calc(50% - var(--nw) * 0.19); bottom: 86%; width: calc(var(--nw) * 0.38); height: auto; z-index: 4; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 5px 4px rgba(10, 70, 90, 0.35)); animation: pin-bob 1.6s ease-in-out infinite; }
