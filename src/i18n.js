@@ -224,7 +224,7 @@ const dict = {
     tut5: 'Gold star tiles must be on your track. Go through the star!',
   },
   fa: {
-    title: 'هو هو چی چی',
+    title: 'Choo Choo Pop',
     play: 'شروع بازی',
     continue: 'ادامه',
     map: 'نقشه',

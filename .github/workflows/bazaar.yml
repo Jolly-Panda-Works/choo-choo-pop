@@ -1,4 +1,4 @@
-# Cafe Bazaar build: the game starting in Persian (هو هو چی چی), with Bazaar in-app billing, sign in and updates.
+# Cafe Bazaar build: the game starting in Persian, with Bazaar in-app billing, sign in and updates.
 # Runs on the `bazaar` branch (and on demand). Step by step setup: docs/BAZAAR.fa.md.
 #
 # Keep the branch up to date with main (`git checkout bazaar && git merge main && git push`);

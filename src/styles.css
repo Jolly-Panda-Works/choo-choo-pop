@@ -74,7 +74,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 54px; color: var(--ink); }
 .topbar h2 { margin: 0; font-size: 26px; color: #fff; -webkit-text-stroke: 6px #1c8fa0; paint-order: stroke fill; text-shadow: 0 4px 0 #14707f; letter-spacing: 0.5px; }
 .chip { background: linear-gradient(#fff, #eef9fb); border: 3px solid #fff; border-radius: 999px; padding: 6px 14px; font-size: 18px; box-shadow: 0 4px 0 var(--plate), 0 7px 10px rgba(10, 80, 95, 0.2); min-width: 46px; text-align: center; color: var(--ink); }
-.title-block { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.title-block { display: flex; flex-direction: column; align-items: center; gap: 3px; white-space: nowrap; }
 .k-easy.diff { background: linear-gradient(#b4f08e, #4fbf2e); } .k-normal.diff { background: linear-gradient(#7fe6f0, #1fa9bf); } .k-hard.diff { background: linear-gradient(#ffd27a, #e88a00); } .k-super.diff { background: linear-gradient(#d9b0ff, #8e44d8); }
 .diff { font-size: 13px; padding: 2px 12px; border-radius: 999px; color: #fff; border: 2px solid rgba(255, 255, 255, 0.85); text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25); }
 
@@ -171,7 +171,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .stage-scroll { flex: 1; overflow-y: auto; margin: 4px -16px -16px; position: relative; -webkit-overflow-scrolling: touch; }
 /* world map: the map fills the whole screen and the header floats over it; no scrollbar, drag to move */
 .screen.map { padding: 0; }
-.screen.map .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; padding: 12px 16px; pointer-events: none; }
+.screen.map .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 40; padding: 12px 16px; pointer-events: none; }
 .screen.map .topbar > * { pointer-events: auto; }
 .screen.map .stage-scroll { position: absolute; inset: 0; margin: 0; scrollbar-width: none; -ms-overflow-style: none; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .screen.map .stage-scroll::-webkit-scrollbar { display: none; }
@@ -366,8 +366,9 @@ button:disabled { opacity: 0.5; cursor: default; }
 .app.on-home { background: #41c3d9; }
 .home5 { position: absolute; inset: 0; padding: 0; overflow: hidden; container-type: size; z-index: 1; }
 .home5-stage { position: absolute; left: 50%; top: 50%; width: max(100cqw, calc(100cqh * 1440 / 2280)); aspect-ratio: 1440 / 2280; transform: translate(-50%, -50%); }
-.home5-stage > * { position: absolute; display: block; }
-.home5-stage img { width: 100%; height: 100%; }
+.home5-ui { position: absolute; left: 50%; top: 50%; width: min(100cqw, calc(100cqh * 1440 / 2280)); aspect-ratio: 1440 / 2280; transform: translate(-50%, -50%); }
+.home5-stage > *, .home5-ui > * { position: absolute; display: block; }
+.home5-stage img, .home5-ui img { width: 100%; height: 100%; }
 .h5btn { background: none; padding: 0; filter: drop-shadow(0 calc(100cqw * 0.006) 4px rgba(10, 70, 90, 0.35)); transition: transform 0.08s; }
 .h5btn:active { transform: scale(0.94); }
 .h5btn img { pointer-events: none; }
@@ -455,3 +456,13 @@ button:disabled { opacity: 0.5; cursor: default; }
 
 /* soft top / bottom edge of the levels scroll area: houses and rails fade out before the clipping edge (the cloud banks only cover part of it) */
 .lv-view .lv-scroll { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); }
+
+/* small phones (320 px wide): the game's top bar and tool rows still fit */
+@media (max-width: 340px) {
+  .topbar h2 { font-size: 22px; }
+  .topbar .coin-chip { font-size: 15px; padding: 4px 10px; }
+  .powers { gap: 6px; }
+  .power { gap: 3px; padding: 4px 8px 4px 5px; font-size: 13px; }
+  .controls { gap: 10px; }
+  .ctl { width: 84px; }
+}

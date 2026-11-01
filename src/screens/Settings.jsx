@@ -15,7 +15,7 @@ import {
 } from '../services/bazaarApp.js';
 import { CREDITS } from '../config.js';
 import { UI_ART, ART } from '../board/sprites.js';
-import { Popup, PandaPeek, Ribbon, rect, k, fs } from '../ui/v5.jsx';
+import { Popup, PandaPeek, Ribbon, Pic, rect, k, fs, box } from '../ui/v5.jsx';
 import Modal from '../ui/Modal.jsx';
 import { sfx } from '../audio.js';
 
@@ -25,7 +25,7 @@ const PITCH = 285;
 const ROW0 = 21;
 const LIST = [118, 600, 1331, 2060];
 
-export default function Settings({ onBack, onStory }) {
+export default function Settings({ onBack, onStory, onCoins }) {
   const save = useSave();
   const t = useT();
   const [confirm, setConfirm] = useState(false);
@@ -105,6 +105,9 @@ export default function Settings({ onBack, onStory }) {
         <Ribbon x={730 - O[0]} y={395 - O[1]}>
           {t('settings')}
         </Ribbon>
+        <Pic name="chip-coins-shop" o={O} />
+        <button style={box('chip-coins-shop', O)} onClick={onCoins} aria-label={t('coins')} />
+        <div className="ptxt" style={{ ...rect(903 - O[0], 499 - O[1], 215, 49), ...fs(44) }}>{t.n(save.coins)}</div>
 
         <div className="pop-list" style={rect(LIST[0] - O[0], LIST[1] - O[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
           <div style={{ position: 'relative', height: k(ROW0 + rows.length * PITCH) }}>
@@ -139,7 +142,7 @@ export default function Settings({ onBack, onStory }) {
                   ) : (
                     <button className="pbtn" style={rect(790, 66, 302, 129)} onClick={r.btn.run}>
                       <img className="v5pic" alt="" draggable="false" src={`${ART}v5/sbtn-${r.danger || !blue ? 'pink' : 'orange'}.webp`} style={rect(0, 0, 302, 129)} />
-                      <span style={{ ...rect(0, 0, 302, 118), display: 'flex', alignItems: 'center', justifyContent: 'center', ...fs(54) }}>{r.btn.label}</span>
+                      <span style={{ ...rect(0, 0, 302, 118), display: 'flex', alignItems: 'center', justifyContent: 'center', ...fs(r.btn.label.length > 2 ? 40 : 54) }}>{r.btn.label}</span>
                     </button>
                   )}
                 </div>

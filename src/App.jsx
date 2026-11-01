@@ -183,7 +183,7 @@ export default function App() {
         />
       )}
       {screen.name === 'missions' && <Missions onBack={() => back({ name: 'home' })} />}
-      {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} />}
+      {screen.name === 'settings' && <Settings onBack={() => back({ name: 'home' })} onStory={() => go('story')} onCoins={() => setOverlay('coins')} />}
       {screen.name === 'story' && <Story onDone={finishStory} />}
       {overlay === 'shop' && <Shop onBack={() => setOverlay(null)} onCoins={() => setOverlay('coins')} />}
       {overlay === 'coins' && <CoinShop onBack={() => setOverlay(null)} />}

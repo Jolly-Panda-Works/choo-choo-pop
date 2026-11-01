@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 // Two store builds of the same game (both languages are in each, see Settings):
 //   ./gradlew assembleRelease -PEDITION=en   -> "Choo Choo Pop"   (com.jollypanda.choochoopop), starts in English
-//   ./gradlew assembleRelease -PEDITION=fa   -> "هو هو چی چی"      (com.jollypanda.choochoopop.fa), Cafe Bazaar, starts in Persian
+//   ./gradlew assembleRelease -PEDITION=fa   -> "Choo Choo Pop"   (com.jollypanda.choochoopop.fa), Cafe Bazaar, starts in Persian
 // The web bundle must be built for the same store first (npm run cap:sync / cap:sync:bazaar).
 def edition = (project.findProperty('EDITION') ?: 'en').toString()
 if (!['en', 'fa'].contains(edition)) {
