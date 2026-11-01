@@ -8,7 +8,8 @@ import { smoothPath, useWidth } from './MapKit.jsx';
 //   locked -> the house is shown in grey (with a padlock); unlocked -> in colour
 //   plaque of the house -> 3 stars: earned ones gold, the rest grey
 // Art: art/map/node/*.webp (made from the "house" + "star" deliverables); `plaque` = the empty star board of each house
-// in percent of the house picture [x, y, w, h], measured on the art.
+// in percent of the house picture [x, y, w, h], measured on the art. Stars have the same size on every house
+// (CSS: .fn-stars height), only their centre follows the plaque.
 const HOUSE = {"house-leaf": {"plaque": [16.74, 86.41, 66.36, 8.36], "aspect": 1.0357}, "house-bamboo": {"plaque": [11.29, 83.29, 77.41, 10.77], "aspect": 1.0771}, "house-flower": {"plaque": [8.51, 85.73, 82.89, 9.08], "aspect": 1.0467}, "house-station": {"plaque": [13.74, 80.09, 73.45, 14.75], "aspect": 1.067}};
 // difficulty family (levels.js nodeKind) -> house
 const HOUSE_OF = { easy: 'house-leaf', normal: 'house-bamboo', hard: 'house-flower', super: 'house-station' };
@@ -85,7 +86,6 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
             const here = n === unlocked && !s;
             const [cx, cy] = pos(i);
             const h = nodeW / HOUSE[house].aspect;
-            const starH = ph * 1.7; // stars are a bit taller than the plaque
             return (
               <div
                 key={n}
@@ -107,7 +107,7 @@ export default function ForestTrack({ levels, unlocked, stars, onPick, label, nu
                   <b className="fn-n">{num(i + 1)}</b>
                   {locked && <NodeLock />}
                 </button>
-                <span className="fn-stars" aria-hidden="true" style={{ left: px + '%', top: py + ph / 2 + '%', width: pw + '%', height: starH + '%' }}>
+                <span className="fn-stars" aria-hidden="true" style={{ left: px + '%', top: py + ph / 2 + '%', width: pw + '%' }}>
                   {[1, 2, 3].map((k) => (
                     <img key={k} src={`${MAP_ART}node/star-${!locked && k <= s ? 'gold' : 'grey'}.webp`} alt="" draggable="false" />
                   ))}

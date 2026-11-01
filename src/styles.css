@@ -397,7 +397,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .fn-n { position: absolute; left: 3%; top: 1%; width: calc(var(--nw) * 0.25); height: calc(var(--nw) * 0.25); display: grid; place-items: center; border-radius: 50%; background: #fff; border: calc(var(--nw) * 0.022) solid var(--c); box-shadow: 0 2px 0 rgba(10, 50, 30, 0.35); font-family: var(--font-display); font-weight: var(--fw-display); font-size: calc(var(--nw) * 0.13); line-height: 1; color: var(--c); z-index: 2; }
 .fn.locked .fn-n { --c: #7b8895; background: #eef1f3; }
 .fn-lock { position: absolute; right: 6%; bottom: 24%; width: calc(var(--nw) * 0.2); height: auto; filter: drop-shadow(0 2px 2px rgba(10, 40, 30, 0.35)); pointer-events: none; z-index: 2; }
-.fn-stars { position: absolute; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; gap: 3%; pointer-events: none; z-index: 2; }
-.fn-stars img { height: 100%; width: auto; max-width: 31%; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(10, 40, 30, 0.35)); }
+.fn-stars { position: absolute; height: calc(var(--nw) * 0.13); transform: translateY(-50%); display: flex; align-items: center; justify-content: center; gap: 3%; pointer-events: none; z-index: 2; }
+.fn-stars img { flex: none; height: 100%; width: auto; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(10, 40, 30, 0.35)); }
 .fn .node-shine { z-index: 0; }
 .fn .lv-marker { top: calc(var(--nw) * -0.2); z-index: 4; }

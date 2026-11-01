@@ -1,14 +1,5 @@
-feat(stage): panda-house levels on a railway for forest stages
+fix(stage): same star size on every panda house
 
-Forest (green) stages now show their 20 levels as panda houses connected by a
-railway, level 1 at the bottom up to level 20 (src/ui/ForestTrack.jsx).
-
-- Houses by difficulty: easy = leaf roof, normal = bamboo, hard = flowers,
-  super hard (level 20) = station with clock.
-- Locked levels are drawn in grey with a padlock.
-- The blank plaque of every house holds the 3 stars: earned ones gold, the
-  rest grey (all grey while locked).
-- The screen opens scrolled to the level the player is on; the panda marker and
-  shine stay on the current level.
-- Other themes keep the old bubble grid (Stage.jsx falls back to it).
-- Add node art (art/map/node/*.webp, resized from the delivered PNGs).
+Stars on the house plaques were sized from each plaque's height, so the station
+(taller plaque) showed bigger stars than the other houses. They now share one
+size (13% of the house width) and only their centre follows the plaque.
