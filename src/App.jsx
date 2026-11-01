@@ -112,6 +112,7 @@ export default function App() {
       {screen.name === 'home' && (
         <Home
           onPlay={() => replace('game', { level: nextLevel, stage: stageOf(nextLevel) })}
+          onMap={() => replace('map')}
           onCoins={() => go('coins')}
           onMissions={() => go('missions')}
           onShop={() => go('shop')}

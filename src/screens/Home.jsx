@@ -10,13 +10,20 @@ import { missionDone } from '../game/missions.js';
 
 const W = 1440;
 const H = 2280;
+// the three round buttons sit lower than in the mockup to make room for the Map button under Play
+const LOWER = { 'h-settings': 230, 'h-missions': 230, 'h-shop': 230 };
+const MAP_BTN = [541, 1372, 901, 1523];
 const pos = (name) => {
   const [x0, y0, x1, y1] = M[name];
+  const dy = LOWER[name] || 0;
+  return pos2(x0, y0 + dy, x1, y1 + dy);
+};
+const pos2 = (x0, y0, x1, y1) => {
   return { left: `${(x0 / W) * 100}%`, top: `${(y0 / H) * 100}%`, width: `${((x1 - x0) / W) * 100}%`, height: `${((y1 - y0) / H) * 100}%` };
 };
 
 /** Home (v5 mockup 01): the PSD scene, a big round Play button and Settings / Missions / Shop bubbles. */
-export default function Home({ onPlay, onCoins, onShop, onSettings, onMissions }) {
+export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMissions }) {
   const t = useT();
   const save = useSave();
   const go = (fn) => () => {
@@ -38,6 +45,15 @@ export default function Home({ onPlay, onCoins, onShop, onSettings, onMissions }
           <Logotype className="bob" />
         </div>
         {btn('h-play', onPlay, t('play'), 'h5play')}
+        <button
+          className="h5btn h5map"
+          style={pos2(...MAP_BTN)}
+          onClick={go(onMap)}
+          aria-label={t('map')}
+        >
+          <img src={`${V5_ART}btn-orange.webp`} alt="" draggable="false" />
+          <span>{t('map')}</span>
+        </button>
         {btn('h-settings', onSettings, t('settings'))}
         {btn('h-missions', onMissions, t('missions'))}
         {btn('h-shop', onShop, t('shop'))}

@@ -68,6 +68,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   return (
     <main className="screen levels">
       <header className="topbar">
+        <BackButton onClick={onBack} label={t('back')} />
         <span className="chip small-chip">
           <img className="chip-star" src={`${MAP_ART}ui/star-gold.webp`} alt="" draggable="false" /> {t.n(got)}/{t.n(STAGE_SIZE * 3)}
         </span>
@@ -131,10 +132,6 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
           })}
         </div>
       </div>
-
-      <footer className="levels-foot">
-        <BackButton onClick={onBack} label={t('back')} />
-      </footer>
     </main>
   );
 }

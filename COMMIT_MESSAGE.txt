@@ -1,15 +1,10 @@
-fix(ci): stop Android build failing with "Value is null" in app/build.gradle
+feat(home): remove foreign animals from the home art, add Map button, back button top-left
 
-Both matrix jobs (en, fa) failed in `./gradlew assembleDebug` with
-"A problem occurred evaluating project ':app'. > Value is null"
-(android/app/build.gradle, line 23). Web build, tests and `cap sync` were fine.
-
-- add scripts/android-edition.mjs: rewrites the plugin + android { } part of
-  app/build.gradle so EDITION / VERSION_CODE / VERSION_NAME are read with
-  findProperty() and safe defaults (en, 1, 1.0) instead of a value that can be
-  null; applicationId is com.jollypanda.choochoopop (en) or ...choochoopop.fa (fa),
-  namespace stays the MainActivity package. The repositories/dependencies tail
-  is kept. Also sets the app name per edition (Choo Choo Pop / هو هو چی چی) in
-  strings.xml. Idempotent.
-- workflow: create the android project with `cap add android` when it is not
-  committed, and run the edition script after `cap sync`, before Gradle.
+- home-bg.webp: paint out the pink cat, panda and chick (not characters of this game)
+  and continue the clouds / grass hill behind them; trees and balloons are untouched.
+- Home: new "Map" button under Play that opens the stage map; the Settings / Missions /
+  Shop bubbles move down to make room for it.
+- Stage (levels) screen: Back button moves from the bottom footer to the top-left
+  of the top bar, like the map and game screens.
+- Top bars are always laid out left-to-right so Back is top-left in the fa (RTL)
+  edition too; the back arrow is no longer mirrored in RTL.
