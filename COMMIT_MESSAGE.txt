@@ -1,17 +1,14 @@
-feat(fa): Cafe Bazaar in-app billing infrastructure; fix coin shop tags and Panda pack
+feat(stage): panda-house levels on a railway for forest stages
 
-Coin shop
-- "Best deal" / "Users' choice" labels now follow the tilt of the tag art
-  (rotate +28deg instead of -34deg) and are centred on the tag body.
-- Remove the panda picture from the Panda pack row (only the coin pile stays).
+Forest (green) stages now show their 20 levels as panda houses connected by a
+railway, level 1 at the bottom up to level 20 (src/ui/ForestTrack.jsx).
 
-Cafe Bazaar billing (Persian edition, Android)
-- Add Capacitor plugin BazaarBilling (Kotlin, Poolakey) in src/edition-fa;
-  the en edition gets an empty EditionPlugins, MainActivity registers them.
-- Gradle: Kotlin plugin, JitPack repo, Poolakey dependency for EDITION=fa only
-  (override with -PPOOLAKEY_VERSION). Manifest: Bazaar <queries> + PAY_THROUGH_BAZAAR.
-- JS: src/services/bazaar.js provider (prices from Bazaar, purchase, consume,
-  restore, pending), registered in main.jsx when VITE_EDITION=fa on Android.
-- billing.js: purchase may return { token }; optional finish()/pending() hooks and
-  billing.recover() grant + consume interrupted purchases without double grants.
-- .env.example for VITE_BAZAAR_RSA_KEY, README section with the setup steps.
+- Houses by difficulty: easy = leaf roof, normal = bamboo, hard = flowers,
+  super hard (level 20) = station with clock.
+- Locked levels are drawn in grey with a padlock.
+- The blank plaque of every house holds the 3 stars: earned ones gold, the
+  rest grey (all grey while locked).
+- The screen opens scrolled to the level the player is on; the panda marker and
+  shine stay on the current level.
+- Other themes keep the old bubble grid (Stage.jsx falls back to it).
+- Add node art (art/map/node/*.webp, resized from the delivered PNGs).

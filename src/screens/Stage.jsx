@@ -2,13 +2,14 @@ import { useSave, starsInRange } from '../store.js';
 import { useT } from '../i18n.js';
 import { STAGES, stageLevels, stageBuilt } from '../game/stages.js';
 import { difficultyOf, nodeKind } from '../game/levels.js';
-import { NODE_BTN } from '../game/mapTheme.js';
+import { NODE_BTN, STAGE_THEMES } from '../game/mapTheme.js';
 import { STAGE_SIZE } from '../config.js';
 import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import { usePandaSrc } from '../ui/Panda.jsx';
 import { BackButton, Coin } from '../ui/icons.jsx';
 import { Crown } from '../ui/MapKit.jsx';
+import ForestTrack from '../ui/ForestTrack.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
 
 // Levels (stations) of one stage as a clean grid of glossy bubbles with their stars underneath:
@@ -16,6 +17,8 @@ import { ua, uaDelay } from '../anim/ua.js';
 //   current -> same, with the panda marker above it and a pulsing shine
 //   next    -> grey bubble with a padlock
 //   later   -> frosted bubble with a padlock
+// Forest (green) stages instead show the 20 levels as panda houses on a winding railway (ui/ForestTrack.jsx):
+//   locked houses are grey, the star plaque of a house shows the stars earned (gold) and the missing ones (grey).
 // This screen deliberately does NOT use the island map art - that belongs to the stage map (StageMap.jsx).
 
 const Lock = () => (
@@ -59,6 +62,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
   const prev = stageId > 1 ? stageId - 1 : null;
   // the next stage can be opened with the arrow only when it exists (all its levels are built)
   const next = stageId < STAGES.length && stageBuilt(stageId + 1) ? stageId + 1 : null;
+  const forest = STAGE_THEMES[stageId - 1]?.id === 'green';
   const go = (id) => () => {
     if (!id) return;
     sfx.click();
@@ -92,6 +96,9 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
         </button>
       </div>
 
+      {forest ? (
+        <ForestTrack levels={levels} unlocked={save.unlocked} stars={save.stars} onPick={onPick} label={t('station')} num={(x) => t.n(x)} Marker={Marker} pandaSkin={save.pandaSkin} />
+      ) : (
       <div className="lv-scroll">
         <div className="lv-grid">
           {levels.map((n, i) => {
@@ -132,6 +139,7 @@ export default function Stage({ stageId, onBack, onPick, onShop, onStage }) {
           })}
         </div>
       </div>
+      )}
     </main>
   );
 }
