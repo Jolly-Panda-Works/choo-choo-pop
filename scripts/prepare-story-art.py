@@ -15,7 +15,7 @@ def main():
         with Image.open(entry['source']) as source:
             panel = ImageOps.fit(source.convert('RGB'), tuple(entry['size']), method=Image.Resampling.LANCZOS)
             # Remove subpixel detail before encoding while preserving final dimensions.
-            detail_size = tuple(round(edge * 0.35) for edge in panel.size)
+            detail_size = tuple(round(edge * entry.get('detail_scale', 0.35)) for edge in panel.size)
             panel = panel.resize(detail_size, Image.Resampling.LANCZOS).resize(panel.size, Image.Resampling.LANCZOS)
             panel.save(output, 'WEBP', quality=85, method=6)
         with Image.open(output) as image:

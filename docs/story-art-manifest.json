@@ -1,7 +1,7 @@
 [
   {
     "panel": "p1-1",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-74e3d8c5-187a-4c27-8073-a3669b07ed81.png",
+    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-11eea583-3071-44e0-b9f3-1ca77c22e76d.png",
     "size": [
       1440,
       766
@@ -9,7 +9,7 @@
   },
   {
     "panel": "p1-2",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-bbb7993f-9c96-49f5-97c5-c8fd1af3130a.png",
+    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-87e0fce4-e2f4-4656-a501-078e104da348.png",
     "size": [
       691,
       1210
@@ -17,7 +17,7 @@
   },
   {
     "panel": "p1-3",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-4cf1e0c8-befb-4a77-8302-a26373604daf.png",
+    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-5a38518e-a265-4caa-a65b-6c81a01eb586.png",
     "size": [
       691,
       1210
@@ -25,7 +25,8 @@
   },
   {
     "panel": "p2-1",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-148d8705-55b6-4e89-8d48-424812838970.png",
+    "detail_scale": 0.25,
+    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-2b18719f-b3ab-44ca-8b91-25124f69944f.png",
     "size": [
       1440,
       847
@@ -49,7 +50,7 @@
   },
   {
     "panel": "p3-1",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-4166a80d-6a6f-4473-ba78-ad8643f735eb.png",
+    "source": "F:/Jolly Panda Studio/Web Game/choo-choo-pop/tmp/story-art/thought-green-source.png",
     "size": [
       1440,
       988
@@ -57,7 +58,8 @@
   },
   {
     "panel": "p3-2",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-28358ffd-72b8-4e3a-ada9-1e0a8c97c31e.png",
+    "detail_scale": 0.25,
+    "source": "F:\\Jolly Panda Studio\\Web Game\\choo-choo-pop\\tmp\\story-art\\full-thought-red-source.png",
     "size": [
       1440,
       988
@@ -65,7 +67,7 @@
   },
   {
     "panel": "p4-1",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-1a9027e9-e7b7-401c-ba9e-d90a7b86d43a.png",
+    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-0751dbc4-ac9e-47f4-b040-6a10861fcdc5.png",
     "size": [
       864,
       927
@@ -73,7 +75,7 @@
   },
   {
     "panel": "p4-2",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-3f82fc45-b99d-49a9-a35e-648dfc5a1ee9.png",
+    "source": "F:\\Jolly Panda Studio\\Web Game\\choo-choo-pop\\tmp\\story-art\\gate-slots-source.png",
     "size": [
       547,
       927
@@ -81,7 +83,7 @@
   },
   {
     "panel": "p4-3",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-edcadcd8-de3c-434a-8c30-184973700af7.png",
+    "source": "F:\\Jolly Panda Studio\\Web Game\\choo-choo-pop\\tmp\\story-art\\incomplete-board-source.png",
     "size": [
       1440,
       1048
@@ -105,7 +107,7 @@
   },
   {
     "panel": "p6-1",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-8f33e8f2-54f3-4f16-a653-d78f2e737312.png",
+    "source": "F:\\Jolly Panda Studio\\Web Game\\choo-choo-pop\\tmp\\story-art\\platform-whistle-source.png",
     "size": [
       691,
       887
@@ -121,7 +123,7 @@
   },
   {
     "panel": "p6-3",
-    "source": "C:\\Users\\Ania\\.codex\\generated_images\\01a19946-4ccc-7823-b590-26009359e780\\exec-8e7c6520-6816-48b9-b38b-b1b312e2d932.png",
+    "source": "F:\\Jolly Panda Studio\\Web Game\\choo-choo-pop\\tmp\\story-art\\happy-train-source.png",
     "size": [
       1440,
       1089
