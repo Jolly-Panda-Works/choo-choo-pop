@@ -1,6 +1,6 @@
 {
-  "$comment": "What's new in Cafe Bazaar for the next version (required: a Bazaar build fails without it). Set version to the version being released (package.json) and write fa and en, on the bazaar branch. Emptied automatically after a release.",
-  "version": "1.6.1",
-  "fa": "فروشگاه سکه و حذف تبلیغات فعال شد. ورود با حساب بازار و ذخیره‌ی پیشرفت هم اضافه شد.",
-  "en": "The coin shop and Remove Ads are now live, along with Bazaar sign-in and saved progress."
+  "$comment": "What's new in Cafe Bazaar for the next version (required: a Bazaar build fails without it). Set version to the version being released (package.json) and write fa and en, on the bazaar branch. Emptied after each release.",
+  "version": "",
+  "fa": "",
+  "en": ""
 }
