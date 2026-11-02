@@ -15,5 +15,7 @@ android/.idea
 
 public/choo-choo-pop-assets/_work/vite-cache
 
+store-screenshots/
+
 .env.local
 .env.*.local
