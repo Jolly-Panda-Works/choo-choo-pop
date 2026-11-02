@@ -167,9 +167,11 @@ jobs:
           mkdir -p out
           for ed in en; do
             for f in artifacts/choo-choo-pop-$ed-debug-apk/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION-debug.apk"; done
-            if ls artifacts/choo-choo-pop-$ed-release/*.apk >/dev/null 2>&1; then
-              for f in artifacts/choo-choo-pop-$ed-release/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.apk"; done
-              for f in artifacts/choo-choo-pop-$ed-release/*.aab; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.aab"; done
+            # this artifact has two paths, so upload-artifact keeps their apk/ and bundle/ folders
+            RELEASE=artifacts/choo-choo-pop-$ed-release
+            if ls "$RELEASE"/apk/release/*.apk >/dev/null 2>&1; then
+              for f in "$RELEASE"/apk/release/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.apk"; done
+              for f in "$RELEASE"/bundle/release/*.aab; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.aab"; done
             fi
           done
           ls -la out
