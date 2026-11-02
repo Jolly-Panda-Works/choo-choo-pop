@@ -18,6 +18,7 @@ import CoinShop from './screens/CoinShop.jsx';
 import Missions from './screens/Missions.jsx';
 import SpinWheel from './screens/SpinWheel.jsx';
 import Customize from './screens/Customize.jsx';
+import BootScreen from './ui/BootScreen.jsx';
 import AdHost from './ui/AdHost.jsx';
 import StartPopup from './ui/StartPopup.jsx';
 import { Icon, IconDefs, CoinChip } from './ui/icons.jsx';
@@ -35,6 +36,7 @@ const COIN_LINK = new Set(['shop', 'missions', 'settings', 'custom']);
 export default function App() {
   const save = useSave();
   const t = useT();
+  const [booting, setBooting] = useState(true);
   // first launch: the story, then straight into level 1
   const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story', then: 'game' }));
   const screenRef = useRef(screen);
@@ -262,6 +264,7 @@ export default function App() {
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
       <PlatformOverlay />
+      {booting && <BootScreen onDone={() => setBooting(false)} />}
     </div>
   );
 }
