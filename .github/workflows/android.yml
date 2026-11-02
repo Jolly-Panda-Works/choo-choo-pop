@@ -3,9 +3,16 @@ name: Build Android
 # push to main/master  -> build the game; if everything succeeds: bump the version, tag it and publish a GitHub Release
 # pull_request         -> build + test only (no version bump, no release)
 # manual run           -> same as push; you can pick the bump (auto / patch / minor / major)
+# Changes to the docs and community files alone don't build or release anything.
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - "LICENSE"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/dependabot.yml"
   pull_request:
   workflow_dispatch:
     inputs:
