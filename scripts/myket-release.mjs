@@ -62,10 +62,11 @@ async function call(method, path = "", body) {
       await new Promise((r) => setTimeout(r, attempt * 20_000));
       continue;
     }
-    return { status: res.status, ok: res.status >= 200 && res.status < 300, json };
+    return { status: res.status, ok: res.status >= 200 && res.status < 300, json, text };
   }
 }
-const why = (r) => r.json.message ?? r.json.error ?? r.status;
+// Myket's error format isn't documented: show its whole answer.
+const why = (r) => `HTTP ${r.status}: ${r.text.slice(0, 1000) || "(empty answer)"}`;
 
 // The docs don't name the versionCode field of a bundle, so it's looked for anywhere in the bundle.
 const hasCode = (release) => new RegExp(`\\b${code}\\b`).test(JSON.stringify(release));
@@ -113,5 +114,9 @@ const committed = await call("POST", "/commit", {
   isManualPublish: !autoPublish,
   message: `Choo Choo Pop ${version} (versionCode ${code}), sent automatically by GitHub Actions.`,
 });
-if (!committed.ok) fail(`Couldn't send the release for review: ${why(committed)}`);
+if (!committed.ok) {
+  const bundles = await call("GET", "?offset=1&limit=20");
+  console.log(`Bundles on Myket: ${bundles.text.slice(0, 2000)}`);
+  fail(`Couldn't send the release for review: ${why(committed)}`);
+}
 console.log(`::notice::Choo Choo Pop ${version} is with Myket for review${autoPublish ? "; it's published as soon as it's approved" : "; publish it in the panel once approved"}.`);
