@@ -3,8 +3,9 @@
 # Runs on the Iranian-store branch (and on demand). Step by step setup: docs/BAZAAR.fa.md, docs/MYKET.fa.md.
 #
 # Keep the branch up to date with main (`git checkout Iranian-store && git merge main && git push`);
-# each push builds both stores with the version from package.json and publishes one GitHub pre-release per
-# store, tagged bazaar-vX.Y.Z and myket-vX.Y.Z. One store failing doesn't stop the other.
+# each push builds both stores with the version from package.json. With release notes for that version it also
+# publishes one GitHub pre-release per store, tagged bazaar-vX.Y.Z and myket-vX.Y.Z, and sends the APKs to the
+# stores. One store failing doesn't stop the other.
 #
 # Settings (repository variables): BAZAAR_RSA_KEY and MYKET_PUBLIC_KEY (the in-app billing keys, public),
 # BAZAAR_DEVELOPER_ID (More games). Signing uses the KEYSTORE_* / KEY_* secrets of android.yml.
@@ -20,10 +21,11 @@
 # successful build sends the signed APK to Myket for review.
 #   MYKET_AUTO_PUBLISH: "false" (default): you publish in the panel; "true": published once approved.
 #
-# Release notes are required (checked before anything is built; the build fails without them):
+# Release notes decide whether a build is published (checked before anything is built):
 #   - a push: store-release-notes.json with "version" = the version being built and "fa" / "en"
 #     filled in. Edit it on the Iranian-store branch (after merging main), commit, push. Once both stores have the
 #     release the file is emptied (a [skip ci] commit), so the next version needs its own.
+#     File empty, or written for another version: the build runs, nothing is published.
 #   - Run workflow: the two notes fields of the form (they take the place of the file).
 
 name: Iranian stores
@@ -65,6 +67,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       code: ${{ steps.version.outputs.code }}
+      publish: ${{ steps.notes.outputs.publish }}
       source: ${{ steps.notes.outputs.source }}
       notes: ${{ steps.notes.outputs.notes }}
     steps:
@@ -84,15 +87,17 @@ jobs:
           echo "code=$((MA * 1000000 + MI * 1000 + PA))" >> "$GITHUB_OUTPUT"
           echo "Store builds $VERSION"
 
-      # Before anything is built: no release without its notes.
-      - name: Release notes (required)
+      # Before anything is built: no release without notes for this version.
+      - name: Release notes
         id: notes
         env:
           NOTES_FA: ${{ inputs.notes_fa }}
           NOTES_EN: ${{ inputs.notes_en }}
         run: |
           node scripts/store-notes.mjs check "$RUNNER_TEMP/store-notes.json"
-          echo "notes=$(base64 -w 0 "$RUNNER_TEMP/store-notes.json")" >> "$GITHUB_OUTPUT"
+          if [ -f "$RUNNER_TEMP/store-notes.json" ]; then
+            echo "notes=$(base64 -w 0 "$RUNNER_TEMP/store-notes.json")" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Install
         run: npm ci
@@ -116,6 +121,7 @@ jobs:
       FLAVOR: ${{ matrix.flavor }}
       VERSION: ${{ needs.prepare.outputs.version }}
       VERSION_CODE: ${{ needs.prepare.outputs.code }}
+      PUBLISH: ${{ needs.prepare.outputs.publish }}
       VITE_STORE: ${{ matrix.store }}
       VITE_BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
       VITE_BAZAAR_DEVELOPER_ID: ${{ vars.BAZAAR_DEVELOPER_ID }}
@@ -139,6 +145,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Release notes
+        if: env.PUBLISH == 'true'
         env:
           NOTES: ${{ needs.prepare.outputs.notes }}
         run: printf '%s' "$NOTES" | base64 --decode > "$RUNNER_TEMP/store-notes.json"
@@ -193,9 +200,10 @@ jobs:
           path: out/*
           retention-days: 1
 
-      # Only the Iranian-store branch publishes; a manual run on another branch is a test build.
+      # Only the Iranian-store branch publishes, and only with notes for this version;
+      # anything else is a test build (its files are in the run's artifact).
       - name: Publish release
-        if: github.ref == 'refs/heads/Iranian-store'
+        if: github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TITLE: ${{ matrix.title }}
@@ -218,7 +226,7 @@ jobs:
       # Cafe Bazaar: send the signed APK (only this branch, and only with the API token;
       # skipped when Bazaar already has this versionCode).
       - name: Release in Cafe Bazaar
-        if: matrix.store == 'bazaar' && github.ref == 'refs/heads/Iranian-store' && env.HAS_KEYSTORE == 'true' && env.HAS_PISHKHAN == 'true'
+        if: matrix.store == 'bazaar' && github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true' && env.HAS_KEYSTORE == 'true' && env.HAS_PISHKHAN == 'true'
         env:
           BAZAAR_PISHKHAN_TOKEN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN }}
           BAZAAR_AUTO_PUBLISH: ${{ vars.BAZAAR_AUTO_PUBLISH || 'false' }}
@@ -227,7 +235,7 @@ jobs:
 
       # Myket: the same, and never without the billing key: that build can't sell anything.
       - name: Release in Myket
-        if: matrix.store == 'myket' && github.ref == 'refs/heads/Iranian-store' && env.HAS_KEYSTORE == 'true' && env.HAS_MYKET == 'true'
+        if: matrix.store == 'myket' && github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true' && env.HAS_KEYSTORE == 'true' && env.HAS_MYKET == 'true'
         env:
           MYKET_ACCESS_TOKEN: ${{ secrets.MYKET_ACCESS_TOKEN }}
           MYKET_AUTO_PUBLISH: ${{ vars.MYKET_AUTO_PUBLISH || 'false' }}

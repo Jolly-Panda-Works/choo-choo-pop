@@ -1,4 +1,4 @@
-// What's new in the Iranian stores (Cafe Bazaar, Myket) for one version: required before every build.
+// What's new in the Iranian stores (Cafe Bazaar, Myket) for one version: nothing is published without it.
 //
 //   node scripts/store-notes.mjs check <out.json>   checks the notes and writes the ones to use
 //   node scripts/store-notes.mjs clear              empties the file for the next version
@@ -7,13 +7,14 @@
 //   1. a manual run's inputs (env NOTES_FA and NOTES_EN; "\n" starts a new line), or
 //   2. store-release-notes.json: { "version", "fa", "en" }, where version must be
 //      the version being built (package.json). Edit it on the Iranian-store branch before pushing.
-// Missing, empty, or written for another version: the check fails, so a release can't go out
-// without them. After a release the file is emptied (clear), so the next one needs new notes.
+// Empty, or written for another version: the build still runs, but it isn't published (publish=false).
+// Half filled, too long or broken: the check fails. After a release the file is emptied (clear), so the
+// next one needs new notes.
 import { readFileSync, writeFileSync } from "node:fs";
 
 const FILE = new URL("../store-release-notes.json", import.meta.url);
 const COMMENT =
-  "What's new in Cafe Bazaar and Myket for the next version (required: the store builds fail without it). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.";
+  "What's new in Cafe Bazaar and Myket for the next version (required: a build is published only when version matches package.json). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.";
 /** Longer notes are cut by the store pages; keep them short. */
 const MAX = 1000;
 
@@ -22,6 +23,12 @@ const version = JSON.parse(readFileSync(new URL("../package.json", import.meta.u
 const fail = (message) => {
   console.log(`::error title=Store release notes::${message}`);
   process.exit(1);
+};
+/** No notes for this version: the build goes on, nothing is published. */
+const noRelease = (message) => {
+  console.log(`::notice title=Not published::${message}`);
+  if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, "publish=false\n", { flag: "a" });
+  process.exit(0);
 };
 const clean = (text) => String(text ?? "").replaceAll("\\n", "\n").trim();
 
@@ -48,8 +55,8 @@ if (inputFa || inputEn) {
     fail("store-release-notes.json is missing or isn't valid JSON.");
   }
   const forVersion = String(file.version ?? "").trim();
-  if (!forVersion) fail(`No release notes for ${version}: set "version": "${version}" and write "fa" and "en" in store-release-notes.json (on the Iranian-store branch), or run the workflow by hand with the notes.`);
-  if (forVersion !== version) fail(`The release notes are for ${forVersion}, but this build is ${version}. Update store-release-notes.json for ${version}.`);
+  if (!forVersion) noRelease(`No release notes for ${version}: not publishing. To publish, set "version": "${version}" and write "fa" and "en" in store-release-notes.json (on the Iranian-store branch).`);
+  if (forVersion !== version) noRelease(`The release notes are for ${forVersion}, but this build is ${version}: not publishing. Update store-release-notes.json for ${version}.`);
   notes = { fa: clean(file.fa), en: clean(file.en) };
   if (!notes.fa) fail(`The Persian release notes ("fa") for ${version} are empty.`);
   if (!notes.en) fail(`The English release notes ("en") for ${version} are empty.`);
@@ -61,4 +68,4 @@ for (const [lang, text] of Object.entries(notes)) {
 
 writeFileSync(out, JSON.stringify({ version, ...notes }));
 console.log(`Release notes for ${version} (from ${source === "inputs" ? "the run's inputs" : "store-release-notes.json"}):\n--- fa ---\n${notes.fa}\n--- en ---\n${notes.en}`);
-if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `source=${source}\n`, { flag: "a" });
+if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `publish=true\nsource=${source}\n`, { flag: "a" });

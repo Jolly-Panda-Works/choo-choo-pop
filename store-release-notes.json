@@ -1,6 +1,6 @@
 {
-  "$comment": "What's new in Cafe Bazaar and Myket for the next version (required: the store builds fail without it). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.",
-  "version": "1.6.1",
-  "fa": "فروشگاه سکه و حذف تبلیغات فعال شد.",
-  "en": "The coin shop and Remove Ads are now live."
+  "$comment": "What's new in Cafe Bazaar and Myket for the next version (required: a build is published only when version matches package.json). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.",
+  "version": "",
+  "fa": "",
+  "en": ""
 }
