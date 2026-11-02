@@ -274,12 +274,11 @@ button:disabled { opacity: 0.5; cursor: default; }
 .sp-grass { background-size: 34cqw; background-color: #7ed957; }
 .sp-item { position: absolute; display: block; height: auto; pointer-events: none; }
 .sp-num { display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(#fff29a, var(--yellow)); border: 3px solid #fff; color: #8a4b12; font-family: var(--font-display); font-weight: var(--fw-display); font-size: 7cqw; box-shadow: 0 3px 0 rgba(138, 75, 18, 0.45); }
-.sp-text { position: absolute; z-index: 1; padding: 1.4cqw 2.2cqw; font-size: 4.1cqw; line-height: 1.45; text-align: center; color: #17405c; font-weight: 700; }
-.sp-cap { background: #fff6c9; border: 2px solid #f4c430; border-radius: 10px; }
-.sp-say { background: #fff; border: 2px solid #17405c; border-radius: 16px; }
-.sp-say.tail-l::after, .sp-say.tail-r::after { content: ''; position: absolute; bottom: -9px; width: 14px; height: 14px; background: #fff; border-right: 2px solid #17405c; border-bottom: 2px solid #17405c; transform: rotate(45deg); }
-.sp-say.tail-l::after { left: 22%; }
-.sp-say.tail-r::after { right: 22%; }
+.sp-text { position: absolute; z-index: 1; font-size: 3.7cqw; line-height: 1.35; text-align: center; color: #17405c; font-weight: 700; }
+.sp-cap { border: 2.4cqw solid transparent; padding: 0.6cqw 1.6cqw; border-image: url('/choo-choo-pop-assets/art/story/frame-cap.webp') 90 fill / 2.8cqw stretch; }
+.sp-say { padding: 2.6cqw 4cqw 5.2cqw; }
+.sp-say::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('/choo-choo-pop-assets/art/story/frame-say.webp') center / 100% 100% no-repeat; }
+.sp-say.tail-r::before { transform: scaleX(-1); }
 @keyframes sp-in { from { opacity: 0; transform: scale(0.8) translateY(10px); } to { opacity: 1; transform: none; } }
 .dots { display: flex; gap: 8px; margin: 10px 0; }
 .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.6); }
@@ -592,3 +591,15 @@ button:active:not(:disabled) { scale: 0.92; }
 .stage-node.off .map-pin { animation: none; opacity: 0; }
 .stage-scroll.settled .map-pin { animation-delay: 0.5s, 0s !important; }
 .on-game .topbar h2 { font-size: 22px; }
+
+/* first loading screen: the train pulls the bar along, in the same pictures as the frame */
+.boot { position: fixed; inset: 0; z-index: 9000; overflow: hidden; container-type: size; background: #3babfe url('/boot/load-bg.webp') center bottom / cover no-repeat; transition: opacity 0.35s; }
+.boot.done { opacity: 0; pointer-events: none; }
+.boot-logo { position: absolute; left: 12%; right: 12%; top: max(13%, calc(40px + env(safe-area-inset-top))); height: 24%; }
+.boot-logo .logotype { display: block; width: 100%; height: 100%; object-fit: contain; }
+.boot-track { position: absolute; left: 7%; right: 7%; bottom: max(5%, calc(16px + env(safe-area-inset-bottom))); aspect-ratio: 3 / 1; direction: ltr; }
+.boot-track img { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* the bar fills the hole of the frame; its front always stays under the train, and at 100% it reaches the far end */
+.boot-bar { position: absolute; left: 7%; width: 86%; top: 35.5%; height: 29%; border-radius: 999px; overflow: hidden; }
+.boot-bar img { clip-path: inset(0 calc(72.1% * (1 - var(--p))) 0 0); transition: clip-path 0.25s linear; }
+.boot-train { transform: translate(calc(-62% * (1 - var(--p))), -3.3%); transition: transform 0.25s linear; }
