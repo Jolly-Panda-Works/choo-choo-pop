@@ -1,7 +1,7 @@
 {
   "name": "choo-choo-pop",
   "private": true,
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A rail-laying logic puzzle game for kids, in English and Persian.",
   "license": "MIT",
   "author": {
