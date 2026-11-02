@@ -1,8 +1,8 @@
 # نسخه‌ی کافه‌بازار (Choo Choo Pop)
 
-آخرین نسخه‌ی بازی همیشه روی `main` است. شاخه‌ی `bazaar` همان `main` به‌اضافه‌ی تنظیمات بازار است: برای هر بیلد، `main` در آن مرج می‌شود و **هیچ‌وقت برعکس**. این شاخه با زبان فارسی شروع می‌شود و شناسه‌ی بسته‌اش `com.jollypanda.choochoopop` است. هر push روی آن نسخه را می‌سازد (**Actions ← Bazaar**) و تا وقتی نسخه‌ی پایدار نداریم، نسخه فقط به‌صورت پیش‌نویس آلفا به پیشخان می‌رود و به دست عموم نمی‌رسد.
+آخرین نسخه‌ی بازی همیشه روی `main` است. شاخه‌ی `Iranian-store` همان `main` به‌اضافه‌ی تنظیمات بازار و مایکت است: برای هر بیلد، `main` در آن مرج می‌شود و **هیچ‌وقت برعکس**. این شاخه با زبان فارسی شروع می‌شود و شناسه‌ی بسته‌اش `com.jollypanda.choochoopop` است. هر push روی آن هر دو نسخه را می‌سازد (**Actions ← Iranian stores**). اگر `BAZAAR_CHANNEL` روی `alpha` باشد، نسخه فقط پیش‌نویس آلفا می‌شود و با `public` مستقیم برای بررسی عمومی می‌رود. راهنمای مایکت در [MYKET.fa.md](MYKET.fa.md) است.
 
-همه‌ی چیزهایی که فقط در این شاخه هستند: `src/services/platform.jsx` (جایگزین قلاب‌های خالی `main`)، `src/services/bazaar.js`، `src/services/bazaarApp.js`، `android/app/src/bazaar`، `DEFAULT_LANG` در `src/config.js`، چند خط در فایل‌های Gradle و `AndroidManifest.xml` و `MainActivity.java`، و این راهنما و `bazaar.yml`.
+کد مخصوص بازار این‌ها است: `src/services/platform.bazaar.jsx`، `src/services/bazaar.js`، `src/services/bazaarApp.js` و `android/app/src/bazaar`. `src/services/platform.jsx` جایگزین قلاب‌های خالی `main` است و `vite.config.js` با `VITE_STORE` فروشگاه را انتخاب می‌کند. `DEFAULT_LANG` در `src/config.js`، چند خط در فایل‌های Gradle و `MainActivity.java`، این راهنما و `stores.yml` هم فقط در این شاخه هستند.
 
 ## چه چیزهایی در بازی هست
 
@@ -103,7 +103,7 @@ base64 -w 0 choo-choo-pop.keystore > keystore.base64.txt
 
 ### ۷. اولین بیلد
 
-روی شاخه‌ی `bazaar`، فایل `bazaar-release-notes.json` را با نسخه‌ی `package.json` و متن فارسی و انگلیسی پر کنید، بعد commit و push کنید.
+روی شاخه‌ی `Iranian-store`، فایل `store-release-notes.json` را با نسخه‌ی `package.json` و متن فارسی و انگلیسی پر کنید، بعد commit و push کنید.
 
 بعد از بیلد:
 
@@ -124,27 +124,27 @@ base64 -w 0 choo-choo-pop.keystore > keystore.base64.txt
 
 ### ۹. انتشار عمومی (وقتی نسخه‌ی پایدار آماده شد)
 
-متغیر `BAZAAR_CHANNEL` را `public` کنید، یا در Actions ← Bazaar ← Run workflow کانال `public` را انتخاب کنید. برای انتشار خودکار بعد از تأیید بازار، `BAZAAR_AUTO_PUBLISH` را `true` کنید.
+متغیر `BAZAAR_CHANNEL` را `public` کنید، یا در Actions ← Iranian stores ← Run workflow کانال `public` را انتخاب کنید. برای انتشار خودکار بعد از تأیید بازار، `BAZAAR_AUTO_PUBLISH` را `true` کنید.
 
 ## کارهای روزمره
 
-تغییرات را روی `main` بدهید و برای نسخه‌ی جدید بازار:
+تغییرات را روی `main` بدهید و برای نسخه‌ی جدید بازار و مایکت:
 
 ```bash
-git checkout bazaar
+git checkout Iranian-store
 git merge main
 ```
 
-بعد `bazaar-release-notes.json` را برای نسخه‌ی جدید پر کنید:
+بعد `store-release-notes.json` را برای نسخه‌ی جدید پر کنید:
 
 ```bash
-git commit -am "chore(bazaar): release notes"
+git commit -am "chore(stores): release notes"
 git push
 git checkout main
 ```
 
-- بدون یادداشت نسخه، بیلد بازار متوقف می‌شود.
+- بدون یادداشت نسخه، بیلد هر دو فروشگاه متوقف می‌شود.
 - `version` در این فایل باید دقیقاً نسخه‌ی `package.json` باشد و هر متن حداکثر ۱۰۰۰ نویسه است.
-- بعد از ارسال موفق به بازار، GitHub فایل را خالی می‌کند؛ پیش از کار بعدی `git pull` بزنید.
-- این فایل را فقط روی `bazaar` ویرایش کنید.
+- بعد از ارسال موفق به هر دو فروشگاه، GitHub فایل را خالی می‌کند؛ پیش از کار بعدی `git pull` بزنید.
+- این فایل را فقط روی `Iranian-store` ویرایش کنید.
 - `versionCode` از شماره‌ی نسخه ساخته می‌شود (`1.2.0` می‌شود `1002000`)، پس هر انتشار باید نسخه‌ی بالاتری داشته باشد.

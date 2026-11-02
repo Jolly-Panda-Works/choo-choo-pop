@@ -15,7 +15,7 @@
 // Steps: skip if Bazaar already has this versionCode (released, in review, or a draft waiting
 // for you) -> drop an older draft left by a failed run -> create a release -> upload the APK ->
 // commit it for review with the changelog (public) or leave it as a draft (alpha).
-// The changelog: { fa, en } from scripts/bazaar-notes.mjs (checked before the build).
+// The changelog: { fa, en } from scripts/store-notes.mjs (checked before the build).
 import { existsSync, openAsBlob, readFileSync } from "node:fs";
 
 // PISHKHAN_API_URL is only for testing against a mock.
@@ -40,7 +40,7 @@ const fail = (message) => {
 if (!token) fail("BAZAAR_PISHKHAN_TOKEN is not set.");
 if (!apk || !existsSync(apk)) fail(`APK not found: ${apk}`);
 if (!version || !Number.isFinite(code) || code <= 0) fail("Pass --version and --code.");
-if (!changelogFile || !existsSync(changelogFile)) fail("Pass --changelog (the notes checked by scripts/bazaar-notes.mjs).");
+if (!changelogFile || !existsSync(changelogFile)) fail("Pass --changelog (the notes checked by scripts/store-notes.mjs).");
 const notes = JSON.parse(readFileSync(changelogFile, "utf8"));
 if (!String(notes.fa ?? "").trim() || !String(notes.en ?? "").trim()) fail("The release notes are empty.");
 

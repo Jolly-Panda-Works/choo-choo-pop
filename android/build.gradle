@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.13.0'
         classpath 'com.google.gms:google-services:4.4.4'
-        // Kotlin: the Cafe Bazaar plugin (src/bazaar/kotlin) is written in Kotlin
+        // Kotlin: the store plugins (src/bazaar/kotlin, src/myket/kotlin) are written in Kotlin
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -25,6 +25,8 @@ allprojects {
         mavenCentral()
         // the Cafe Bazaar SDKs (Poolakey, CafeBazaarAuth, bazaarUpdater) are published on JitPack
         maven { url 'https://jitpack.io' }
+        // the Myket billing SDK
+        maven { url 'https://maven.myket.ir' }
     }
 }
 
