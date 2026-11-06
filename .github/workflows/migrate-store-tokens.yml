@@ -1,0 +1,35 @@
+name: Migrate existing store tokens to central publisher
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  encrypt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check PyNaCl==1.6.2
+      - name: Encrypt to the publisher environment only
+        env:
+          BAZAAR_PISHKHAN_TOKEN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN }}
+          MYKET_ACCESS_TOKEN: ${{ secrets.MYKET_ACCESS_TOKEN }}
+        run: |
+          python <<'PY'
+          import os,json,base64
+          from nacl.public import PublicKey,SealedBox
+          box=SealedBox(PublicKey(base64.b64decode('XRSe70Cd2AXdUPdm6QGPmxTDcP5Qk7GLuw/RMsWQBD4=')))
+          result={}
+          for name in ['BAZAAR_PISHKHAN_TOKEN','MYKET_ACCESS_TOKEN']:
+              value=os.environ.get(name,'')
+              if not value: raise RuntimeError('Missing secret: '+name)
+              result[name]={'key_id':'3380204578043523366','encrypted_value':base64.b64encode(box.encrypt(value.encode())).decode()}
+          with open('sealed-store-tokens.json','w') as f: json.dump(result,f)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sealed-store-tokens
+          path: sealed-store-tokens.json
+          retention-days: 1
+          if-no-files-found: error
