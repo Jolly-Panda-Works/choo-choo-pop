@@ -33,6 +33,7 @@ concurrency:
 jobs:
   # ---- 1. which version is this build? ----------------------------------------------------------
   prepare:
+    if: vars.BUILD_MODE != 'central'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.v.outputs.version }}
