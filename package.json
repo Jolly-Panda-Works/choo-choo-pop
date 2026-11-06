@@ -23,7 +23,9 @@
     "preview": "vite preview",
     "levels:build": "node scripts/build-levels.mjs",
     "test:levels": "node scripts/test-levels.mjs",
-    "cap:sync": "npm run build && cap sync android"
+    "cap:sync": "npm run build && cap sync android",
+    "test": "npm run test:levels",
+    "build:android": "node scripts/build.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

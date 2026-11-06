@@ -11,6 +11,9 @@ android {
     // One build per store: same app id and version, each with its own SDKs, manifest and plugin (src/<store>)
     flavorDimensions = ['store']
     productFlavors {
+        standalone {
+            dimension = 'store'
+        }
         bazaar {
             dimension = 'store'
         }
@@ -43,6 +46,10 @@ android {
         }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

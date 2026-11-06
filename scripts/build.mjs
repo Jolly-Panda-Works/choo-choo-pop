@@ -1,0 +1,38 @@
+import { execFileSync } from 'node:child_process';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, chmodSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { versionCode } from './version.mjs';
+const config=JSON.parse(readFileSync('game.config.json','utf8'));
+const store=process.env.STORE||'debug';
+if(!['debug',...config.stores].includes(store)) throw Error('Unsupported build edition');
+if(process.env.PUBLISH_STORES==='true') throw Error('Central builds never submit to stores');
+const version=process.env.VERSION||JSON.parse(readFileSync('package.json','utf8')).version;
+const code=versionCode(version);
+const isDebug=store==='debug';
+const env={...process.env,VITE_STORE:store,VITE_BAZAAR_RSA_KEY:process.env.BAZAAR_RSA_KEY||'',VITE_MYKET_PUBLIC_KEY:process.env.MYKET_PUBLIC_KEY||'',VITE_BAZAAR_DEVELOPER_ID:process.env.BAZAAR_DEVELOPER_ID||''};
+if(!isDebug && !env[store==='bazaar'?'VITE_BAZAAR_RSA_KEY':'VITE_MYKET_PUBLIC_KEY']) throw Error('Missing store billing public key');
+const keys=['KEYSTORE_BASE64','KEYSTORE_PASSWORD','KEY_ALIAS','KEY_PASSWORD'];
+if(!isDebug && !keys.every(k=>process.env[k])) throw Error('Existing release signing secrets are mandatory');
+const win=process.platform==='win32';
+const run=(cmd,args,opts={})=>execFileSync(cmd,args,{stdio:'inherit',env,...opts});
+// Vite reads package.json for the visible version. This is a build-only update; no source commit is created.
+const pkg=JSON.parse(readFileSync('package.json','utf8')); pkg.version=version;
+writeFileSync('package.json',JSON.stringify(pkg,null,2)+'\n');
+run(win?'npm.cmd':'npm',['run','build'],{shell:win});
+run(win?'npx.cmd':'npx',['cap','sync','android'],{shell:win});
+const flavor=isDebug?'Standalone':store==='bazaar'?'Bazaar':'Myket';
+const args=[`assemble${flavor}${isDebug?'Debug':'Release'}`,...(isDebug?[]:[`bundle${flavor}Release`]),'--no-daemon',`-PVERSION_CODE=${code}`,`-PVERSION_NAME=${version}`];
+if(!isDebug) {
+  const keystore=`${process.env.RUNNER_TEMP||process.cwd()}/release.keystore`;
+  writeFileSync(keystore,Buffer.from(process.env.KEYSTORE_BASE64,'base64'),{mode:0o600});
+  args.push(`-Pandroid.injected.signing.store.file=${keystore}`,`-Pandroid.injected.signing.store.password=${process.env.KEYSTORE_PASSWORD}`,`-Pandroid.injected.signing.key.alias=${process.env.KEY_ALIAS}`,`-Pandroid.injected.signing.key.password=${process.env.KEY_PASSWORD}`);
+}
+if(!win) chmodSync('android/gradlew',0o755);
+run(win?'gradlew.bat':'./gradlew',args,{cwd:'android',shell:win});
+mkdirSync('out',{recursive:true});
+const variant=isDebug?'standalone':store;
+const type=isDebug?'debug':'release';
+const prefix=`${config.slug}-v${version}-${isDebug?'standalone-debug':store}`;
+copyFileSync(`android/app/build/outputs/apk/${variant}/${type}/app-${variant}-${type}.apk`,`out/${prefix}.apk`);
+if(!isDebug) copyFileSync(`android/app/build/outputs/bundle/${variant}Release/app-${variant}-release.aab`,`out/${prefix}.aab`);
+writeFileSync('out/SHA256SUMS.txt',readdirSync('out').filter(n=>n!=='SHA256SUMS.txt').sort().map(n=>`${createHash('sha256').update(readFileSync(`out/${n}`)).digest('hex')}  ${n}`).join('\n')+'\n');

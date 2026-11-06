@@ -7,7 +7,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // must be registered before super; the plugin of the store this build is for (src/<store>)
-        registerPlugin(StorePlugins.PLUGIN);
+        if (StorePlugins.PLUGIN != null) registerPlugin(StorePlugins.PLUGIN);
         super.onCreate(savedInstanceState);
     }
 }

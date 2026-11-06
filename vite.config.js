@@ -33,7 +33,7 @@ const pruneDist = () => ({
 
 // Which store this build is for (VITE_STORE): only that store's code goes in the bundle, see src/services/platform.jsx.
 const STORE = process.env.VITE_STORE || 'bazaar';
-if (!['bazaar', 'myket'].includes(STORE)) throw new Error(`Unknown VITE_STORE: ${STORE}`);
+if (!['bazaar', 'myket', 'debug'].includes(STORE)) throw new Error(`Unknown VITE_STORE: ${STORE}`);
 
 export default defineConfig({
   base: './',

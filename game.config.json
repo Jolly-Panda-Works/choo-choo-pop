@@ -1,0 +1,10 @@
+{
+  "name": "Choo Choo Pop",
+  "slug": "choochoopop",
+  "appId": "com.jollypanda.choochoopop",
+  "nativeProject": "committed",
+  "web": false,
+  "orientation": "portrait",
+  "billing": true,
+  "stores": ["bazaar", "myket"]
+}
