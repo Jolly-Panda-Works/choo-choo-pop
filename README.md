@@ -1,5 +1,20 @@
 # Choo Choo Pop
 
+A rail-laying logic puzzle game for kids, in English and Persian. Built with React, Vite and Capacitor.
+
+**Download:** [latest release](https://github.com/Jolly-Panda-Works/choo-choo-pop/releases/latest)
+
+```bash
+npm ci
+npm run dev
+```
+
+Want to help? Read [CONTRIBUTING.md](CONTRIBUTING.md).
+
+**License:** the code is under the [MIT License](LICENSE). The art, audio, characters and game name are not; see [ASSETS_LICENSE.md](ASSETS_LICENSE.md).
+
+---
+
 بازی پازل ریل‌چینی برای کودکان (رده‌ی سنی ۷ سال)، کاملاً **top-down** (بوم دوبعدی + اسپرایت‌های PNG)، React + Capacitor (اندروید) و بیلد خودکار با GitHub Actions.
 شناسه‌ی اپ: `com.jollypanda.choochoopop`
 

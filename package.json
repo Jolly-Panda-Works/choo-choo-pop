@@ -1,10 +1,20 @@
 {
   "name": "choo-choo-pop",
   "private": true,
-  "version": "1.6.1",
+  "version": "1.6.3",
+  "description": "A rail-laying logic puzzle game for kids, in English and Persian.",
+  "license": "MIT",
   "author": {
     "name": "Usef Farahmand",
     "url": "https://www.useffarahmand.com"
+  },
+  "homepage": "https://github.com/Jolly-Panda-Works/choo-choo-pop#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jolly-Panda-Works/choo-choo-pop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jolly-Panda-Works/choo-choo-pop/issues"
   },
   "type": "module",
   "scripts": {

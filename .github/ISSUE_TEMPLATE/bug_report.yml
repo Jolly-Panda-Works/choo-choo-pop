@@ -1,0 +1,43 @@
+name: Bug report
+description: Something in the game doesn't work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Write in English or Persian. Add a screenshot or video if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we see it?
+      placeholder: |
+        1. Open level 12
+        2. Tap the hint button
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Game version
+      description: It's in the About popup in the settings.
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where did you get the game?
+      options:
+        - GitHub
+        - Cafe Bazaar
+        - Myket
+        - Built it myself
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Phone and Android version
