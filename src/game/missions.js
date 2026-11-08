@@ -26,12 +26,12 @@ export const DAILY_KINDS = [
 export const WEEKLY_KINDS = [
   { id: 'wLevels', ev: 'win', targets: [12, 18, 25], coins: [100, 150, 200], gift: { hints: 2 } },
   { id: 'wStars', ev: 'stars', targets: [24, 36, 48], coins: [100, 150, 200], gift: { hints: 2 } },
-  { id: 'wPerfect', ev: 'perfect', targets: [5, 8, 12], coins: [120, 170, 230], gift: { powerup: 'star' } },
+  { id: 'wPerfect', ev: 'perfect', targets: [5, 8, 12], coins: [120, 170, 230], gift: { powerup: 'peek' } },
   { id: 'wDays', ev: 'visit', targets: [3, 4, 5], coins: [80, 120, 160], gift: { hints: 1 } },
-  { id: 'wNoHint', ev: 'nohint', targets: [6, 10, 15], coins: [100, 150, 200], gift: { powerup: 'eraser' } },
+  { id: 'wNoHint', ev: 'nohint', targets: [6, 10, 15], coins: [100, 150, 200], gift: { powerup: 'peek' } },
   { id: 'wNoMistake', ev: 'nomistake', targets: [4, 7, 10], coins: [110, 160, 220], gift: { powerup: 'peek' } },
   { id: 'wCoins', ev: 'coins', targets: [150, 250, 400], coins: [90, 130, 180], gift: { hints: 2 } },
-  { id: 'wPower', ev: 'powerup', targets: [4, 6, 9], coins: [120, 170, 230], gift: { powerup: 'star' }, needsStage: POWERUP_STAGE },
+  { id: 'wPower', ev: 'powerup', targets: [4, 6, 9], coins: [120, 170, 230], gift: { powerup: 'peek' }, needsStage: POWERUP_STAGE },
 ];
 
 const pad = (n) => String(n).padStart(2, '0');

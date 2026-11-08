@@ -1,8 +1,7 @@
 import { STAGE_COUNT, STAGE_SIZE } from './constants.js';
 import { levelCount } from './levels.js';
 
-// Stage definitions. Only stage 1 has its 20 levels built so far (scripts/build-levels.mjs);
-// stages 2-4 appear on the map as "coming soon".
+// Six playable lands with twenty puzzles each.
 // Position of the stage on the map (percent of the map width / height) lives in screens/StageMap.jsx.
 export const STAGES = Array.from({ length: STAGE_COUNT }, (_, i) => ({
   id: i + 1,
@@ -11,7 +10,7 @@ export const STAGES = Array.from({ length: STAGE_COUNT }, (_, i) => ({
   // text keys: stage1Name ... (i18n.js)
   nameKey: 'stage' + (i + 1) + 'Name',
   // Level numbers (inside the stage, 1..20) that are "super hard". Stage 1 only has the very last one.
-  superHard: i === 0 ? [20] : [19, 20],
+  superHard: [],
 }));
 
 export const stageOfLevel = (n) => Math.min(STAGE_COUNT, Math.ceil(n / STAGE_SIZE));

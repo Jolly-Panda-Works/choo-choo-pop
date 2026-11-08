@@ -15,6 +15,8 @@ export const V5_ART = ART + 'v5/';
 export const MISSION_ART = ART + 'missions/';
 
 const FILES = {
+  noteDot: 'ui/note-dot-v1.png',
+  noteCross: 'ui/note-cross-v1.png',
   straight: 'track/straight.png',
   // Tunnel gates (v3): green = entry, red = exit. Each image is a capsule lying ACROSS the track; the arrow on it shows
   // the travel direction in the image's own frame (entry: up, exit: down) - BoardCanvas rotates it per board side.

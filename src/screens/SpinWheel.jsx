@@ -9,7 +9,7 @@ import { ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 
 // The lucky wheel: one free spin a day, more with a rewarded video. Slices run clockwise from the top.
-const PRIZES = [{ coins: 20 }, { hints: 1 }, { coins: 50 }, { power: 'star' }, { coins: 10 }, { power: 'eraser' }, { coins: 100 }, { power: 'peek' }];
+const PRIZES = [{ coins: 20 }, { hints: 1 }, { coins: 50 }, { hints: 1 }, { coins: 10 }, { coins: 30 }, { coins: 100 }, { power: 'peek' }];
 // a power-up the player has not been taught yet gives this instead
 const BEFORE_LESSON = { star: { hints: 1 }, eraser: { coins: 30 }, peek: { coins: 40 } };
 const SLICE = 360 / PRIZES.length;

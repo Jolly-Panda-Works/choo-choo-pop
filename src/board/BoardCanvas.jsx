@@ -296,6 +296,29 @@ function draw(R, now) {
   g.stroke();
   g.restore();
 
+  // Walls occupy only the boundary: both neighbouring cells stay playable.
+  g.save(); g.strokeStyle = '#704c3b'; g.lineWidth = S * 0.12; g.lineCap = 'round';
+  for (const [a,b] of level.walls) {
+    const ar=Math.floor(a/cols), ac=a%cols, br=Math.floor(b/cols), bc=b%cols;
+    const x=px((ac+bc)/2-cols/2+0.5), y=py((ar+br)/2-rows/2+0.5);
+    g.beginPath();
+    if (ar===br) { g.moveTo(x,y-S*0.46); g.lineTo(x,y+S*0.46); }
+    else { g.moveTo(x-S*0.46,y); g.lineTo(x+S*0.46,y); }
+    g.stroke();
+  }
+  g.restore();
+  for (const f of level.fixed) {
+    const x=px(f.cell%cols-cols/2+0.5), y=py(Math.floor(f.cell/cols)-rows/2+0.5);
+    const {kind,k}=pieceTurns(...f.sides); const rails=getRailSet(R.railSkin);
+    drawTile(g,kind==='curve'?rails.curve:rails.straight,x,y,S+0.5,k,1);
+    g.fillStyle='#22546d'; g.beginPath(); g.arc(x+S*0.28,y-S*0.28,S*0.1,0,Math.PI*2); g.fill();
+    g.fillStyle='#fff'; g.font=boardFont(S*0.14); g.textAlign='center'; g.fillText('•',x+S*0.28,y-S*0.24);
+  }
+  for (const [key,value] of Object.entries(R.notes || {})) {
+    const cell=+key; if(inPath.has(cell)) continue;
+    const size=S*0.5;
+    g.drawImage(value===1?sp.noteDot:sp.noteCross,px(cell%cols-cols/2+0.5)-size/2,py(Math.floor(cell/cols)-rows/2+0.5)-size/2,size,size);
+  }
   // --- gold star tiles
   const bob = 1 + 0.04 * Math.sin(now / 350);
   for (const gi of level.given) {
@@ -328,10 +351,10 @@ function draw(R, now) {
   });
   for (const key of [...R.appear.keys()]) if (!seen.has(key)) R.appear.delete(key);
 
-  // --- power-up "peek": the whole answer as a soft glowing trail
-  if (R.peekUntil > now) {
+  // --- power-up "peek": a fixed short continuation of one lane
+  if (R.peekUntil > now && R.peekTrail) {
     const fade = Math.min(1, (R.peekUntil - now) / 500);
-    level.lanes.forEach((l, li) => {
+    [R.peekTrail].forEach(({ cells, lane: li }) => {
       g.save();
       g.globalAlpha = 0.85 * fade;
       g.lineCap = 'round';
@@ -341,7 +364,7 @@ function draw(R, now) {
       g.shadowColor = '#fff';
       g.shadowBlur = S * 0.25;
       g.beginPath();
-      l.solution.forEach((cell, i) => {
+      cells.forEach((cell, i) => {
         const x = px((cell % cols) - cols / 2 + 0.5);
         const y = py(Math.floor(cell / cols) - rows / 2 + 0.5);
         if (i) g.lineTo(x, y);
@@ -472,7 +495,7 @@ function draw(R, now) {
   }
 }
 
-export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, evalResult, phase, coach, skin, railSkin, reserveBottom = 0, onPath, onRunDone }) {
+export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, peekTrail = null, notes = {}, noteMode = false, onNote, evalResult, phase, coach, skin, railSkin, reserveBottom = 0, onPath, onRunDone }) {
   const wrapRef = useRef(null);
   const cvRef = useRef(null);
   const R = useRef({
@@ -487,7 +510,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     phase: 'play',
   });
   const cbRef = useRef({});
-  cbRef.current = { onPath, onRunDone, pathRef, level, reserveBottom };
+  cbRef.current = { onNote, noteMode, onPath, onRunDone, pathRef, level, reserveBottom };
 
   // keep the draw state in sync with props
   useEffect(() => {
@@ -495,7 +518,9 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     const levelChanged = r.level !== level;
     r.level = level;
     r.paths = paths;
+    r.notes = notes;
     r.peekUntil = peekUntil;
+    r.peekTrail = peekTrail;
     r.counts = evalResult.counts;
     r.coach = coach;
     r.skin = skin;
@@ -518,7 +543,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
       r.appear = new Map();
     }
     r.dirty = true;
-  }, [level, paths, evalResult, phase, coach, skin, railSkin, reserveBottom, peekUntil]);
+  }, [level, paths, evalResult, phase, coach, skin, railSkin, reserveBottom, peekUntil, peekTrail, notes]);
 
   // size + render loop
   useEffect(() => {
@@ -585,7 +610,6 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     const { level: lv, pathRef: pr, onPath: op } = cbRef.current;
     const next = stepOnto(lv, pr.current, drag.current.lane, cell);
     if (next !== pr.current) {
-      pr.current = next;
       op(next);
     }
   };
@@ -595,6 +619,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     const [x, y] = world(e);
     const cell = cellAt(x, y);
     if (cell === -1) return;
+    if (cbRef.current.noteMode) { cbRef.current.onNote?.(cell); return; }
     const { level: lv, pathRef: pr } = cbRef.current;
     const lane = laneForCell(lv, pr.current, cell);
     if (lane === -1) return;

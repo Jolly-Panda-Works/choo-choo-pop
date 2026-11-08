@@ -20,10 +20,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:demo": "vite build --mode demo",
     "preview": "vite preview",
     "levels:build": "node scripts/build-levels.mjs",
     "test:levels": "node scripts/test-levels.mjs",
-    "cap:sync": "npm run build && cap sync android"
+    "cap:sync": "npm run build && cap sync android",
+    "test": "npm run test:levels && node scripts/test-board-state.mjs && node scripts/test-timing.mjs && node scripts/test-powerup-packs.mjs && node scripts/test-introductions.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

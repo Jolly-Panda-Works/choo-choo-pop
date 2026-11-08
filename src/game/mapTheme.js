@@ -12,9 +12,11 @@ export const TILE = {
   end: 500 / 1080, // clouds - always the top tile; the art is END_OVERLAP taller and fades out over the tile below
 };
 
-// One island theme per built stage. All four built stages sit on green islands (see CITIES).
+// One island theme per built stage. All six built stages sit on green islands (see CITIES).
 // `btn` = colour of the glossy map-stage button used for the stage on the world map.
 export const STAGE_THEMES = [
+  { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
+  { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
   { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
   { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },
   { id: 'green', btn: 'green', tiles: ['green-start', 'green-2', 'end'] },

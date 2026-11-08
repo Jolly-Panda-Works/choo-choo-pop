@@ -32,9 +32,14 @@ export function laneForCell(level, paths, cell) {
   for (let i = 0; i < paths.length; i++) if (paths[i].includes(cell)) return i;
   for (let i = 0; i < paths.length; i++) {
     const head = paths[i][paths[i].length - 1];
-    if (head !== laneExitIdx(level, i) && dirBetween(level, head, cell) !== -1 && canEnter(level, paths, i, cell)) return i;
+    if (head !== laneExitIdx(level, i) && dirBetween(level, head, cell) !== -1 && edgeAllowed(level, head, cell) && canEnter(level, paths, i, cell)) return i;
   }
   return -1;
+}
+
+export function edgeAllowed(level, a, b) {
+  if ((level.walls || []).some(([x,y]) => (x === a && y === b) || (x === b && y === a))) return false;
+  return (level.fixed || []).every(f => (f.cell !== a || f.sides.includes(dirBetween(level,a,b))) && (f.cell !== b || f.sides.includes(dirBetween(level,b,a))));
 }
 
 function canEnter(level, paths, lane, cell) {
@@ -61,7 +66,7 @@ export function stepOnto(level, paths, lane, cell) {
   if (at !== -1) return set(path.slice(0, at + 1));
   if (head === laneExitIdx(level, lane)) return paths;
   if (dirBetween(level, head, cell) === -1) return paths;
-  if (!canEnter(level, paths, lane, cell)) return paths;
+  if (!canEnter(level, paths, lane, cell) || !edgeAllowed(level, head, cell)) return paths;
   return set([...path, cell]);
 }
 
@@ -83,8 +88,16 @@ export function evaluate(level, paths) {
   const rowsOk = counts.rows.every((n, i) => n === level.rowClues[i]);
   const colsOk = counts.cols.every((n, i) => n === level.colClues[i]);
   const cells = new Set(allCells(paths));
-  const givenOk = level.given.every((g) => cells.has(g));
-  return { counts, laneDone, reachedExit, rowsOk, colsOk, givenOk, solved: reachedExit && rowsOk && colsOk && givenOk };
+  const givenOk = [...level.given, ...(level.fixed || []).map(f => f.cell)].every((g) => cells.has(g));
+  const railsOk = paths.every((p, li) => p.every((cell, j) => {
+    if (j && !edgeAllowed(level,p[j-1],cell)) return false;
+    const fixed = (level.fixed || []).find(f => f.cell === cell);
+    if (!fixed) return true;
+    const incoming = j ? dirBetween(level,cell,p[j-1]) : level.lanes[li].entry.side;
+    const outgoing = j+1 < p.length ? dirBetween(level,cell,p[j+1]) : level.lanes[li].exit.side;
+    return fixed.sides.includes(incoming) && fixed.sides.includes(outgoing) && incoming !== outgoing;
+  }));
+  return { counts, laneDone, reachedExit, rowsOk, colsOk, givenOk, solved: reachedExit && rowsOk && colsOk && givenOk && railsOk };
 }
 
 /** Longest correct prefix of one lane. */
@@ -149,3 +162,19 @@ export const gateIsOuter = (level, g) => {
   const nc = g.c + DC[g.side];
   return nr < 0 || nc < 0 || nr >= level.rows || nc >= level.cols;
 };
+
+/** Preview one unfinished lane, anchored at its last correct cell.
+ * Keep at least one future cell hidden when more than one remains.
+ * No rails are changed; callers snapshot this when the power is used.
+ */
+export function peekSegment(level, paths) {
+  for (let lane = 0; lane < level.lanes.length; lane++) {
+    const solution = level.lanes[lane].solution;
+    const k = goodPrefix(level, paths, lane);
+    const remaining = solution.length - k;
+    if (remaining <= 0) continue;
+    const count = Math.min(3, Math.max(1, remaining - 1));
+    return { lane, cells: solution.slice(Math.max(0, k - 1), k + count) };
+  }
+  return null;
+}
