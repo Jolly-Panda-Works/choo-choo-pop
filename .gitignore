@@ -23,3 +23,5 @@ store-screenshots/
 out/
 
 .wrangler/
+.dev.vars
+.dev.vars.*

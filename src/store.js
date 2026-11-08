@@ -12,7 +12,7 @@ import {
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
 import { purchasePowerupPack } from './game/powerupPacks.js';
-import { demoLanguage } from './demo/rules.js';
+import { demoLanguage, demoHintSpend, demoSocialReward } from './demo/rules.js';
 import { levelCount } from './game/levels.js';
 
 const KEY = IS_WEB_DEMO ? 'choochoopop.demo.v1' : 'choochoopop.save.v3';
@@ -24,6 +24,10 @@ const defaults = () => ({
   unlocked: 1, // highest level number the player may play
   stars: {}, // level number -> 1..3
   hints: START_HINTS,
+  demoHints: 5,
+  demoSocialClaimed: [],
+  demoSocialPending: null,
+  demoVerifiedGrants: [],
   coins: START_COINS,
   sound: true,
   music: true,
@@ -79,6 +83,18 @@ function persist() {
 }
 
 export const getState = () => state;
+export function spendDemoHint() {
+  const patch = demoHintSpend(state);
+  if (!patch) return false;
+  update(patch);
+  return true;
+}
+export function claimDemoSocial(reward) {
+  const patch = demoSocialReward(state, reward);
+  if (!patch) return false;
+  update(patch);
+  return true;
+}
 export const currentLang = () => IS_WEB_DEMO ? demoLanguage(typeof navigator === 'undefined' ? [] : navigator.languages || [navigator.language]) : state.lang || DEFAULT_LANG;
 export const subscribe = (l) => {
   listeners.add(l);
@@ -111,7 +127,7 @@ export function completeLevel(level, stars, difficulty = 1) {
     const first = prev === 0;
     const coins = first ? COIN_BASE[difficulty] + COINS_PER_STAR * stars : Math.max(0, stars - prev) * COINS_PER_STAR;
     // a free hint for every second level finished for the first time (after the tutorial)
-    const hintBonus = first && level > TUTORIAL_LEVELS && level % 2 === 0;
+    const hintBonus = !IS_WEB_DEMO && first && level > TUTORIAL_LEVELS && level % 2 === 0;
     res = { first, coins, hintBonus };
     return {
       stars: { ...s.stars, [level]: Math.max(prev, stars) },

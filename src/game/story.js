@@ -14,7 +14,7 @@ export const STORY = [
   {
     panels: [
       { box: [0, 0, 100, 42], art: 'story/s04.webp', text: { key: 's04', kind: 'cap', x: 12, y: 5, w: 76 } },
-      { box: [21, 44, 58, 56], art: 'story/s05.webp', text: { key: 's05', kind: 'say', x: 16, y: 5, w: 68, tail: 'l' } },
+      { box: [21, 44, 58, 56], art: 'story/s05.webp', text: { key: 's05', kind: 'shock', x: 16, y: 5, w: 68, tail: 'l' } },
     ],
   },
   {

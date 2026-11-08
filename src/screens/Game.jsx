@@ -7,6 +7,7 @@ import Modal from '../ui/Modal.jsx';
 import { Stars, Coin, CoinChip, Bulb, BackButton, Icon, PowerIcon } from '../ui/icons.jsx';
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission, saveDraft, clearDraft, markTaught, markUiTaught } from '../store.js';
 import { useT } from '../i18n.js';
+import { spendDemoHint } from '../store.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
 import { startPaths, evaluate, applyHint, peekSegment } from '../game/logic.js';
@@ -19,7 +20,7 @@ import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
 import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, TIMER_FIRST_LEVEL, FREEZE_MS, powerAvailable, PEEK_MS, IDLE_HINT_MS } from '../config.js';
 
-export default function Game({ demo = false, levelOverride, paused = false, levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
+export default function Game({ demo = false, onDemoNoHints, onDemoComplete, levelOverride, paused = false, levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
   const baseLevel = useMemo(() => levelOverride || getLevel(levelNo), [levelNo, levelOverride]);
   const level = baseLevel;
   const save = useSave();
@@ -155,6 +156,7 @@ export default function Game({ demo = false, levelOverride, paused = false, leve
     else sfx.win();
     const res = completeLevel(levelNo, stars, level.difficulty);
     setReward(res);
+    if (demo && levelNo === 10) onDemoComplete?.();
     adDue.current = tickAdCounter(levelNo);
     if (levelNo > TUTORIAL_LEVELS) {
       trackMission('win');
@@ -180,6 +182,7 @@ export default function Game({ demo = false, levelOverride, paused = false, leve
   };
   const hint = () => {
     if (!playing) return;
+    if (demo && !spendDemoHint()) { onDemoNoHints?.(); return; }
     if (!demo && !tutorial && save.hints <= 0) {
       sfx.error();
       setNoHints(true);
@@ -353,11 +356,11 @@ export default function Game({ demo = false, levelOverride, paused = false, leve
           <span>{t('undo')}</span>
         </button>
         <button className="ctl" onClick={redo} disabled={!playing || !history.future.length}><img src={`${UI_ART}undo.png`} width="30" height="30" style={{ transform: 'scaleX(-1)' }} alt="" draggable="false" /><span>{t('redo')}</span></button>
-        <button className="ctl" onClick={() => { setNoteMode(v => !v); if (!noteMode) say(t('notesHelp')); }} disabled={!playing} aria-pressed={noteMode}><img src={`${UI_ART}icon-notes-v1.png`} width="30" height="30" alt="" draggable="false" /><span>{t(noteMode ? 'drawRails' : 'notes')}</span></button>
+        <button className="ctl" onClick={() => { setNoteMode(v => !v); if (!noteMode) say(t('notesHelp')); }} disabled={!playing} aria-pressed={noteMode}><img src={UI_ART + (noteMode ? 'icon-rails-v1.png' : 'icon-notes-v1.png')} width="30" height="30" alt="" draggable="false" /><span>{t(noteMode ? 'drawRails' : 'notes')}</span></button>
         <button className="ctl" onClick={hint} disabled={!playing}>
           <Bulb size={30} />
           <span>{t('hint')}</span>
-          {!demo && !tutorial && <i className="badge">{t.n(save.hints)}</i>}
+          {(demo || !tutorial) && <i className="badge">{t.n(demo ? save.demoHints : save.hints)}</i>}
         </button>
         <button className="ctl" onClick={restart} disabled={!playing}>
           <img src={`${UI_ART}restart.png`} width="30" height="30" alt="" draggable="false" />
@@ -365,7 +368,7 @@ export default function Game({ demo = false, levelOverride, paused = false, leve
         </button>
       </footer>
 
-      {lessonOpen && <Modal key={lesson.id} pose="point" title={t(lesson.title)}>
+      {lessonOpen && <Modal key={lesson.id} pose="point" title={t(lesson.title)} variant="tutorial">
         <div className="intro-icon">
           {lesson.power ? <PowerIcon id={lesson.power} size={76} /> : lesson.bulb ? <Bulb size={76} /> : lesson.art ? <img src={UI_ART+lesson.art} alt="" style={{transform:lesson.mirror?'scaleX(-1)':undefined, width:lesson.id==='timer'?220:76}} /> : null}
         </div>

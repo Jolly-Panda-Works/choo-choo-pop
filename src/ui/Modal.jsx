@@ -9,7 +9,7 @@ import { sfx } from '../audio.js';
  * Opens / closes with the converted Unity clips popups-default-popup-open / -close and the fade-in of the win popup background.
  * `children` may be a function: it gets `leave(fn)`, which plays the closing clip and then runs fn.
  */
-export default function Modal({ pose, title, children, wide = false, onClose, titleClass = '' }) {
+export default function Modal({ pose, title, children, wide = false, onClose, titleClass = '', variant = '' }) {
   const save = useSave();
   const [closing, setClosing] = useState(false);
   const leave = (fn) => {
@@ -28,7 +28,7 @@ export default function Modal({ pose, title, children, wide = false, onClose, ti
       onClick={close}
     >
       <div
-        className={'modal ' + (closing ? ua('popups-default-popup-close') : ua('popups-default-popup-open')) + (pose ? ' has-panda' : '') + (wide ? ' wide' : '')}
+        className={'modal ' + (variant ? 'modal-' + variant + ' ' : '') + (closing ? ua('popups-default-popup-close') : ua('popups-default-popup-open')) + (pose ? ' has-panda' : '') + (wide ? ' wide' : '')}
         onClick={(e) => e.stopPropagation()}
       >
         {pose && <Panda pose={pose} skin={save.pandaSkin} size={150} className="modal-panda" />}

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {publicPosts,reactionProgress,MISSION_MS} from '../worker/reactions.js';
+const post=(id,count)=>`<div data-post="UsefGameLab/${id}"><div class="tgme_widget_message_reactions"><span class="tgme_reaction"><i><b>❤</b></i>${count}</span></div><div class="tgme_widget_message_footer"></div></div>`;
+assert.deepEqual(publicPosts(post(1,3)+post(3,0)+post(2,4),'UsefGameLab'),[{id:3,count:0},{id:2,count:4},{id:1,count:3}]);
+assert.equal(publicPosts(post(1,'1.2K'),'UsefGameLab')[0].count,null);
+assert.deepEqual(publicPosts('<div data-post="Other/1"></div>','UsefGameLab'),[]);
+const mission={posts:[{id:1,count:3},{id:2,count:4},{id:3,count:0}],expires:MISSION_MS};
+assert.equal(reactionProgress(mission,[{id:1,count:4},{id:2,count:5},{id:3,count:1}],1000).complete,true);
+assert.equal(reactionProgress(mission,[{id:1,count:4},{id:2,count:5}],1000).complete,false);
+assert.equal(reactionProgress(mission,[{id:1,count:3},{id:2,count:5},{id:3,count:1}],1000).progress,2);
+assert.equal(reactionProgress(mission,[],MISSION_MS+1).expired,true);
+console.log('Public post parsing, frozen post selection, all-three increases and 10-minute expiry passed.');

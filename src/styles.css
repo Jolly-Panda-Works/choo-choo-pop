@@ -788,3 +788,119 @@ html, body, #root { width: 100%; }
 @media (max-height:600px) and (orientation:portrait) {
  .demo-app .demo-level .stars img { width: 18px; }
 }
+/* Cream and gold tutorial panels match the game's shop and station artwork. */
+.modal.modal-tutorial { border-width: 24px; border-image: url('/choo-choo-pop-assets/art/ui/tutorial-frame-v1.png') 16% fill / 24px stretch; filter: drop-shadow(0 8px 10px #56371655); }
+.modal-tutorial .modal-body { background: none; border-radius: 0; padding: 8px 5px 12px; color: #79501e; }
+.modal.modal-tutorial h3 { color: #96580f; text-shadow: 0 1px 0 #fff5d2; }
+.modal-tutorial .goal { color: #694a29; }
+.modal.modal-tutorial .modal-panda { bottom: calc(100% + 10px); }
+.bubble.panda-bubble { background: none; border: 14px solid transparent; border-image: url('/choo-choo-pop-assets/art/ui/tutorial-frame-v1.png') 16% fill / 14px stretch; border-radius: 0; box-shadow: none; color: #694a29; padding: 2px 5px; filter: drop-shadow(0 3px 4px #5d492b33); }
+[dir='rtl'] .bubble.panda-bubble { padding: 2px 5px; }
+@media (max-height:650px) and (orientation:portrait) {
+ .modal.modal-tutorial { border-width: 18px; border-image-width: 18px; }
+ .modal-tutorial .modal-body { padding: 4px; }
+}
+.modal.modal-tutorial { background: #fff1d2; background-clip: border-box; border-radius: 28px; }
+.bubble.panda-bubble { background: #fff1d2; background-clip: border-box; border-radius: 22px; }
+/* In-play guidance uses the same illustrated speech bubble as the story scenes. */
+.bubble.panda-bubble {
+  width: min(92%, 390px); bottom: 6px; gap: 0; padding: 0;
+  background: none; border: 0; border-image: none; border-radius: 0;
+  box-shadow: none; filter: none; align-items: center; font-size: 15px; line-height: 1.5;
+}
+[dir='rtl'] .bubble.panda-bubble { padding: 0; }
+.bubble.panda-bubble .panda { height: 82px !important; max-width: 72px; margin-inline-end: -4px; z-index: 1; }
+.bubble.panda-bubble span {
+  display: flex; align-items: center; justify-content: center; flex: 1; min-height: 104px;
+  padding: 18px 24px 26px; text-align: center; color: #254b70;
+  background: url('/choo-choo-pop-assets/art/ui/story-speech-bubble.png') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 2px #285c3433);
+}
+.game .toast {
+  background: url('/choo-choo-pop-assets/art/ui/story-speech-bubble.png') center / 100% 100% no-repeat;
+  color: #254b70; border-radius: 0; box-shadow: none;
+  padding: 22px 30px 30px; line-height: 1.5; font-size: 15px;
+  filter: drop-shadow(0 3px 2px #285c3433);
+}
+/* Generated guidance frame and two distinct opening-comic dialogue moods. */
+.bubble.panda-bubble span, .game .toast {
+ background-image: url('/choo-choo-pop-assets/art/ui/guide-frame-v2.png');
+ padding: 20px 28px; color: #245265;
+}
+.bubble.panda-bubble span { min-height: 100px; }
+.sp-say, .sp-shock {
+ display: flex; align-items: center; justify-content: center;
+ aspect-ratio: 1; padding: 4.5cqw; border: 0; font-size: 3.4cqw; line-height: 1.3;
+ background: url('/choo-choo-pop-assets/art/ui/story-circle-v2.png') center / 100% 100% no-repeat;
+}
+.sp-say::before, .sp-shock::before { content: none; }
+.sp-shock { background-image: url('/choo-choo-pop-assets/art/ui/story-shock-v2.png'); padding: 5cqw; color: #17213b; font-size: 5cqw; }
+/* Keep the generated 3:1 guidance artwork at its native proportions. */
+.bubble.panda-bubble span, .game .toast {
+ aspect-ratio: 3 / 1; min-height: 0; height: auto;
+ background-size: contain;
+ padding: 14px 28px;
+}
+.game .toast { display: flex; align-items: center; justify-content: center; }
+@media (max-width: 380px) {
+ .bubble.panda-bubble span, .game .toast { font-size: 13px; padding: 12px 24px; }
+}
+.demo-ending { margin: auto; width: min(90%,480px); display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; padding: 24px; }
+.demo-ending h1 { font-family: var(--font-display); color: #fff; text-shadow: 0 2px 2px #245265; }
+.demo-ending p { color: #17405c; font-size: 18px; }
+.demo-ending .btn { text-decoration: none; }
+.demo-socials { display: grid; gap: 8px; text-align: start; }
+.demo-social { border-radius: 14px; background: #fff7df; border: 1px solid #efc97a; padding: 10px 12px; }
+.demo-social a { color: #17405c; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-decoration: none; font-size: 15px; }
+.demo-social b { color: #986016; font-size: 12px; flex-shrink: 0; }
+.demo-social .btn { width: 100%; margin-top: 8px; font-size: 14px; }
+.demo-social-done { color: #527c4a; font-size: 13px; }
+.modal-demo-hints .modal-body { max-height: min(70dvh,650px); overflow-y: auto; }
+.modal-demo-hints .goal { font-size: 15px; }
+.modal-demo-hints > .modal-panda { height: 110px !important; }
+.modal-demo-hints a.btn { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+@media(max-height:650px) { .modal-demo-hints.has-panda { margin-top: 80px; } .modal-demo-hints > .modal-panda { height: 80px !important; } }
+/* A compact gold-framed Telegram gift popup. */
+.modal.modal-demo-hints {
+ width: min(100%,350px); border-width: 18px;
+ border-image: url('/choo-choo-pop-assets/art/ui/tutorial-frame-v1.png') 16% fill / 18px stretch;
+ background: #fff1d2; background-clip: border-box; border-radius: 24px;
+}
+.modal-demo-hints .modal-body { background: transparent; padding: 12px 5px 16px; overflow: visible; max-height: none; }
+.modal-demo-hints h3 { color: #8c500f; font-size: 25px; }
+.modal-demo-hints .goal { font-size: 16px; color: #765029; }
+.modal-demo-hints > .modal-panda { bottom: calc(100% + 8px); height: 100px !important; }
+.modal-demo-hints .modal-x { top: -35px; right: -32px; width: 44px; height: 44px; }
+.demo-telegram-card { display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 12px 0 16px; color: #245265; }
+.demo-telegram-card > img { width: 72px; height: 72px; object-fit: contain; }
+.demo-hint-gift { display: flex; align-items: center; gap: 5px; color: #9c6212; font-size: 14px; }
+.demo-hint-gift img { width: 20px; height: 20px; object-fit: contain; }
+.demo-telegram-actions { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8px; }
+.demo-telegram-actions a.btn { min-width: 0; min-height: 54px; padding-inline: 8px; font-size: 15px; }
+.demo-full-game-link { display: block; margin-top: 16px; color: #78511f; font-size: 14px; text-underline-offset: 4px; }
+@media(max-height:650px) { .modal-demo-hints.has-panda { margin-top: 70px; } .modal-demo-hints > .modal-panda { height: 70px !important; } .demo-telegram-card { margin-block: 6px; } .demo-telegram-card > img { width: 56px; height: 56px; } }
+/* Native mission frame keeps the same artwork and proportions as the app. */
+.demo-reward-popup { position: relative; height: auto; width: min(92vw,calc(88dvh * 960 / 1660),393px); aspect-ratio: 960 / 1660; text-align: center; }
+.demo-reward-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.demo-reward-popup h2 { position: absolute; top: 21%; left: 17%; width: 66%; height: 7%; display: grid; place-items: center; margin: 0; color: #fff; font-family: var(--font-display); font-size: clamp(19px,3dvh,27px); text-shadow: 0 2px 2px #26742b; }
+.demo-reward-close { position: absolute; top: 22%; right: -1%; width: 13%; aspect-ratio: 1; background: url('/choo-choo-pop-assets/art/v5/btn-close.webp') center / contain no-repeat; }
+.demo-reward-content { position: absolute; top: 32%; bottom: 8%; left: 10%; right: 10%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; gap: 8px; color: #365828; }
+.demo-reward-content > p { margin: 0; font-size: 17px; }
+.demo-reward-telegram { width: clamp(48px,10dvh,78px); height: auto; }
+.demo-reward-content a.btn { display: flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0; padding: 10px; font-size: clamp(14px,2.4dvh,20px); }
+.demo-reward-content .demo-continue-download { flex-direction: column; gap: 2px; min-height: 76px; margin-top: 8px; }
+.demo-continue-download strong { font-size: clamp(19px,3dvh,26px); font-weight: 900; }
+.demo-continue-download small { font-family: var(--font-body); font-size: 12px; font-weight: 700; }
+@media(max-height:650px) { .demo-reward-content { gap: 4px; } .demo-reward-content .demo-continue-download { min-height: 60px; } }
+.demo-reward-content .demo-hints-alert { color: #d63940; font-size: 19px; font-weight: 800; animation: demo-hint-pulse 1.6s ease-in-out infinite; }
+@keyframes demo-hint-pulse { 0%,100% { transform: scale(1); text-shadow: 0 0 0 transparent; } 50% { transform: scale(1.06); text-shadow: 0 2px 8px #e6474544; } }
+.demo-telegram-single { gap: 10px; }
+.demo-telegram-single img { width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; }
+.demo-reward-or { display: flex; align-items: center; gap: 12px; width: 85%; color: #7b7854; font-size: 15px; font-weight: 700; }
+.demo-reward-or::before, .demo-reward-or::after { content: ''; height: 1px; background: #b9bd9266; flex: 1; }
+.demo-reward-content .demo-continue-download { min-height: 62px; margin-top: 0; }
+.demo-continue-download strong { font-size: clamp(18px,2.8dvh,24px); }
+@media (prefers-reduced-motion: reduce) { .demo-reward-content .demo-hints-alert { animation: none; } }
+.demo-telegram-entry { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.demo-verify-return { font-size: 13px; color: #3a6b38; text-underline-offset: 3px; }
+.demo-auto-status { font-size: 12px; color: #507340; min-height: 18px; }
