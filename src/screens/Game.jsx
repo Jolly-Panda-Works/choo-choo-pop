@@ -5,21 +5,22 @@ import Panda from '../ui/Panda.jsx';
 import { ua } from '../anim/ua.js';
 import Modal from '../ui/Modal.jsx';
 import { Stars, Coin, CoinChip, Bulb, BackButton, Icon, PowerIcon } from '../ui/icons.jsx';
-import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission, saveDraft, clearDraft } from '../store.js';
+import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission, saveDraft, clearDraft, markTaught, markUiTaught } from '../store.js';
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
 import { startPaths, evaluate, applyHint, peekSegment } from '../game/logic.js';
 import { boardSignature, freshBoard, restoreDraft, pushBoard, undoBoard, redoBoard } from '../game/boardState.js';
-import { timeTargets, timedStars, formatTime } from '../game/timing.js';
+import { timeTargets, timedStars, formatTime, timerFill } from '../game/timing.js';
 import { usePlayTimer } from '../game/usePlayTimer.js';
+import { introductionLessons } from '../game/introductions.js';
 import { isTutorial, coachFor, tutorialIdleMs, idleCoach } from '../game/tutorial.js';
 import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
-import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, powerAvailable, PEEK_MS, IDLE_HINT_MS } from '../config.js';
+import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, TIMER_FIRST_LEVEL, FREEZE_MS, powerAvailable, PEEK_MS, IDLE_HINT_MS } from '../config.js';
 
-export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
-  const baseLevel = useMemo(() => getLevel(levelNo), [levelNo]);
+export default function Game({ demo = false, levelOverride, paused = false, levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
+  const baseLevel = useMemo(() => levelOverride || getLevel(levelNo), [levelNo, levelOverride]);
   const level = baseLevel;
   const save = useSave();
   const t = useT();
@@ -30,7 +31,15 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   const paths = history.present.paths;
   const notes = history.present.notes;
   const [noteMode, setNoteMode] = useState(false);
-  const [lessonOpen, setLessonOpen] = useState(!!level.lesson);
+  const [lessons] = useState(() => demo && levelNo > 1 ? [] : introductionLessons(level, save.uiTaught, save.taught));
+  const [lessonIndex, setLessonIndex] = useState(0);
+  const lesson = lessons[lessonIndex];
+  const lessonOpen = !!lesson;
+  const nextLesson = () => {
+    sfx.click();
+    if (lesson.power) markTaught(lesson.power); else markUiTaught(lesson.id);
+    setLessonIndex(i => i + 1);
+  };
   const [powerUsed, setPowerUsed] = useState(() => restored.current?.powerUsed || 0);
   const [peekUntil, setPeekUntil] = useState(0);
   const [peekTrail, setPeekTrail] = useState(null);
@@ -63,8 +72,9 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   const path = paths[0];
   const playing = phase === 'play';
   const targets = useMemo(() => timeTargets(level), [level]);
-  const timer = usePlayTimer(ready && playing && !lessonOpen && !askLeave && !noHints && !noPower, restored.current?.elapsedMs);
-  const liveStars = timedStars(timer.elapsedMs, targets);
+  const timed = !demo && levelNo >= TIMER_FIRST_LEVEL;
+  const timer = usePlayTimer(timed && ready && !paused && playing && !lessonOpen && !askLeave && !noHints && !noPower, restored.current?.elapsedMs, restored.current?.freezeRemainingMs);
+  const liveStars = timed ? timedStars(timer.elapsedMs, targets) : 3;
 
   // after a moment without a move the finger shows what to do next (the tutorial coach, or the idle hint of a station)
   useEffect(() => {
@@ -93,16 +103,16 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   }, [install]);
   useEffect(() => {
     if (phase === 'won' || phase === 'next') { clearDraft(levelNo); return; }
-    saveDraft(levelNo, { ...history, signature: boardSignature(level), hintsUsed, mistakes, powerUsed, elapsedMs: timer.elapsedMs });
-  }, [history, hintsUsed, mistakes, powerUsed, phase, levelNo, level, timer.elapsedMs]);
+    saveDraft(levelNo, { ...history, signature: boardSignature(level), hintsUsed, mistakes, powerUsed, elapsedMs: timer.read(), freezeRemainingMs: timer.readFreeze() });
+  }, [history, hintsUsed, mistakes, powerUsed, phase, levelNo, level, Math.floor(timer.elapsedMs / 1000), Math.ceil(timer.freezeRemainingMs / 1000)]);
   // Flush the final fraction of a second on navigation or app suspension.
   const draftRef = useRef(null);
-  draftRef.current = { history, hintsUsed, mistakes, powerUsed, phase, read: timer.read };
+  draftRef.current = { history, hintsUsed, mistakes, powerUsed, phase, read: timer.read, readFreeze: timer.readFreeze };
   useEffect(() => {
     const flush = () => {
       const d = draftRef.current;
       if (d.phase === 'won' || d.phase === 'next') return;
-      saveDraft(levelNo, { ...d.history, signature: boardSignature(level), hintsUsed: d.hintsUsed, mistakes: d.mistakes, powerUsed: d.powerUsed, elapsedMs: d.read() });
+      saveDraft(levelNo, { ...d.history, signature: boardSignature(level), hintsUsed: d.hintsUsed, mistakes: d.mistakes, powerUsed: d.powerUsed, elapsedMs: d.read(), freezeRemainingMs: d.readFreeze() });
     };
     window.addEventListener('pagehide', flush);
     return () => { window.removeEventListener('pagehide', flush); flush(); };
@@ -123,7 +133,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   // solved -> train runs
   useEffect(() => {
     if (playing && result.solved) {
-      setStars(timedStars(timer.stop(), targets));
+      setStars(timed ? timedStars(timer.stop(), targets) : 3);
       setPhase('run');
       sfx.whistle();
     }
@@ -170,13 +180,13 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   };
   const hint = () => {
     if (!playing) return;
-    if (!tutorial && save.hints <= 0) {
+    if (!demo && !tutorial && save.hints <= 0) {
       sfx.error();
       setNoHints(true);
       return;
     }
     sfx.hint();
-    if (!tutorial) {
+    if (!demo && !tutorial) {
       spendHint(); // hints are free while learning
       setHintsUsed((n) => n + 1);
     }
@@ -186,6 +196,13 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   // ---- power-ups (lands 4-6)
   const usePower = (id, free = false) => {
     if (!playing || !powerAvailable(id, levelNo, save.taught)) return false;
+    if (id === 'freeze') {
+      if (!timed || timer.readFreeze() > 0) return false;
+      if (!free && !spendPowerup(id)) return setNoPower(id), false;
+      timer.freeze(FREEZE_MS);
+      sfx.hint(); setPowerUsed(n => n + 1); trackMission('powerup');
+      return true;
+    }
     const trail = peekSegment(level, pathRef.current);
     if (!trail || peekUntil > performance.now()) return false;
     if (!free && !spendPowerup(id)) return setNoPower(id), false;
@@ -261,10 +278,10 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   };
   if (backRef) backRef.current = goBack;
 
-  const lastLevel = levelNo >= levelCount;
+  const lastLevel = levelNo >= (demo ? 10 : levelCount);
   const inStage = indexInStage(levelNo);
-  const stageDone = inStage === STAGE_SIZE;
-  const taughtPowers = POWERUPS.filter((p) => powerAvailable(p.id, levelNo, save.taught));
+  const stageDone = !demo && inStage === STAGE_SIZE;
+  const taughtPowers = demo ? [] : POWERUPS.filter((p) => powerAvailable(p.id, levelNo, save.taught));
 
   if (!ready) return <main className="screen game" />;
 
@@ -280,13 +297,17 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
             <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
           </span>
         </div>
-        <CoinChip amount={t.n(save.coins)} onClick={onCoins} label={t('coins')} />
+        {!demo && <CoinChip amount={t.n(save.coins)} onClick={onCoins} label={t('coins')} />}
       </header>
 
-      <div className="solve-timer" aria-label={t('solveTime')}>
-        <div className="timer-current"><span>{t('solveTime')}</span> <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b><Stars n={playing ? liveStars : stars} size={20} /></div>
+      {timed && <div className={'solve-timer' + (timer.freezeRemainingMs > 0 ? ' frozen' : '')} aria-label={t('solveTime')}>
+        <div className="timer-current"><span>{t('solveTime')}</span> <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b>{timer.freezeRemainingMs > 0 && <span>{t('timerFrozen', { n: t.n(Math.ceil(timer.freezeRemainingMs / 1000)) })}</span>}</div>
+        <div className="timer-track" role="progressbar" aria-label={t('timeStars')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(timerFill(timer.elapsedMs, targets)*100)}>
+          <div className="timer-fill" style={{width: (timerFill(timer.elapsedMs, targets)*100)+'%'}} />
+          {[{n:1,x:0},{n:2,x:1-1/1.2},{n:3,x:1-targets.threeMs/(targets.twoMs*1.2)}].map(({n,x}) => <span key={n} className={'timer-star star-'+n+(liveStars >= n ? ' lit' : ' dim')} style={{left:(x*100)+'%'}}><img src={`${UI_ART}../map/ui/star-${liveStars >= n ? 'gold' : 'grey'}.webp`} width="28" height="27" alt="" draggable="false" /></span>)}
+        </div>
         <div className="timer-targets">{t('timeTargets', { three: t.n(formatTime(targets.threeMs)), two: t.n(formatTime(targets.twoMs)) })}</div>
-      </div>
+      </div>}
       <div className="board-wrap">
         <BoardCanvas
           level={level}
@@ -318,7 +339,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
       {taughtPowers.length > 0 && (
         <div className="powers">
           {taughtPowers.map((p) => (
-            <button key={p.id} className="power" onClick={() => usePower(p.id)} disabled={!playing} aria-label={t('pw_' + p.id)}>
+            <button key={p.id} className="power" onClick={() => usePower(p.id)} disabled={!playing || (p.id === 'freeze' && timer.freezeRemainingMs > 0)} aria-label={t('pw_' + p.id)}>
               <PowerIcon id={p.id} size={28} />
               <span>{t('pw_' + p.id)}</span>
               <i className="badge">{t.n(save.powerups[p.id] || 0)}</i>
@@ -331,12 +352,12 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
           <img src={`${UI_ART}undo.png`} width="30" height="30" alt="" draggable="false" />
           <span>{t('undo')}</span>
         </button>
-        <button className="ctl" onClick={redo} disabled={!playing || !history.future.length}><span aria-hidden="true">↪</span><span>{t('redo')}</span></button>
-        <button className="ctl" onClick={() => { setNoteMode(v => !v); if (!noteMode) say(t('notesHelp')); }} disabled={!playing} aria-pressed={noteMode}><span aria-hidden="true">● ×</span><span>{t(noteMode ? 'drawRails' : 'notes')}</span></button>
+        <button className="ctl" onClick={redo} disabled={!playing || !history.future.length}><img src={`${UI_ART}undo.png`} width="30" height="30" style={{ transform: 'scaleX(-1)' }} alt="" draggable="false" /><span>{t('redo')}</span></button>
+        <button className="ctl" onClick={() => { setNoteMode(v => !v); if (!noteMode) say(t('notesHelp')); }} disabled={!playing} aria-pressed={noteMode}><img src={`${UI_ART}icon-notes-v1.png`} width="30" height="30" alt="" draggable="false" /><span>{t(noteMode ? 'drawRails' : 'notes')}</span></button>
         <button className="ctl" onClick={hint} disabled={!playing}>
           <Bulb size={30} />
           <span>{t('hint')}</span>
-          {!tutorial && <i className="badge">{t.n(save.hints)}</i>}
+          {!demo && !tutorial && <i className="badge">{t.n(save.hints)}</i>}
         </button>
         <button className="ctl" onClick={restart} disabled={!playing}>
           <img src={`${UI_ART}restart.png`} width="30" height="30" alt="" draggable="false" />
@@ -344,12 +365,20 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
         </button>
       </footer>
 
-      {lessonOpen && <Modal pose="point" title={t('newRule')}><p className="goal">{t(level.lesson)}</p><button className="btn big green" onClick={() => setLessonOpen(false)}>{t('gotIt')}</button></Modal>}
+      {lessonOpen && <Modal key={lesson.id} pose="point" title={t(lesson.title)}>
+        <div className="intro-icon">
+          {lesson.power ? <PowerIcon id={lesson.power} size={76} /> : lesson.bulb ? <Bulb size={76} /> : lesson.art ? <img src={UI_ART+lesson.art} alt="" style={{transform:lesson.mirror?'scaleX(-1)':undefined, width:lesson.id==='timer'?220:76}} /> : null}
+        </div>
+        <p className="goal">{t(lesson.text)}</p>
+        {lesson.id === 'notes' && <div className="intro-notes"><img src={UI_ART+'note-dot-v1.png'} alt="●" /><img src={UI_ART+'note-cross-v1.png'} alt="×" /></div>}
+        <p className="small">{t.n(lessonIndex+1)} / {t.n(lessons.length)}</p>
+        <button className="btn big green" onClick={nextLesson}>{t(lessonIndex+1<lessons.length?'next':'gotIt')}</button>
+      </Modal>}
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
         <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')}>
           <Stars n={stars} size={58} className="big win-stars" pop />
-          <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>
+          {timed && <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>}
           <p className="reward-line big">
             {reward.coins > 0 ? (
               <>
@@ -360,7 +389,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
             )}
           </p>
           {reward.hintBonus && <p className="small">{t('bonusHint')}</p>}
-          {lastLevel && <p className="small">{t('allDone')}</p>}
+          {lastLevel && <p className="small">{t(demo ? 'demoFinished' : 'allDone')}</p>}
           {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
           <div className="modal-actions col">
             {!lastLevel && (

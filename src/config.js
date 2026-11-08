@@ -1,13 +1,15 @@
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.0.0';
 
 // One game in two languages; the player switches in the settings.
+export const IS_WEB_DEMO = import.meta.env.VITE_WEB_DEMO === '1';
+export const APP_DOWNLOAD_URL = 'https://jollypanda.ir/en/games/choo-choo-pop/';
 export const DEFAULT_LANG = 'fa';
 
 export const CREDITS = { author: 'Usef Farahmand', website: 'https://www.useffarahmand.com' };
 
 // Test services (fake ads, free fake purchases) are only on in dev builds, or when you build with VITE_MOCK_SERVICES=1.
 // A production build with no real ad/billing provider registered shows no ads and sells nothing (see src/services).
-export const MOCK_SERVICES = !!import.meta.env.DEV || import.meta.env.VITE_MOCK_SERVICES === '1';
+export const MOCK_SERVICES = !IS_WEB_DEMO && (!!import.meta.env.DEV || import.meta.env.VITE_MOCK_SERVICES === '1');
 
 export * from './game/constants.js';
 
@@ -39,9 +41,10 @@ export const START_POWERUPS = 2; // of each kind
 export const PEEK_MS = 3200;
 export const IDLE_HINT_MS = 5000; // no move for this long: the finger shows where to drag
 export const POWERUPS = [
+  { id: 'freeze', price: 50 },
   { id: 'peek', price: 60 }, // briefly shows the next few cells of one unfinished lane
 ];
-export const POWERUP_PACK = 3; // the shop sells them 3 at a time
+export { POWERUP_PACKS } from './game/powerupPacks.js';
 export const REMOVE_ADS_ID = 'remove_ads';
 
 // A skippable ad after every 4th or 5th finished level (never in the tutorial, never after removing ads)

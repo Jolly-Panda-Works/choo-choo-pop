@@ -220,6 +220,7 @@ export default function App() {
       {screen.name === 'game' && (
         <Game
           key={screen.level}
+          paused={!!overlay}
           levelNo={screen.level}
           startPicks={screen.picks}
           onMap={() => replace('stage', { stage: stageOf(screen.level) })}
