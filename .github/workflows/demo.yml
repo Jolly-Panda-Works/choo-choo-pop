@@ -18,7 +18,3 @@ jobs:
       - run: npm test
       - run: node scripts/test-demo.mjs
       - run: npm run build:demo
-      - uses: actions/upload-artifact@v4
-        with:
-          name: choochoopop-web-demo
-          path: dist
