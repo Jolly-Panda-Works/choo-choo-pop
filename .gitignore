@@ -21,3 +21,5 @@ store-screenshots/
 .env.*.local
 .local/
 out/
+
+.wrangler/
