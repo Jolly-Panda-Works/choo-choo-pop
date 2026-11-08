@@ -15,13 +15,23 @@ export function formatTime(ms) {
   return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
 }
 // Monotonic clock: paused intervals and closed-app time never count.
-export function createPlayClock(initialMs = 0, now = () => performance.now()) {
+export function createPlayClock(initialMs = 0, now = () => performance.now(), initialFreezeMs = 0) {
   let total = Number.isFinite(initialMs) && initialMs >= 0 ? initialMs : 0;
+  let frozen = Number.isFinite(initialFreezeMs) ? Math.max(0, initialFreezeMs) : 0;
   let since = null;
+  const sample = () => {
+    if (since === null) return;
+    const current = now(), delta = Math.max(0, current - since);
+    const skipped = Math.min(frozen, delta);
+    frozen -= skipped; total += delta - skipped; since = current;
+  };
   return {
-    read: () => total + (since === null ? 0 : Math.max(0, now() - since)),
+    read() { sample(); return total; },
+    remainingFreeze() { sample(); return frozen; },
+    freeze(ms) { sample(); if (frozen > 0) return false; frozen = ms; return true; },
     start() { if (since === null) since = now(); },
-    stop() { if (since !== null) { total += Math.max(0, now() - since); since = null; } return total; },
-    reset() { total = 0; since = null; },
+    stop() { sample(); since = null; return total; },
+    reset() { total = 0; frozen = 0; since = null; },
   };
 }
+export const timerFill = (elapsedMs, targets) => Math.max(0, Math.min(1, 1 - elapsedMs / (targets.twoMs * 1.2)));

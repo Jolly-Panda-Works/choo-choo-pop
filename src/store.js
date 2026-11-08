@@ -7,13 +7,14 @@ import {
   COINS_PER_STAR,
   AD_EVERY,
   START_POWERUPS,
-  POWERUPS,
   DEFAULT_LANG,
+  IS_WEB_DEMO,
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
+import { purchasePowerupPack } from './game/powerupPacks.js';
 import { levelCount } from './game/levels.js';
 
-const KEY = 'choochoopop.save.v3';
+const KEY = IS_WEB_DEMO ? 'choochoopop.demo.v1' : 'choochoopop.save.v3';
 const OLD_KEY = 'choochoopop.save.v2';
 
 const pickAdTarget = () => AD_EVERY[Math.floor(Math.random() * AD_EVERY.length)];
@@ -34,12 +35,13 @@ const defaults = () => ({
   railSkin: 'classic',
   ownedRail: ['classic'],
   starsSpent: 0,
+  uiTaught: {},
   drafts: {},
   taught: {}, // power-ups whose lesson was seen
   pandaSkin: 'classic',
   ownedTrain: ['classic'],
   ownedPanda: ['classic'],
-  powerups: { peek: START_POWERUPS },
+  powerups: { freeze: START_POWERUPS, peek: START_POWERUPS },
   mis: null, // missions, see game/missions.js
   lastSpin: '', // day of the last free spin of the wheel
   lang: null, // 'en' | 'fa', null = the default of this build
@@ -54,7 +56,7 @@ function load() {
     }
     // migrate the old single-stage save (levels, stars, hints, settings)
     const old = localStorage.getItem(OLD_KEY);
-    if (old) {
+    if (old && !IS_WEB_DEMO) {
       const o = JSON.parse(old);
       return { ...defaults(), ...o, storySeen: true };
     }
@@ -126,10 +128,10 @@ export const spendPowerup = (id) => {
   return true;
 };
 export const addPowerup = (id, n = 1) => update((s) => ({ powerups: { ...s.powerups, [id]: (s.powerups[id] || 0) + n } }));
-export function buyPowerup(id) {
-  const def = POWERUPS.find((p) => p.id === id);
-  if (!def || !spendCoins(def.price * 3)) return false;
-  addPowerup(id, 3);
+export function buyPowerup(packId) {
+  const patch = purchasePowerupPack(state, packId);
+  if (!patch) return false;
+  update(patch); // deduct coins and grant the pack together in one saved update
   return true;
 }
 
@@ -219,3 +221,5 @@ export const starsInRange = (s, from, to) => {
 
 export const saveDraft = (level, draft) => update(s => ({ drafts: { ...s.drafts, [level]: draft } }));
 export const clearDraft = level => update(s => { const drafts={...s.drafts}; delete drafts[level]; return {drafts}; });
+
+export const markUiTaught = id => update(s => ({uiTaught:{...s.uiTaught,[id]:true}}));

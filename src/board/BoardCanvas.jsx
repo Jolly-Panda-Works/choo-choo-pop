@@ -316,8 +316,8 @@ function draw(R, now) {
   }
   for (const [key,value] of Object.entries(R.notes || {})) {
     const cell=+key; if(inPath.has(cell)) continue;
-    g.fillStyle=value===1?'#245c9d':'#9b3e49'; g.font=boardFont(S*0.48); g.textAlign='center';
-    g.fillText(value===1?'●':'×',px(cell%cols-cols/2+0.5),py(Math.floor(cell/cols)-rows/2+0.67));
+    const size=S*0.5;
+    g.drawImage(value===1?sp.noteDot:sp.noteCross,px(cell%cols-cols/2+0.5)-size/2,py(Math.floor(cell/cols)-rows/2+0.5)-size/2,size,size);
   }
   // --- gold star tiles
   const bob = 1 + 0.04 * Math.sin(now / 350);

@@ -87,6 +87,7 @@ export function BackButton({ onClick, label, className = '' }) {
 
 /** Power-up icons: star tile, eraser, eye (peek). */
 export function PowerIcon({ id, size = 40 }) {
+  if (id === 'freeze') return <img src={ART + 'ui/icon-freeze-v1.png'} {...fit(size)} alt="" draggable="false" />;
   const src = id === 'star' ? 'map/ui/star-gold.webp' : `v5/icon-${id}.webp`;
   return <img src={ART + src} {...fit(size)} alt="" draggable="false" />;
 }
