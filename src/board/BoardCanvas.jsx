@@ -328,10 +328,10 @@ function draw(R, now) {
   });
   for (const key of [...R.appear.keys()]) if (!seen.has(key)) R.appear.delete(key);
 
-  // --- power-up "peek": the whole answer as a soft glowing trail
-  if (R.peekUntil > now) {
+  // --- power-up "peek": a fixed short continuation of one lane
+  if (R.peekUntil > now && R.peekTrail) {
     const fade = Math.min(1, (R.peekUntil - now) / 500);
-    level.lanes.forEach((l, li) => {
+    [R.peekTrail].forEach(({ cells, lane: li }) => {
       g.save();
       g.globalAlpha = 0.85 * fade;
       g.lineCap = 'round';
@@ -341,7 +341,7 @@ function draw(R, now) {
       g.shadowColor = '#fff';
       g.shadowBlur = S * 0.25;
       g.beginPath();
-      l.solution.forEach((cell, i) => {
+      cells.forEach((cell, i) => {
         const x = px((cell % cols) - cols / 2 + 0.5);
         const y = py(Math.floor(cell / cols) - rows / 2 + 0.5);
         if (i) g.lineTo(x, y);
@@ -472,7 +472,7 @@ function draw(R, now) {
   }
 }
 
-export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, evalResult, phase, coach, skin, railSkin, reserveBottom = 0, onPath, onRunDone }) {
+export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, peekTrail = null, evalResult, phase, coach, skin, railSkin, reserveBottom = 0, onPath, onRunDone }) {
   const wrapRef = useRef(null);
   const cvRef = useRef(null);
   const R = useRef({
@@ -496,6 +496,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
     r.level = level;
     r.paths = paths;
     r.peekUntil = peekUntil;
+    r.peekTrail = peekTrail;
     r.counts = evalResult.counts;
     r.coach = coach;
     r.skin = skin;
@@ -518,7 +519,7 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, eval
       r.appear = new Map();
     }
     r.dirty = true;
-  }, [level, paths, evalResult, phase, coach, skin, railSkin, reserveBottom, peekUntil]);
+  }, [level, paths, evalResult, phase, coach, skin, railSkin, reserveBottom, peekUntil, peekTrail]);
 
   // size + render loop
   useEffect(() => {

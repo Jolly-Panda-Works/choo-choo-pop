@@ -34,14 +34,12 @@ export const packBonus = (p) => Math.round((p.coins * p.extra) / (100 + p.extra)
 // coins from the optional rewarded video
 export const VIDEO_COINS = 100;
 
-// Power-ups: unlocked from stage 2 on. Bought with coins in the shop, also given by missions.
+// Power-ups: unlocked one at a time from stage 4 on. Bought with coins in the shop, also given by missions.
 export const START_POWERUPS = 2; // of each kind
 export const PEEK_MS = 3200;
 export const IDLE_HINT_MS = 5000; // no move for this long: the finger shows where to drag
 export const POWERUPS = [
-  { id: 'star', price: 40 }, // lays one gold star tile (a sure rail)
-  { id: 'eraser', price: 40 }, // wipes every wrong rail
-  { id: 'peek', price: 60 }, // shows the whole answer for a few seconds
+  { id: 'peek', price: 60 }, // briefly shows the next few cells of one unfinished lane
 ];
 export const POWERUP_PACK = 3; // the shop sells them 3 at a time
 export const REMOVE_ADS_ID = 'remove_ads';

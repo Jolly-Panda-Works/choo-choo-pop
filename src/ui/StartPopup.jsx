@@ -5,7 +5,7 @@ import { useT } from '../i18n.js';
 import { useSave, markTaught } from '../store.js';
 import Modal from './Modal.jsx';
 import { ART } from '../board/sprites.js';
-import { POWERUP_TEACH } from '../config.js';
+import { POWERUP_TEACH, powerAvailable } from '../config.js';
 import { sfx } from '../audio.js';
 
 // the station frame, in its own pixels
@@ -19,7 +19,7 @@ const SLOT_W = 140;
 const SLOT_H = 125;
 const SLOT_GAP = 30;
 const SLOT_Y = 566;
-const SLOTS = ['star', 'peek', 'hint'];
+const SLOTS = ['peek', 'hint'];
 
 /** "Level #" popup shown before a station starts: name, stars, the boosters taught so far, Play and Back. */
 export default function StartPopup({ levelNo, inStage, stars, tutorial, onPlay, onClose }) {
@@ -49,7 +49,7 @@ export default function StartPopup({ levelNo, inStage, stars, tutorial, onPlay, 
         ))}
         {SLOTS.map((id, i) => {
           // locked until taught: hints after the tutorial, power-ups by their lesson
-          const ok = id === 'hint' ? !tutorial : !!save.taught[id];
+          const ok = id === 'hint' ? !tutorial : powerAvailable(id, levelNo, save.taught);
           const on = picks.includes(id);
           return (
             <button key={id} className={'slotbtn' + (ok && slotCount(id) <= 0 ? ' empty' : '')} style={rect(firstX + i * (SLOT_W + SLOT_GAP), SLOT_Y, SLOT_W, SLOT_H)} onClick={() => toggle(id, ok, slotCount(id))} aria-label={t(id === 'hint' ? 'hint' : 'pw_' + id)}>

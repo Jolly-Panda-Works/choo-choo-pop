@@ -9,22 +9,22 @@ import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPoweru
 import { useT } from '../i18n.js';
 import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
-import { startPaths, evaluate, applyHint, eraseWrong } from '../game/logic.js';
+import { startPaths, evaluate, applyHint, peekSegment } from '../game/logic.js';
 import { isTutorial, coachFor, tutorialIdleMs, idleCoach } from '../game/tutorial.js';
 import { sfx } from '../audio.js';
 import { ads } from '../services/ads.js';
-import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, POWERUP_STAGE, PEEK_MS, IDLE_HINT_MS } from '../config.js';
+import { TUTORIAL_LEVELS, STAGE_SIZE, POWERUPS, powerAvailable, PEEK_MS, IDLE_HINT_MS } from '../config.js';
 
 export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, onCoins, backRef }) {
   const baseLevel = useMemo(() => getLevel(levelNo), [levelNo]);
-  const [bonusGiven, setBonusGiven] = useState([]); // gold stars laid by the star power-up
-  const level = useMemo(() => (bonusGiven.length ? { ...baseLevel, given: [...baseLevel.given, ...bonusGiven] } : baseLevel), [baseLevel, bonusGiven]);
+  const level = baseLevel;
   const save = useSave();
   const t = useT();
   const [ready, setReady] = useState(false);
   const [paths, setPaths] = useState(() => startPaths(baseLevel));
   const [powerUsed, setPowerUsed] = useState(0);
   const [peekUntil, setPeekUntil] = useState(0);
+  const [peekTrail, setPeekTrail] = useState(null);
   const [noPower, setNoPower] = useState(null);
   // play | run | won | lost | next (the start popup of the next station is up)
   // (opened from the start popup of the levels screen: that popup was already answered, so the level starts right away)
@@ -150,28 +150,14 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
     commit(applyHint(level, paths));
   };
 
-  // ---- power-ups (stage 2 and later)
+  // ---- power-ups (lands 4-6)
   const usePower = (id, free = false) => {
-    if (!playing) return false;
-    const cur = pathRef.current;
-    if (id === 'eraser' && eraseWrong(level, cur).every((p, i) => p.length === cur[i].length)) {
-      say(t('nothingWrong'));
-      return false;
-    }
-    if (id === 'star') {
-      const skip = new Set([...level.given, ...level.lanes.flatMap((l) => [l.solution[0], l.solution[l.solution.length - 1]])]);
-      const pool = level.allSolution.filter((c) => !skip.has(c));
-      if (!pool.length) {
-        say(t('nothingWrong'));
-        return false;
-      }
-      if (!free && !spendPowerup(id)) return setNoPower(id), false;
-      setBonusGiven((b) => [...b, pool[Math.floor(Math.random() * pool.length)]]);
-    } else {
-      if (!free && !spendPowerup(id)) return setNoPower(id), false;
-      if (id === 'eraser') commit(eraseWrong(level, cur));
-      else setPeekUntil(performance.now() + PEEK_MS);
-    }
+    if (!playing || !powerAvailable(id, levelNo, save.taught)) return false;
+    const trail = peekSegment(level, pathRef.current);
+    if (!trail || peekUntil > performance.now()) return false;
+    if (!free && !spendPowerup(id)) return setNoPower(id), false;
+    setPeekTrail(trail);
+    setPeekUntil(performance.now() + PEEK_MS);
     sfx.hint();
     setPowerUsed((n) => n + 1);
     trackMission('powerup');
@@ -245,7 +231,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
   const lastLevel = levelNo >= levelCount;
   const inStage = indexInStage(levelNo);
   const stageDone = inStage === STAGE_SIZE;
-  const taughtPowers = POWERUPS.filter((p) => save.taught[p.id]);
+  const taughtPowers = POWERUPS.filter((p) => powerAvailable(p.id, levelNo, save.taught));
 
   if (!ready) return <main className="screen game" />;
 
@@ -270,6 +256,7 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
           paths={paths}
           pathRef={pathRef}
           peekUntil={peekUntil}
+          peekTrail={peekTrail}
           evalResult={result}
           phase={phase === 'play' || phase === 'run' || phase === 'won' ? phase : 'locked'}
           coach={coach || idleHint}
@@ -358,7 +345,8 @@ export default function Game({ levelNo, startPicks = [], onMap, onNext, onShop, 
                     setHintsUsed(0);
                     setMistakes(0);
                     commit(startPaths(baseLevel));
-                    setBonusGiven([]);
+                    setPeekTrail(null);
+                    setPeekUntil(0);
                     setPowerUsed(0);
                     setPhase('play');
                   })

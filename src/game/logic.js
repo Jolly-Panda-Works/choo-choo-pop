@@ -149,3 +149,19 @@ export const gateIsOuter = (level, g) => {
   const nc = g.c + DC[g.side];
   return nr < 0 || nc < 0 || nr >= level.rows || nc >= level.cols;
 };
+
+/** Preview one unfinished lane, anchored at its last correct cell.
+ * Keep at least one future cell hidden when more than one remains.
+ * No rails are changed; callers snapshot this when the power is used.
+ */
+export function peekSegment(level, paths) {
+  for (let lane = 0; lane < level.lanes.length; lane++) {
+    const solution = level.lanes[lane].solution;
+    const k = goodPrefix(level, paths, lane);
+    const remaining = solution.length - k;
+    if (remaining <= 0) continue;
+    const count = Math.min(3, Math.max(1, remaining - 1));
+    return { lane, cells: solution.slice(Math.max(0, k - 1), k + count) };
+  }
+  return null;
+}

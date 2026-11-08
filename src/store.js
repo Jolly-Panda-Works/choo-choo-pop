@@ -38,7 +38,7 @@ const defaults = () => ({
   pandaSkin: 'classic',
   ownedTrain: ['classic'],
   ownedPanda: ['classic'],
-  powerups: { star: START_POWERUPS, eraser: START_POWERUPS, peek: START_POWERUPS },
+  powerups: { peek: START_POWERUPS },
   mis: null, // missions, see game/missions.js
   lastSpin: '', // day of the last free spin of the wheel
   lang: null, // 'en' | 'fa', null = the default of this build
