@@ -25,7 +25,9 @@ export function puzzleKey(d) {
     }).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
     const rows=Array(h).fill(0), cols=Array(w).fill(0);
     for (const l of lanes) for (const i of l.solution) { const j=cell(i); rows[Math.floor(j/w)]++; cols[j%w]++; }
-    keys.push(JSON.stringify([h,w,transformed,rows,cols,(d.blocks||[]).map(cell).sort((a,b)=>a-b),(d.given||[]).map(cell).sort((a,b)=>a-b)]));
+    const walls=(d.walls||[]).map(pair=>pair.map(cell).sort((a,b)=>a-b)).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    const fixed=(d.fixed||[]).map(f=>[cell(f.cell),f.sides.map(side=>((mirror?[0,3,2,1][side]:side)+turns)%4).sort()]).sort((a,b)=>a[0]-b[0]);
+    keys.push(JSON.stringify([walls,fixed,h,w,transformed,rows,cols,(d.blocks||[]).map(cell).sort((a,b)=>a-b),(d.given||[]).map(cell).sort((a,b)=>a-b)]));
   }
   return keys.sort()[0];
 }

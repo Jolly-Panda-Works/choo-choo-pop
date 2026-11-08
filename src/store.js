@@ -34,6 +34,7 @@ const defaults = () => ({
   railSkin: 'classic',
   ownedRail: ['classic'],
   starsSpent: 0,
+  drafts: {},
   taught: {}, // power-ups whose lesson was seen
   pandaSkin: 'classic',
   ownedTrain: ['classic'],
@@ -215,3 +216,6 @@ export const starsInRange = (s, from, to) => {
   for (let i = from; i <= to; i++) n += s.stars[i] || 0;
   return n;
 };
+
+export const saveDraft = (level, draft) => update(s => ({ drafts: { ...s.drafts, [level]: draft } }));
+export const clearDraft = level => update(s => { const drafts={...s.drafts}; delete drafts[level]; return {drafts}; });

@@ -24,7 +24,7 @@
     "levels:build": "node scripts/build-levels.mjs",
     "test:levels": "node scripts/test-levels.mjs",
     "cap:sync": "npm run build && cap sync android",
-    "test": "npm run test:levels",
+    "test": "npm run test:levels && node scripts/test-board-state.mjs && node scripts/test-timing.mjs",
     "build:android": "node scripts/build.mjs"
   },
   "dependencies": {

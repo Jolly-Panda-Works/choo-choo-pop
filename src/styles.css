@@ -603,3 +603,12 @@ button:active:not(:disabled) { scale: 0.92; }
 .boot-bar { position: absolute; left: 7%; width: 86%; top: 35.5%; height: 29%; border-radius: 999px; overflow: hidden; }
 .boot-bar img { clip-path: inset(0 calc(72.1% * (1 - var(--p))) 0 0); transition: clip-path 0.25s linear; }
 .boot-train { transform: translate(calc(-62% * (1 - var(--p))), -3.3%); transition: transform 0.25s linear; }
+
+.controls { gap: 6px; }
+.controls .ctl { width: min(17vw, 84px); }
+.ctl[aria-pressed="true"] { filter: drop-shadow(0 0 5px #238dd1); color: #11679c; }
+
+.solve-timer { flex-shrink: 0; text-align: center; color: #24553d; padding: 5px 8px; border-radius: 16px; background: #ffffffd9; margin: 4px auto; max-width: 100%; }
+.timer-current { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
+.timer-current b { font-variant-numeric: tabular-nums; min-width: 3.5em; }
+.timer-targets { font-size: 11px; padding-top: 2px; }

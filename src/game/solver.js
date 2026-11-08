@@ -1,4 +1,4 @@
-import { DR, DC } from './logic.js';
+import { DR, DC, edgeAllowed } from './logic.js';
 
 /**
  * Counts distinct valid solutions (stops counting at `limit`) and how many search
@@ -24,7 +24,7 @@ export function solveStats(level, limit = 2, nodeCap = Infinity) {
   const rowFree = new Array(rows).fill(cols);
   const colFree = new Array(cols).fill(rows);
   const visited = new Uint8Array(N);
-  const givenSet = new Set(level.given);
+  const givenSet = new Set([...level.given, ...(level.fixed || []).map(f => f.cell)]);
   let givenLeft = givenSet.size;
   let found = 0;
   let nodes = 0;
@@ -117,7 +117,7 @@ export function solveStats(level, limit = 2, nodeCap = Infinity) {
       const nc = c + DC[d];
       if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
       const ni = nr * cols + nc;
-      if (visited[ni]) continue;
+      if (visited[ni] || !edgeAllowed(level,cur,ni)) continue;
       if (exitLane[ni] !== -1 && exitLane[ni] !== li) continue;
       mark(ni, true);
       if (feasible() && reachOk(li, ni)) dfs(li, ni);

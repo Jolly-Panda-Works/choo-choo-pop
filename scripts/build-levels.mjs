@@ -5,6 +5,7 @@ import { mulberry32 } from '../src/game/rng.js';
 import { generateCandidate, generateMulti } from '../src/game/generator.js';
 import { hydrateLevel } from '../src/game/levels.js';
 import { LEVEL_DATA as OLD } from '../src/game/levelData.js';
+import { dirBetween } from '../src/game/logic.js';
 import { puzzleKey } from './puzzle-key.mjs';
 import { solveStats } from '../src/game/solver.js';
 
@@ -30,6 +31,25 @@ for (let n = 6; n <= 120; n++) {
       const c = generateMulti(rows, cols, trains, 0.52 + slot / 200, rng, 0);
       if (!c) continue;
       d = { ...c, given: [], difficulty: stage === 6 && slot >= 10 ? 2 : 1 };
+    }
+    if (n >= 61) {
+      const lanes = d.lanes || [{solution:d.solution}];
+      d.fixed = lanes.slice(0, n>=101 ? 2 : 1).map(l => {
+        const j=Math.max(1,Math.floor(l.solution.length/2));
+        return {cell:l.solution[j],sides:[dirBetween(d,l.solution[j],l.solution[j-1]),dirBetween(d,l.solution[j],l.solution[j+1])]};
+      });
+      if(n===61) d.lesson='fixedLesson';
+      if(n>=71) {
+        const used=new Set(lanes.flatMap(l=>l.solution.slice(1).map((b,j)=>[l.solution[j],b].sort((a,b)=>a-b).join(':'))));
+        const blocks=new Set(d.blocks||[]); const pool=[];
+        for(let a=0;a<rows*cols;a++) for(const b of [a+1,a+cols]) {
+          if(b>=rows*cols || dirBetween(d,a,b)<0 || blocks.has(a)||blocks.has(b)||used.has([a,b].join(':'))) continue;
+          pool.push([a,b]);
+        }
+        d.walls=pool.slice(slot%Math.max(1,pool.length),slot%Math.max(1,pool.length)+(n>=101?3:2));
+        if(!d.walls.length) continue;
+        if(n===71) d.lesson='wallLesson';
+      }
     }
     const fingerprint = puzzleKey(d);
     if (fingerprints.has(fingerprint)) continue;
