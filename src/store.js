@@ -12,6 +12,7 @@ import {
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
 import { purchasePowerupPack } from './game/powerupPacks.js';
+import { demoLanguage } from './demo/rules.js';
 import { levelCount } from './game/levels.js';
 
 const KEY = IS_WEB_DEMO ? 'choochoopop.demo.v1' : 'choochoopop.save.v3';
@@ -78,7 +79,7 @@ function persist() {
 }
 
 export const getState = () => state;
-export const currentLang = () => state.lang || DEFAULT_LANG;
+export const currentLang = () => IS_WEB_DEMO ? demoLanguage(typeof navigator === 'undefined' ? [] : navigator.languages || [navigator.language]) : state.lang || DEFAULT_LANG;
 export const subscribe = (l) => {
   listeners.add(l);
   return () => listeners.delete(l);

@@ -13,3 +13,17 @@ for(const [i,d] of DEMO_LEVELS.entries()){
  console.log(`Demo ${i+1}: ${l.rows}x${l.cols}, difficulty=${l.difficulty}, solver=${stats.nodes}`);
 }
 assert.equal(DEMO_LEVELS.at(-1).difficulty,4);
+import { demoLanguage, demoUnlocked } from '../src/demo/rules.js';
+assert.equal(demoLanguage(['fa-IR','en-US']),'fa');
+assert.equal(demoLanguage(['en-GB','fa-IR']),'en');
+assert.equal(demoLanguage(['de-DE','fa']),'fa');
+assert.equal(demoLanguage(['de-DE']),'en');
+assert.equal(demoLanguage([]),'en');
+assert.equal(demoUnlocked({}),1);
+assert.equal(demoUnlocked({1:3}),2);
+assert.equal(demoUnlocked({1:3,3:3,9:3}),2);
+assert.equal(demoUnlocked(Object.fromEntries(Array.from({length:10},(_,i)=>[i+1,1]))),10);
+console.log('Browser language and sequential demo unlocking OK');
+import { demoDownloadUrl } from '../src/demo/rules.js';
+assert.equal(demoDownloadUrl('fa'),'https://jollypanda.ir/fa/games/choo-choo-pop/');
+assert.equal(demoDownloadUrl('en'),'https://jollypanda.ir/en/games/choo-choo-pop/');
