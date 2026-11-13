@@ -144,6 +144,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .modal-x:active { transform: scale(0.92); }
 .modal-panda { position: absolute !important; bottom: calc(100% + 47px); left: 50%; transform: translateX(-50%); z-index: 1; }
 .modal h3 { margin: 0 0 10px; font-size: 28px; line-height: 1.25; color: var(--ink); }
+html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans Arabic', system-ui, sans-serif; }
 .modal.win .stars { margin: 4px 0 14px; gap: 6px; }
 .modal .goal { margin: 0 0 10px; font-size: 17px; line-height: 1.6; }
 .modal .stage-line { margin-bottom: 8px; }

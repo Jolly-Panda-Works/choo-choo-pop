@@ -375,7 +375,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       </Modal>}
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
-        <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')}>
+        <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')} titleClass="win-title">
           <Stars n={stars} size={58} className="big win-stars" pop />
           {timed && <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>}
           <p className="reward-line big">
