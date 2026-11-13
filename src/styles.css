@@ -25,7 +25,7 @@ html, body, #root { height: 100%; margin: 0; overflow: hidden; overscroll-behavi
 /* the new fonts have no Persian letters: Vazirmatn (bundled) draws them */
 html.ed-fa { --font: 'Cabin', 'Vazirmatn Variable', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif; --font-display: 'Merkin', 'Vazirmatn Variable', 'Noto Sans Arabic', system-ui, sans-serif; --fw-display: 900; }
 body { font-family: var(--font); color: var(--ink); background: var(--sea); font-weight: 700; }
-h1, h2, h3, .btn, .chip, .stone, .ctl span, .ribbon b, .node-n, .diff, .price { font-family: var(--font-display); font-weight: var(--fw-display); }
+h1, h2, h3, .btn, .chip, .stone, .ctl span, .ribbon b, .node-n, .price { font-family: var(--font-display); font-weight: var(--fw-display); }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; }
 button:disabled { opacity: 0.5; cursor: default; }
 
@@ -76,8 +76,6 @@ button:disabled { opacity: 0.5; cursor: default; }
 .topbar h2 { margin: 0; font-size: 26px; color: #fff; -webkit-text-stroke: 6px #1c8fa0; paint-order: stroke fill; text-shadow: 0 4px 0 #14707f; letter-spacing: 0.5px; }
 .chip { background: linear-gradient(#fff, #eef9fb); border: 3px solid #fff; border-radius: 999px; padding: 6px 14px; font-size: 18px; box-shadow: 0 4px 0 var(--plate), 0 7px 10px rgba(10, 80, 95, 0.2); min-width: 46px; text-align: center; color: var(--ink); }
 .title-block { display: flex; flex-direction: column; align-items: center; gap: 3px; white-space: nowrap; }
-.k-easy.diff { background-image: url('/choo-choo-pop-assets/art/v5/diff-green.webp'); } .k-normal.diff { background-image: url('/choo-choo-pop-assets/art/v5/diff-orange.webp'); } .k-hard.diff, .k-super.diff { background-image: url('/choo-choo-pop-assets/art/v5/diff-pink.webp'); }
-.diff { font-size: 13px; padding: 3px 16px 4px; background: center / 100% 100% no-repeat; color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
 
 /* ---- home ---- */
 .home { justify-content: flex-start; align-items: center; text-align: center; padding-top: 10vh; gap: 6vh; }
@@ -127,7 +125,6 @@ button:disabled { opacity: 0.5; cursor: default; }
 .toast { top: 8px; background: linear-gradient(#ff9fb4, var(--coral)); color: #fff; animation: toast 0.25s ease-out; }
 @keyframes toast { from { opacity: 0; transform: translate(-50%, -10px); } }
 .hearts { display: inline-flex; gap: 2px; }
-.sub-row { display: flex; align-items: center; gap: 8px; }
 .heart { stroke-width: 1.6; stroke: #fff; paint-order: stroke; filter: drop-shadow(0 2px 0 rgba(150, 30, 60, 0.35)); }
 .heart.on { fill: url(#g-heart); } .heart.off { fill: rgba(31, 86, 98, 0.3); stroke: rgba(255, 255, 255, 0.6); }
 .heart-shine { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; opacity: 0.85; }

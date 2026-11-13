@@ -8,7 +8,7 @@ import { Stars, Coin, CoinChip, Bulb, BackButton, Icon, PowerIcon } from '../ui/
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission, saveDraft, clearDraft, markTaught, markUiTaught } from '../store.js';
 import { useT } from '../i18n.js';
 import { spendDemoHint } from '../store.js';
-import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
+import { getLevel, levelCount } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
 import { startPaths, evaluate, applyHint, peekSegment } from '../game/logic.js';
 import { boardSignature, freshBoard, restoreDraft, pushBoard, undoBoard, redoBoard } from '../game/boardState.js';
@@ -61,7 +61,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const adDue = useRef(false);
   const tutorial = isTutorial(level);
   const stage = stageOfLevel(levelNo);
-  const kind = nodeKind(level.difficulty);
 
   useEffect(() => {
     const release = holdSprites();
@@ -296,9 +295,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
           <h2>
             {t('station')} {t.n(inStage)}
           </h2>
-          <span className="sub-row">
-            <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
-          </span>
         </div>
         {!demo && <CoinChip amount={t.n(save.coins)} onClick={onCoins} label={t('coins')} />}
       </header>
