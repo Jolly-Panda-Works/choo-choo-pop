@@ -391,7 +391,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
               <span className="small">{t('noNewCoins')}</span>
             )}
           </p>
-          {reward.hintBonus && <p className="small">{t('bonusHint')}</p>}
           {lastLevel && <p className="small">{t(demo ? 'demoFinished' : 'allDone')}</p>}
           {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
           <div className="modal-actions col">
