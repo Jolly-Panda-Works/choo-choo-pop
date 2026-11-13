@@ -374,7 +374,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
         </div>
         <p className="goal">{t(lesson.text)}</p>
         {lesson.id === 'notes' && <div className="intro-notes"><img src={UI_ART+'note-dot-v1.png'} alt="●" /><img src={UI_ART+'note-cross-v1.png'} alt="×" /></div>}
-        <p className="small">{t.n(lessonIndex+1)} / {t.n(lessons.length)}</p>
+        {lessons.length > 1 && <p className="small">{t.n(lessonIndex + 1)} / {t.n(lessons.length)}</p>}
         <button className="btn big green" onClick={nextLesson}>{t(lessonIndex+1<lessons.length?'next':'gotIt')}</button>
       </Modal>}
       {/* ---- level cleared ---- */}
