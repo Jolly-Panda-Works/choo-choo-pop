@@ -30,11 +30,17 @@ export default function Story({ onDone }) {
       <div className="comic" key={page} onClick={next}>
         {panels.slice(0, shown).map((p) => {
           const [x, y, w, h] = p.box;
-          const { key, kind, tail, ...at } = p.text;
+          const { key, kind, tail, tailPosition, x: textX, w: textWidth, y: textTop, b: textBottom } = p.text;
+          const textStyle = {
+            left: `${textX}%`,
+            width: `${textWidth}%`,
+            ...(textBottom == null ? { top: `${textTop}%` } : { bottom: `${textBottom}%` }),
+            ...(tailPosition == null ? {} : { '--tail-position': `${tailPosition}%` }),
+          };
           return (
             <div key={key} className="sp" style={{ left: `${x}%`, top: `${y}%`, width: `${w}%`, height: `${h}%` }}>
               <img className="sp-bg" src={ART + p.art} alt="" draggable="false" />
-              <div className={`sp-text sp-${kind}` + (tail ? ` tail-${tail}` : '')} style={{ left: `${at.x}%`, width: `${at.w}%`, ...(at.b != null ? { bottom: `${at.b}%` } : { top: `${at.y}%` }) }}>
+              <div className={`sp-text sp-${kind}` + (tail ? ` tail-${tail}` : '')} style={textStyle}>
                 {t(key)}
               </div>
             </div>
