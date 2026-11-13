@@ -302,8 +302,10 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       {timed && <div className={'solve-timer' + (timer.freezeRemainingMs > 0 ? ' frozen' : '')} aria-label={t('solveTime')}>
         <div className="timer-current"><span>{t('solveTime')}</span> <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b>{timer.freezeRemainingMs > 0 && <span>{t('timerFrozen', { n: t.n(Math.ceil(timer.freezeRemainingMs / 1000)) })}</span>}</div>
         <div className="timer-track" role="progressbar" aria-label={t('timeStars')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(timerFill(timer.elapsedMs, targets)*100)}>
-          <div className="timer-fill" style={{width: (timerFill(timer.elapsedMs, targets)*100)+'%'}} />
+          <div className="timer-lane">
+            <div className="timer-fill" style={{width: (timerFill(timer.elapsedMs, targets)*100)+'%'}} />
           {[{n:1,x:0},{n:2,x:1-1/1.2},{n:3,x:1-targets.threeMs/(targets.twoMs*1.2)}].map(({n,x}) => <span key={n} className={'timer-star star-'+n+(liveStars >= n ? ' lit' : ' dim')} style={{left:(x*100)+'%'}}><img src={`${UI_ART}../map/ui/star-${liveStars >= n ? 'gold' : 'grey'}.webp`} width="28" height="27" alt="" draggable="false" /></span>)}
+          </div>
         </div>
         <div className="timer-targets">{t('timeTargets', { three: t.n(formatTime(targets.threeMs)), two: t.n(formatTime(targets.twoMs)) })}</div>
       </div>}
