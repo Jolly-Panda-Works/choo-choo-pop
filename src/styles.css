@@ -27,6 +27,10 @@ html.ed-fa { --font: 'Cabin', 'Vazirmatn Variable', 'Noto Sans Arabic', 'Segoe U
 body { font-family: var(--font); color: var(--ink); background: var(--sea); font-weight: 700; }
 h1, h2, h3, .btn, .chip, .stone, .ctl span, .ribbon b, .node-n, .price { font-family: var(--font-display); font-weight: var(--fw-display); }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; }
+button, a.btn { text-align: center; }
+html:lang(fa) :is(.btn, .pbtn, .tabs button, .ctl span, .power, .skip, .h5label, .shop-categories button, .shop-product-buy) {
+  font-family: 'Vazirmatn Variable', 'Noto Sans Arabic', system-ui, sans-serif;
+}
 button:disabled { opacity: 0.5; cursor: default; }
 
 .app { position: relative; height: 100%; display: flex; flex-direction: column;
@@ -49,7 +53,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 
 /* ---- buttons: pill art from the v4 UI kit (art/ui/btn-*.webp, btnbig-*.webp), stretched with border-image so the round caps stay round ---- */
 .btn { --h: 54px; --cap: 27px; --src: 57; --bi: url('/choo-choo-pop-assets/art/ui/btn-blue.webp'); --c: #1d8aa3;
-  position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: var(--h); padding: 0 4px; border: 0 solid transparent;
+  position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: var(--h); padding: 4px 4px 8px; border: 0 solid transparent;
   border-width: 0 var(--cap); border-image: var(--bi) 0 var(--src) fill / 0 var(--cap) stretch; background: none; font-size: 20px; line-height: 1.15; color: #fff;
   text-shadow: 0 2px 0 var(--c), 0 0 7px var(--c); filter: drop-shadow(0 4px 3px rgba(10, 70, 90, 0.32)); transition: transform 0.08s; }
 .btn:active:not(:disabled) { transform: translateY(3px) scale(0.97); }
@@ -148,7 +152,7 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
 .modal.win .stars { margin: 4px 0 14px; gap: 6px; }
 .modal .goal { margin: 0 0 10px; font-size: 17px; line-height: 1.6; }
 .modal .stage-line { margin-bottom: 8px; }
-.modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+.modal-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 14px; }
 .modal-actions.col { flex-direction: column; }
 .modal-actions.col .btn { flex-shrink: 0; }
 .modal-actions.col .modal-actions { margin-top: 0; }
@@ -431,7 +435,8 @@ button:active:not(:disabled) { scale: 0.92; }
 .prow > .v5pic, .prow > * { position: absolute; }
 .ptxt { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1; white-space: nowrap; }
 .pcoin { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: middle; margin-inline: 0.15em; }
-.pbtn { position: absolute; display: grid; place-items: center; color: #fff; text-shadow: 0 calc(var(--k) * 4) 0 rgba(150, 70, 0, 0.55); }
+.pbtn { position: absolute; display: grid; place-items: center; color: #fff; line-height: 1.15; text-shadow: 0 calc(var(--k) * 4) 0 rgba(150, 70, 0, 0.55); }
+.pbtn > span { padding-inline: 5%; overflow-wrap: anywhere; }
 .pbtn:active:not(:disabled) { transform: translateY(calc(var(--k) * 5)) scale(0.97); }
 .pbtn:disabled { opacity: 0.55; }
 .pbtn.done:disabled { opacity: 1; }
@@ -670,7 +675,16 @@ html, body, #root { width: 100%; }
 .game .board-wrap { margin-inline: -12px; }
 .game .controls { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; width: 100%; max-width: 440px; margin-inline: auto; }
 .game .controls .ctl { width: 100%; min-width: 0; min-height: 56px; height: 68px; font-size: 11px; }
-.game .ctl > span { max-width: 100%; overflow-wrap: anywhere; line-height: 1.15; }
+.game .ctl > :is(img, svg) { flex-shrink: 0; }
+.game .ctl > span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 2.3em;
+  padding-inline: 2px;
+  overflow-wrap: anywhere;
+  line-height: 1.15;
+}
 .game .powers { flex-wrap: wrap; padding: 8px 5px 0; row-gap: 10px; }
 .game .power { min-height: 44px; }
 .game .solve-timer { width: min(360px,100%); padding: 4px 16px; }
@@ -696,6 +710,7 @@ html, body, #root { width: 100%; }
 @media (orientation: portrait) and (max-height: 650px) {
   .game { padding-top: 6px; padding-bottom: 4px; }
   .game .controls .ctl { height: 58px; }
+  .game .ctl > :is(img, svg) { width: 25px; height: 25px; }
   .game .powers { padding-top: 5px; }
   .game .solve-timer { margin-block: 2px; padding-block: 2px; }
   .game .timer-current { font-size: 11px; }
@@ -732,7 +747,7 @@ html, body, #root { width: 100%; }
 .pop-in .shop-categories button { position: relative; min-width: 0; min-height: 66px; gap: 2px; padding: 8px 3px 13px; border: 0; border-radius: 0; color: #fff; background: url('/choo-choo-pop-assets/art/v5/sbtn-orange.webp') center / 100% 100% no-repeat; box-shadow: none; font-family: var(--font-display); font-weight: var(--fw-display); text-shadow: 0 1px 1px #8f460c; }
 .pop-in .shop-categories button[aria-pressed='true'] { background-image: url('/choo-choo-pop-assets/art/v5/sbtn-pink.webp'); text-shadow: 0 1px 1px #a62b58; filter: drop-shadow(0 2px 2px #a62b5844); }
 .pop-in .shop-categories button:active { transform: translateY(2px); }
-.shop-categories button span { max-width: 100%; overflow-wrap: anywhere; font-size: 11px; }
+.shop-categories button span { display: grid; place-items: center; min-height: 2.4em; max-width: 100%; overflow-wrap: anywhere; font-size: 11px; line-height: 1.2; }
 .pop-in .shop-product-buy { padding: 5px 3px 9px; background: url('/choo-choo-pop-assets/art/v5/sbtn-pink.webp') center / 100% 100% no-repeat; }
 @media (max-width: 340px) {
   .shop-products { padding-inline: 3px; }
@@ -787,8 +802,8 @@ html, body, #root { width: 100%; }
 }
 /* Preserve the actual 240 x 218 toolbar artwork instead of stretching it. */
 .demo-app .game .controls { grid-template-columns: repeat(5,minmax(0,84px)); justify-content: center; }
-.demo-app .game .controls .ctl { width: 100%; height: auto; min-height: 0; aspect-ratio: 240 / 218; flex-shrink: 0; background-size: contain; padding: 2px 0 7px; }
-.demo-app .game .controls .ctl > img, .demo-app .game .controls .ctl > svg { width: clamp(22px,6vw,30px); height: clamp(22px,6vw,30px); object-fit: contain; flex-shrink: 0; }
+.demo-app .game .controls .ctl { width: 100%; height: auto; min-height: 58px; aspect-ratio: 240 / 218; flex-shrink: 0; background-size: 100% 100%; padding: 2px 0 7px; }
+.demo-app .game .controls .ctl > img, .demo-app .game .controls .ctl > svg { width: clamp(22px,6vw,30px); height: clamp(22px,6vw,30px); object-fit: contain; }
 .demo-app .demo-node { flex-shrink: 0; aspect-ratio: 380 / 370; background-size: contain; }
 @media (max-width:380px) {
  .demo-app .game .controls .ctl { font-size: 10px; gap: 0; }
