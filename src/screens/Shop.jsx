@@ -66,8 +66,8 @@ export default function Shop({ onBack }) {
             </nav>
             <section className="shop-category-products" aria-label={activeCategory.label} key={activeCategory.id}>
             <div className="shop-category-header"><h3 className="shop-category-heading">{activeCategory.label}</h3><span className="shop-category-owned">{t('shopOwned', { n: t.n(owned) })}</span></div>
-            {rows.filter(r => r.category === activeCategory.id).map((r, i) => {
-              const look = rowLook('shop', i);
+            {rows.filter(r => r.category === activeCategory.id).map((r) => {
+              const look = rowLook('shop');
               return <div key={r.key} className="shop-product" style={{background:look.color,borderColor:look.edge,color:look.ink}}>
                 <div className="shop-product-art">{r.icon}{r.count != null && <span className="shop-product-count">{t.n(r.count)}</span>}</div>
                 <div className="shop-product-copy"><div className="shop-product-name">{r.name}</div>{r.info && <div className="shop-product-info">{r.info}</div>}</div>

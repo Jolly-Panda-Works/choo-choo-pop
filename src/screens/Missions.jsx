@@ -66,7 +66,7 @@ export default function Missions({ onBack }) {
             const ready = x.p >= x.target && !x.claimed;
             const p = Math.min(1, x.p / x.target);
             const gift = giftIcon(earnedReward(x.reward, save.taught));
-            const look = rowLook('missions', i);
+            const look = rowLook('missions');
             return (
               <div key={x.id} className="prow" style={{ top: k(10 + i * PITCH), left: k(ROW_X), width: k(1152), height: k(ROW_H) }}>
                 <RowBg look={look} h={ROW_H} />
