@@ -149,6 +149,27 @@ button:disabled { opacity: 0.5; cursor: default; }
 .modal-panda { position: absolute !important; bottom: calc(100% + 47px); left: 50%; transform: translateX(-50%); z-index: 1; }
 .modal h3 { margin: 0 0 10px; font-size: 28px; line-height: 1.25; color: var(--ink); }
 html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans Arabic', system-ui, sans-serif; }
+.modal.modal-station-result {
+  width: min(100%, 400px);
+  border: 0;
+  container-type: inline-size;
+  background: url('/choo-choo-pop-assets/art/v5/station-frame.webp') center / 100% 100% no-repeat;
+}
+.modal-station-result .modal-body {
+  background: none;
+  padding: 31cqw 15cqw 15cqw;
+}
+.modal-station-result .modal-panda {
+  bottom: calc(100% - 12px);
+}
+.modal-station-result .modal-actions .btn {
+  --cap: 22px;
+  padding-inline: 4px;
+}
+@media (max-height: 650px) {
+  .modal.modal-station-result.has-panda { margin-top: 84px; }
+  .modal-station-result .modal-panda { height: 96px !important; }
+}
 .modal.win .stars { margin: 4px 0 14px; gap: 6px; }
 .modal .goal { margin: 0 0 10px; font-size: 17px; line-height: 1.6; }
 .modal .stage-line { margin-bottom: 8px; }
