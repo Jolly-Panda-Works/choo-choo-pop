@@ -58,7 +58,7 @@ export default function CoinShop({ onBack }) {
       <PopList style={inPopup(LIST[0], LIST[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
         <div style={{ position: 'relative', height: k(ROW0 + rows * PITCH) }}>
           {COIN_PACKS.map((p, i) => {
-            const look = rowLook('coins', i);
+            const look = rowLook('coins');
             const icon = PACK_ICON[p.id];
             return (
               <Row key={p.id} i={i} look={look}>
@@ -89,10 +89,10 @@ export default function CoinShop({ onBack }) {
             );
           })}
           {/* remove ads */}
-          <Row i={COIN_PACKS.length} look={rowLook('coins', COIN_PACKS.length)}>
+          <Row i={COIN_PACKS.length} look={rowLook('coins')}>
             <img className="v5pic" alt="" draggable="false" src={`${ART}v5/no-ads.webp`} style={PACK_BOX} />
-            <div className="ptxt" style={{ ...rowRect(300, 44, 450, 64), ...fs(46), color: rowLook('coins', COIN_PACKS.length).ink }}>{t('removeAds')}</div>
-            <div className="ptxt" style={{ ...rowRect(300, 116, 450, 110), ...fs(32), color: rowLook('coins', COIN_PACKS.length).sub, whiteSpace: 'normal' }}>{save.adsRemoved ? t('adsRemoved') : t('removeAdsInfo')}</div>
+            <div className="ptxt" style={{ ...rowRect(300, 44, 450, 64), ...fs(46), color: rowLook('coins').ink }}>{t('removeAds')}</div>
+            <div className="ptxt" style={{ ...rowRect(300, 116, 450, 110), ...fs(32), color: rowLook('coins').sub, whiteSpace: 'normal' }}>{save.adsRemoved ? t('adsRemoved') : t('removeAdsInfo')}</div>
             <button className="pbtn" disabled={!store || busy || save.adsRemoved} style={rowRect(772, 81, 334, 141)} onClick={() => setGate(REMOVE_ADS_ID)}>
               <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-orange.webp`} style={rowRect(0, 0, 334, 141)} />
               <span style={{ ...rowRect(0, 0, 334, 128), display: 'grid', placeItems: 'center', ...fs(48) }}>{save.adsRemoved ? <Icon name="tick" /> : prices[REMOVE_ADS_ID] || '—'}</span>

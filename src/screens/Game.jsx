@@ -8,7 +8,7 @@ import { Stars, Coin, CoinChip, Bulb, BackButton, Icon, PowerIcon } from '../ui/
 import { useSave, completeLevel, spendHint, addHints, tickAdCounter, spendPowerup, trackMission, saveDraft, clearDraft, markTaught, markUiTaught } from '../store.js';
 import { useT } from '../i18n.js';
 import { spendDemoHint } from '../store.js';
-import { getLevel, levelCount, DIFFICULTY_KEYS, nodeKind } from '../game/levels.js';
+import { getLevel, levelCount } from '../game/levels.js';
 import { stageOfLevel, indexInStage, STAGES } from '../game/stages.js';
 import { startPaths, evaluate, applyHint, peekSegment } from '../game/logic.js';
 import { boardSignature, freshBoard, restoreDraft, pushBoard, undoBoard, redoBoard } from '../game/boardState.js';
@@ -61,7 +61,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const adDue = useRef(false);
   const tutorial = isTutorial(level);
   const stage = stageOfLevel(levelNo);
-  const kind = nodeKind(level.difficulty);
 
   useEffect(() => {
     const release = holdSprites();
@@ -296,9 +295,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
           <h2>
             {t('station')} {t.n(inStage)}
           </h2>
-          <span className="sub-row">
-            <span className={'diff k-' + kind}>{t(DIFFICULTY_KEYS[level.difficulty])}</span>
-          </span>
         </div>
         {!demo && <CoinChip amount={t.n(save.coins)} onClick={onCoins} label={t('coins')} />}
       </header>
@@ -306,8 +302,10 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       {timed && <div className={'solve-timer' + (timer.freezeRemainingMs > 0 ? ' frozen' : '')} aria-label={t('solveTime')}>
         <div className="timer-current"><span>{t('solveTime')}</span> <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b>{timer.freezeRemainingMs > 0 && <span>{t('timerFrozen', { n: t.n(Math.ceil(timer.freezeRemainingMs / 1000)) })}</span>}</div>
         <div className="timer-track" role="progressbar" aria-label={t('timeStars')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(timerFill(timer.elapsedMs, targets)*100)}>
-          <div className="timer-fill" style={{width: (timerFill(timer.elapsedMs, targets)*100)+'%'}} />
+          <div className="timer-lane">
+            <div className="timer-fill" style={{width: (timerFill(timer.elapsedMs, targets)*100)+'%'}} />
           {[{n:1,x:0},{n:2,x:1-1/1.2},{n:3,x:1-targets.threeMs/(targets.twoMs*1.2)}].map(({n,x}) => <span key={n} className={'timer-star star-'+n+(liveStars >= n ? ' lit' : ' dim')} style={{left:(x*100)+'%'}}><img src={`${UI_ART}../map/ui/star-${liveStars >= n ? 'gold' : 'grey'}.webp`} width="28" height="27" alt="" draggable="false" /></span>)}
+          </div>
         </div>
         <div className="timer-targets">{t('timeTargets', { three: t.n(formatTime(targets.threeMs)), two: t.n(formatTime(targets.twoMs)) })}</div>
       </div>}
@@ -374,12 +372,12 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
         </div>
         <p className="goal">{t(lesson.text)}</p>
         {lesson.id === 'notes' && <div className="intro-notes"><img src={UI_ART+'note-dot-v1.png'} alt="●" /><img src={UI_ART+'note-cross-v1.png'} alt="×" /></div>}
-        <p className="small">{t.n(lessonIndex+1)} / {t.n(lessons.length)}</p>
+        {lessons.length > 1 && <p className="small">{t.n(lessonIndex + 1)} / {t.n(lessons.length)}</p>}
         <button className="btn big green" onClick={nextLesson}>{t(lessonIndex+1<lessons.length?'next':'gotIt')}</button>
       </Modal>}
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
-        <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')}>
+        <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')} titleClass="win-title" variant="station-result">
           <Stars n={stars} size={58} className="big win-stars" pop />
           {timed && <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>}
           <p className="reward-line big">
@@ -391,7 +389,6 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
               <span className="small">{t('noNewCoins')}</span>
             )}
           </p>
-          {reward.hintBonus && <p className="small">{t('bonusHint')}</p>}
           {lastLevel && <p className="small">{t(demo ? 'demoFinished' : 'allDone')}</p>}
           {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
           <div className="modal-actions col">

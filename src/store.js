@@ -118,21 +118,18 @@ export function useSave() {
 /**
  * Record a finished level.
  * Coins: first clear = base(difficulty) + 5 per star; clearing again with more stars pays 5 per extra star.
- * Returns { first, coins, hintBonus }.
+ * Returns { first, coins }.
  */
 export function completeLevel(level, stars, difficulty = 1) {
-  let res = { first: false, coins: 0, hintBonus: false };
+  let res = { first: false, coins: 0 };
   update((s) => {
     const prev = s.stars[level] || 0;
     const first = prev === 0;
     const coins = first ? COIN_BASE[difficulty] + COINS_PER_STAR * stars : Math.max(0, stars - prev) * COINS_PER_STAR;
-    // a free hint for every second level finished for the first time (after the tutorial)
-    const hintBonus = !IS_WEB_DEMO && first && level > TUTORIAL_LEVELS && level % 2 === 0;
-    res = { first, coins, hintBonus };
+    res = { first, coins };
     return {
       stars: { ...s.stars, [level]: Math.max(prev, stars) },
       unlocked: Math.min(levelCount, Math.max(s.unlocked, level + 1)),
-      hints: hintBonus ? s.hints + 1 : s.hints,
       coins: s.coins + coins,
     };
   });

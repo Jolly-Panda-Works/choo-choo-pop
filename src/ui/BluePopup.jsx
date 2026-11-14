@@ -8,19 +8,15 @@ const DH = 2478;
 // the frame art of each popup, and the shadow of its title
 const FRAMES = { shop: '#b86f00', coins: '#4f2aa8', missions: '#17752f', custom: '#c81e66', spin: '#5a22ad', settings: '#0c5fb8' };
 const ROW_COLORS = { shop: '#f0a020', coins: '#8a5fe0', missions: '#46b552', custom: '#f2649f', settings: '#2f8fe8' };
-/** List rows take turns: the colour of the frame, then white. */
-export const rowLook = (frame, i) => {
-  const color = ROW_COLORS[frame];
-  const on = i % 2 === 0;
-  return {
-    color: on ? color : '#fff',
-    edge: color,
-    ink: on ? '#fff' : FRAMES[frame],
-    sub: on ? 'rgba(255, 255, 255, 0.9)' : FRAMES[frame],
-    amount: on ? '#ffe07a' : FRAMES[frame],
-    btn: on && frame === 'shop' ? 'pink' : 'orange',
-  };
-};
+/** White list rows with borders and text matched to the frame. */
+export const rowLook = (frame) => ({
+  color: '#fff',
+  edge: ROW_COLORS[frame],
+  ink: FRAMES[frame],
+  sub: FRAMES[frame],
+  amount: FRAMES[frame],
+  btn: 'orange',
+});
 const TAB_COLORS = { missions: ['#b5e8ae', '#84cf7c'], custom: ['#fcb0c3', '#ee8fa8'] };
 /** The colours of a frame for its `.tabs`. */
 export const tabColors = (frame) => ({ '--tab': TAB_COLORS[frame][0], '--tab-edge': TAB_COLORS[frame][1], '--tab-d': FRAMES[frame] });

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { currentLang } from '../store.js';
 import { formatNumber } from '../i18n.js';
 import { SIDE_VEC, pathConnections, stepOnto, laneForCell, gateIsOuter } from '../game/logic.js';
-import { mulberry32 } from '../game/rng.js';
 import { buildRoute, sampleRoute } from './route.js';
 import { getSprites, getTrainSet, getRailSet } from './sprites.js';
 
@@ -49,44 +48,7 @@ function layoutFor(level, W, H, reserveBottom) {
   const S = Math.max(10, Math.min((W - pad * 2) / (maxX - minX), (availH - pad * 2) / (maxY - minY), 100));
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
-  return { S, ox: W / 2 - cx * S, oy: availH / 2 - cy * S, topClue, rightClue, box: { minX, maxX, minY, maxY } };
-}
-
-const EDGE = 4;
-/** Bushes on the grass around the board (seeded per level so they never jump). */
-function makeDecor(level, lay, W, H) {
-  const rng = mulberry32(level.id * 977 + 13);
-  const { S, ox, oy, box } = lay;
-  const keep = {
-    x0: ox + box.minX * S - 0.3 * S,
-    x1: ox + box.maxX * S + 0.3 * S,
-    y0: oy + box.minY * S - 0.3 * S,
-    y1: oy + box.maxY * S + 0.3 * S,
-  };
-  const out = [];
-  const sp = getSprites();
-  const step = Math.max(46, S * 1.15);
-  for (let y = -step * 0.4; y < H + step; y += step) {
-    for (let x = -step * 0.4; x < W + step; x += step) {
-      const px = x + (rng() - 0.5) * step * 0.7;
-      const py = y + (rng() - 0.5) * step * 0.7;
-      if (rng() < 0.55) continue;
-      const size = S * 0.95;
-      const k = 'bush';
-      const flip = rng() < 0.5;
-      const skip = rng() < 0.28;
-      const img = sp[k];
-      const halfW = size * 0.5;
-      const halfH = ((img.height / img.width) * size) / 2;
-      // always whole: inside the canvas, clear of the board and of the other pieces
-      if (skip || px - halfW < EDGE || px + halfW > W - EDGE || py - halfH < EDGE || py + halfH > H - EDGE) continue;
-      if (px + halfW > keep.x0 && px - halfW < keep.x1 && py + halfH > keep.y0 && py - halfH < keep.y1) continue;
-      if (out.some((o) => Math.abs(o.x - px) < o.halfW + halfW && Math.abs(o.y - py) < o.halfH + halfH)) continue;
-      out.push({ k, x: px, y: py, size, flip, halfW, halfH });
-    }
-  }
-  out.sort((a, b) => a.y - b.y);
-  return out;
+  return { S, ox: W / 2 - cx * S, oy: availH / 2 - cy * S, topClue, rightClue };
 }
 
 const pieceTurns = (a, b) => {
@@ -204,19 +166,6 @@ function draw(R, now) {
       g.fillText(formatNumber(gt.li + 1), bx, by + S * 0.01);
     }
   };
-
-  // --- decoration on the grass
-  for (const d of R.decor) {
-    const img = sp[d.k];
-    const w = d.size;
-    const h = (img.height / img.width) * w;
-    g.save();
-    g.translate(d.x, d.y);
-    if (d.flip) g.scale(-1, 1);
-    g.globalAlpha = 0.96;
-    g.drawImage(img, -w / 2, -h / 2, w, h);
-    g.restore();
-  }
 
   // --- board frame
   const bx = px(-cols / 2) - 0.17 * S;
@@ -502,7 +451,6 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, peek
     appear: new Map(),
     puffs: [],
     lastPuff: 0,
-    decor: [],
     dirty: true,
     ready: false,
     paths: [],
@@ -539,7 +487,6 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, peek
     r.phase = phase;
     if (levelChanged && r.W) {
       r.lay = layoutFor(level, r.W, r.H, reserveBottom);
-      r.decor = makeDecor(level, r.lay, r.W, r.H);
       r.appear = new Map();
     }
     r.dirty = true;
@@ -562,7 +509,6 @@ export default function BoardCanvas({ level, paths, pathRef, peekUntil = 0, peek
       cv.height = Math.round(r.H * dpr);
       const lv = cbRef.current.level;
       r.lay = layoutFor(lv, r.W, r.H, cbRef.current.reserveBottom);
-      r.decor = makeDecor(lv, r.lay, r.W, r.H);
       r.dirty = true;
     };
     const ro = new ResizeObserver(resize);

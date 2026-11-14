@@ -88,14 +88,14 @@ export default function Customize({ onBack }) {
       <PopList key={tab} style={inPopup(LIST[0], LIST_Y, LIST[2] - LIST[0], LIST[3] - LIST_Y)}>
         <div style={{ position: 'relative', height: k(ROW0 + cfg.list.length * PITCH + (mine.length && forSale.length ? DIVIDER : 0)) }}>
           {mine.length > 0 && forSale.length > 0 && (
-            <div className="look-divider" style={{ ...rect(ROW_X, ROW0 + mine.length * PITCH, 1152, DIVIDER - 17), ...fs(38), color: rowLook('custom', 1).ink }}>
+            <div className="look-divider" style={{ ...rect(ROW_X, ROW0 + mine.length * PITCH, 1152, DIVIDER - 17), ...fs(38), color: rowLook('custom').ink }}>
               <span>{t('forSale')}</span>
             </div>
           )}
           {[...mine, ...forSale].map((s, i) => {
             const has = i < mine.length;
             const on = save[cfg.cur] === s.id;
-            const look = rowLook('custom', i);
+            const look = rowLook('custom');
             const top = ROW0 + i * PITCH + (mine.length && !has ? DIVIDER : 0);
             return (
               <div key={s.id} className="prow" style={{ top: k(top), left: k(ROW_X), width: k(1152), height: k(268) }}>

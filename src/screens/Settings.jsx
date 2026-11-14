@@ -70,7 +70,7 @@ export default function Settings({ onBack, onStory, onLang }) {
         <PopList style={inPopup(LIST[0], LIST[1], LIST[2] - LIST[0], LIST[3] - LIST[1])}>
           <div style={{ position: 'relative', height: k(ROW0 + rows.length * PITCH) }}>
             {rows.map((r, i) => {
-              const look = rowLook('settings', i);
+              const look = rowLook('settings');
               return (
                 <div key={r.key} className="prow" style={{ top: k(ROW0 + i * PITCH), left: k(ROW_X), width: k(1152), height: k(268) }}>
                   <RowBg look={look} />

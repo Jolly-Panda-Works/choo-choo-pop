@@ -38,7 +38,6 @@ const FILES = {
   hand: 'ui/move-hand.webp',
   tree: 'ui/tree-rose.webp',
   treeYellow: 'ui/tree-yellow.webp',
-  bush: 'deco/bush.png',
 };
 
 function loadImage(url) {
