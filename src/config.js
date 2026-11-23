@@ -1,6 +1,7 @@
 export const APP_VERSION = typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '0.0.0';
 
-// One game in two languages; the player switches in the settings.
+// Bazaar and Myket always use Persian. Standalone builds keep the language preference.
+export const IS_IRANIAN_STORE = typeof __IS_IRANIAN_STORE__ !== 'undefined' && __IS_IRANIAN_STORE__;
 export const IS_WEB_DEMO = import.meta.env.VITE_WEB_DEMO === '1';
 export const APP_DOWNLOAD_URL = 'https://jollypanda.ir/en/games/choo-choo-pop/';
 export const DEFAULT_LANG = 'fa';

@@ -39,7 +39,7 @@ function About({ onClose }) {
   );
 }
 
-export default function Settings({ onBack, onStory, onLang }) {
+export default function Settings({ onBack, onLang }) {
   const save = useSave();
   const t = useT();
   const [about, setAbout] = useState(false);
@@ -58,9 +58,10 @@ export default function Settings({ onBack, onStory, onLang }) {
     { key: 'sound', icon: 'sound', name: t('sound'), on: save.sound, set: (v) => update({ sound: v }) },
     { key: 'music', icon: 'music', name: t('music'), on: save.music, set: (v) => update({ music: v }) },
     { key: 'vibrate', icon: 'alert', name: t('vibration'), on: save.vibrate, set: (v) => update({ vibrate: v }) },
-    { key: 'language', name: t('language'), btn: { label: t.lang === 'fa' ? 'English' : 'فارسی', run: onLang } },
-    { key: 'story', name: t('replayStory'), btn: { label: <Icon name="repeat" />, run: onStory } },
   ];
+  if (onLang) {
+    rows.push({ key: 'language', name: t('language'), btn: { label: t.lang === 'fa' ? 'English' : 'فارسی', run: onLang } });
+  }
   rows.push(...platformRows);
   rows.push({ key: 'about', name: t('about'), btn: { label: <Icon name="info" />, run: () => setAbout(true) } });
 

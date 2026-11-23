@@ -9,6 +9,7 @@ import {
   START_POWERUPS,
   DEFAULT_LANG,
   IS_WEB_DEMO,
+  IS_IRANIAN_STORE,
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
 import { purchasePowerupPack } from './game/powerupPacks.js';
@@ -95,7 +96,11 @@ export function claimDemoSocial(reward) {
   update(patch);
   return true;
 }
-export const currentLang = () => IS_WEB_DEMO ? demoLanguage(typeof navigator === 'undefined' ? [] : navigator.languages || [navigator.language]) : state.lang || DEFAULT_LANG;
+export function currentLang() {
+  if (IS_WEB_DEMO) return demoLanguage(typeof navigator === 'undefined' ? [] : navigator.languages || [navigator.language]);
+  if (IS_IRANIAN_STORE) return 'fa';
+  return state.lang || DEFAULT_LANG;
+}
 export const subscribe = (l) => {
   listeners.add(l);
   return () => listeners.delete(l);

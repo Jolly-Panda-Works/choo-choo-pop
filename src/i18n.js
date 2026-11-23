@@ -1,6 +1,6 @@
 import { currentLang, useSave } from './store.js';
 
-// Both languages ship in every build; the player's choice is in the save (see store.js, lang).
+// The build and saved preferences determine which language is displayed (see store.js).
 const dict = {
   en: {
     title: 'Choo Choo Pop',
@@ -68,7 +68,6 @@ const dict = {
     sound: 'Sound',
     music: 'Music',
     vibration: 'Vibration',
-    replayStory: 'Watch the story again',
     version: 'Version',
     language: 'Language',
     gameBy: 'A game by',
@@ -326,7 +325,6 @@ const dict = {
     sound: 'صدا',
     music: 'موسیقی',
     vibration: 'لرزش',
-    replayStory: 'دیدن دوبارهٔ داستان',
     version: 'نسخه',
     language: 'زبان',
     gameBy: 'ساختهٔ',

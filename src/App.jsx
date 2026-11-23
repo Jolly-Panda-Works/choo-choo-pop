@@ -5,7 +5,7 @@ import { levelCount, getLevel } from './game/levels.js';
 import { stageOfLevel, indexInStage } from './game/stages.js';
 import { isTutorial } from './game/tutorial.js';
 import { ART } from './board/sprites.js';
-import { MOCK_SERVICES } from './config.js';
+import { IS_IRANIAN_STORE, MOCK_SERVICES } from './config.js';
 import { PlatformOverlay } from './services/platform.jsx';
 import Home from './screens/Home.jsx';
 import StageMap from './screens/StageMap.jsx';
@@ -38,10 +38,9 @@ export default function App() {
   const t = useT();
   const [booting, setBooting] = useState(true);
   // first launch: the story, then straight into level 1
-  const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story', then: 'game' }));
+  const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story' }));
   const screenRef = useRef(screen);
   screenRef.current = screen;
-  const stack = useRef([]);
   const gameBack = useRef(null);
   const timers = useRef([]);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -118,31 +117,17 @@ export default function App() {
     );
   };
 
-  const go = (name, extra = {}) =>
-    withWipe(() => {
-      stack.current.push(screenRef.current);
-      setScreen({ name, ...extra });
-    });
   const replace = (name, extra = {}) =>
     withWipe(
-      () => {
-        stack.current = [];
-        setScreen({ name, ...extra });
-      },
+      () => setScreen({ name, ...extra }),
       name === 'stage' && screenRef.current.name === 'stage',
     );
-  const back = (fallback) =>
-    withWipe(() => {
-      const prev = stack.current.pop();
-      setScreen(prev || fallback);
-    });
 
   // the new language comes up under the clouds, on Home
   const changeLang = () =>
     withWipe(() => {
       update({ lang: currentLang() === 'fa' ? 'en' : 'fa' });
       setOverlay(null);
-      stack.current = [];
       setScreen({ name: 'home' });
     });
 
@@ -155,9 +140,7 @@ export default function App() {
 
   const finishStory = () => {
     update({ storySeen: true });
-    const s = screenRef.current;
-    if (s.then === 'game') replace('game', { level: 1, stage: 1, picks: [] });
-    else back({ name: 'home' });
+    replace('game', { level: 1, stage: 1, picks: [] });
   };
 
   // Android back button
@@ -177,7 +160,7 @@ export default function App() {
           else if (s.name === 'game') gameBack.current?.();
           else if (s.name === 'stage') replace('map');
           else if (s.name === 'map') replace('home');
-          else back({ name: 'home' });
+          else replace('home');
         });
       } catch (e) {
         /* web build */
@@ -234,11 +217,7 @@ export default function App() {
       {overlay === 'settings' && (
         <Settings
           onBack={() => closeOverlay()}
-          onLang={changeLang}
-          onStory={() => {
-            closeOverlay();
-            go('story');
-          }}
+          onLang={IS_IRANIAN_STORE ? undefined : changeLang}
         />
       )}
       {overlay === 'start' && (
