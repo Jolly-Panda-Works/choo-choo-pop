@@ -350,7 +350,7 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
 /* ---- levels of a stage (v4): bubble grid on the home sky scene, like the landscape reference ---- */
 .levels { padding: 0 12px 14px; }
 .on-stage .scene-cloud { display: none; }
-.levels .topbar { position: relative; z-index: 2; flex: none; min-height: 62px; margin-inline: -12px; }
+.levels .topbar { position: relative; z-index: 2; flex: none; min-height: 70px; margin-inline: -12px; }
 .levels .topbar::before {
   content: '';
   position: absolute;
@@ -361,7 +361,7 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
   transform: scaleY(-1);
   mask-image: linear-gradient(to bottom, transparent, #000 65%);
 }
-.pager { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 2px; }
+.pager { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 8px 0 2px; }
 .pager-title { display: flex; flex-direction: column; align-items: center; min-width: 0; flex: 0 1 230px; }
 .pager-title h2 { margin: 0; font-size: clamp(24px, 7.6vw, 36px); line-height: 1.1; color: #fff; -webkit-text-stroke: 8px #1c8fa0; paint-order: stroke fill; text-shadow: 0 5px 0 #14707f; white-space: normal; text-align: center; }
 .pager-arrow { flex: none; width: 46px; padding: 6px 0; background: none; }
@@ -639,6 +639,9 @@ button:active:not(:disabled) { scale: 0.92; }
 /* back (settings on Home) and the coin counter stand in the same spot on every screen */
 .app .back-btn, .app .home-settings:not(.custom) { position: absolute; top: calc(10px + env(safe-area-inset-top)); left: 12px; z-index: 3; width: 52px; height: 52px; }
 .app .chip.coin-chip { position: absolute; top: calc(19px + env(safe-area-inset-top)); right: 12px; z-index: 3; margin: 0; font-size: 20px; }
+/* The stage header is already inside the app's safe-area padding. */
+.app .levels .back-btn { top: 10px; }
+.app .levels .coin-chip { top: 19px; }
 .app .chip.over-coins { z-index: 6; }
 /* the title sits in the gap between the two */
 .on-game .topbar, .levels .topbar { padding: 0 104px 0 52px; }
