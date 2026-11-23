@@ -19,19 +19,15 @@ export default function AdRewardPopup({ reward }) {
   return (
     <div className="ad-reward-layer" role="dialog" aria-modal="true" aria-label={title}>
       <Modal pose="cheer" title={title}>
-        {(leave) => (
-          <>
-            <p className="reward-line big">{prize.icon} {prize.label}</p>
-            <div className="modal-actions">
-              <button type="button" className="btn big green" autoFocus onClick={() => {
-                sfx.click();
-                leave(() => claimAdReward(reward));
-              }}>
-                {t('claimReward')}
-              </button>
-            </div>
-          </>
-        )}
+        <p className="reward-line big">{prize.icon} {prize.label}</p>
+        <div className="modal-actions">
+          <button type="button" className="btn big green" autoFocus onClick={() => {
+            sfx.click();
+            claimAdReward(reward);
+          }}>
+            {t('claimReward')}
+          </button>
+        </div>
       </Modal>
     </div>
   );

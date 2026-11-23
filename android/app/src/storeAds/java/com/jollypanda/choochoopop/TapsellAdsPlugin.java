@@ -81,11 +81,16 @@ public class TapsellAdsPlugin extends Plugin {
             Tapsell.showAd(getActivity(), zoneId, adId, new TapsellShowOptions(), new TapsellAdShowListener() {
                 private boolean opened;
                 private boolean rewarded;
+                private boolean rewardReported;
+                private boolean closed;
                 private boolean finished;
+                private final boolean expectsReward = "rewarded".equals(placement);
+                private final Runnable closeTimeout = this::finish;
 
                 private void finish() {
                     if (finished) return;
                     finished = true;
+                    main.removeCallbacks(closeTimeout);
                     showing = false;
                     JSObject result = new JSObject();
                     result.put("shown", opened);
@@ -95,10 +100,23 @@ public class TapsellAdsPlugin extends Plugin {
                 }
 
                 @Override public void onOpened() { main.post(() -> opened = true); }
-                @Override public void onClosed() { main.postDelayed(this::finish, 250); }
+                @Override public void onClosed() {
+                    main.post(() -> {
+                        if (closed || finished) return;
+                        closed = true;
+                        if (!expectsReward || rewardReported) finish();
+                        // Some ads close before the SDK delivers the reward result.
+                        else main.postDelayed(closeTimeout, 2000);
+                    });
+                }
                 @Override public void onError(String message) { main.post(this::finish); }
                 @Override public void onRewarded(boolean completed) {
-                    main.post(() -> rewarded = "rewarded".equals(placement) && completed);
+                    main.post(() -> {
+                        if (!expectsReward || finished) return;
+                        rewardReported = true;
+                        rewarded = rewarded || completed;
+                        if (closed) finish();
+                    });
                 }
                 @Override public void onAdClicked() {}
             });

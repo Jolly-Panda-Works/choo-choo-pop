@@ -32,7 +32,7 @@ export function CoinChip({ amount, onClick, label, className = '' }) {
         <img className="coin-plus" src={`${V5_ART}circle-green.webp`} alt="" draggable="false" />
         <img className="coin-plus cross" src={`${V5_ART}plus-white.webp`} alt="" draggable="false" />
       </span>
-      <span className="coin-amount">{amount}</span>
+      <span className="coin-amount" aria-live="polite">{amount}</span>
     </button>
   );
 }

@@ -43,18 +43,22 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
   const [note, setNote] = useState('');
   const timer = useRef();
   useEffect(() => () => clearTimeout(timer.current), []);
+  const say = (message) => {
+    setNote(message);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setNote(''), 2300);
+  };
   const freeCoins = async () => {
     sfx.click();
     if (ads.rewardedAvailable()) {
       const earned = await ads.rewarded({ kind: 'coins', amount: VIDEO_COINS }, () => {
         addCoins(VIDEO_COINS);
         sfx.coins();
+        say(t('coinRewardAdded', { n: t.n(VIDEO_COINS) }));
       });
       if (earned) return;
     }
-    setNote(t('noVideo'));
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setNote(''), 2300);
+    say(t('noVideo'));
   };
   const go = (fn) => () => {
     sfx.click();

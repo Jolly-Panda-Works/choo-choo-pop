@@ -49,6 +49,7 @@ export default function App() {
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
   // shop and coin popups open ON the current screen (no screen change) and close back to it
   const [overlay, setOverlay] = useState(null);
+  const [wheelCoinsInFlight, setWheelCoinsInFlight] = useState(0);
   const overlayRef = useRef(null);
   overlayRef.current = overlay;
   // the start popup of a station opens on the screen that asked for it; the game loads only after Play
@@ -239,12 +240,12 @@ export default function App() {
         />
       )}
       {overlay === 'custom' && <Customize onBack={() => closeOverlay()} />}
-      {overlay === 'spin' && <SpinWheel onBack={() => closeOverlay()} />}
+      {overlay === 'spin' && <SpinWheel onBack={() => closeOverlay()} onCoinsInFlight={setWheelCoinsInFlight} />}
       {overlay === 'missions' && <Missions onBack={() => closeOverlay()} />}
       {overlay === 'shop' && <Shop onBack={() => closeOverlay()} />}
       {overlay === 'coins' && <CoinShop onBack={() => closeOverlay()} />}
       {/* the balance stays in sight over the dim layer; it opens the coin shop only from popups that are safe to leave */}
-      {overlay && <CoinChip className="over-coins" amount={t.n(save.coins)} onClick={COIN_LINK.has(overlay) ? () => closeOverlay('coins') : undefined} label={t('coins')} />}
+      {overlay && <CoinChip className="over-coins" amount={t.n(save.coins - (overlay === 'spin' ? wheelCoinsInFlight : 0))} onClick={COIN_LINK.has(overlay) ? () => closeOverlay('coins') : undefined} label={t('coins')} />}
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
       <PlatformOverlay />

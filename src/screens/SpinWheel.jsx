@@ -26,7 +26,7 @@ function PrizeIcon({ prize }) {
   return <img src={`${ART}v5/coin-gold.webp`} alt="" draggable="false" />;
 }
 
-export default function SpinWheel({ onBack }) {
+export default function SpinWheel({ onBack, onCoinsInFlight }) {
   const t = useT();
   const save = useSave();
   const [today, setToday] = useState(dayKey);
@@ -43,8 +43,9 @@ export default function SpinWheel({ onBack }) {
       clearInterval(clock);
       document.removeEventListener('visibilitychange', checkDay);
       timers.current.forEach(clearTimeout);
+      onCoinsInFlight(0);
     };
-  }, []);
+  }, [onCoinsInFlight]);
   const say = (m) => {
     setNote(m);
     timers.current.push(setTimeout(() => setNote(''), 2400));
@@ -54,16 +55,23 @@ export default function SpinWheel({ onBack }) {
 
   const spin = (kind) => {
     const i = Math.floor(Math.random() * prizes.length);
-    if (!redeemWheelSpin(kind, prizes[i])) return;
+    const prize = prizes[i];
+    // Persist the prize immediately, but reveal the extra coins when the wheel stops.
+    onCoinsInFlight(prize.coins || 0);
+    if (!redeemWheelSpin(kind, prize)) {
+      onCoinsInFlight(0);
+      return;
+    }
     const stop = 360 - i * SLICE;
     setBusy(true);
     sfx.wheelSpin();
     setAngle((a) => a - (a % 360) + TURNS * 360 + stop);
     timers.current.push(
       setTimeout(() => {
+        onCoinsInFlight(0);
         setBusy(false);
         sfx.coins();
-        say(t('thanks'));
+        say(prize.coins ? t('coinRewardAdded', { n: t.n(prize.coins) }) : t('thanks'));
       }, SPIN_MS),
     );
   };
