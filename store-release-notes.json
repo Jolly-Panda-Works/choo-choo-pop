@@ -1,6 +1,5 @@
 {
-  "$comment": "What's new in Cafe Bazaar and Myket for the next version (required: a build is published only when version matches package.json). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.",
-  "version": "",
-  "fa": "",
-  "en": ""
+  "version": "1.8.2",
+  "fa": "- ماجراجویی کامل در ۶ سرزمین با ۱۲۰ معمای متفاوت\n- آموزش قدم‌به‌قدم، ذخیرهٔ خودکار تلاش‌های نیمه‌تمام و ستاره‌بندی بر اساس زمان\n- گردونهٔ شانس با یک چرخش رایگان روزانه و تا پنج چرخش اضافه با تماشای ویدئو\n- دریافت سکه و راهنما با تماشای تبلیغات جایزه‌ای",
+  "en": "- A complete adventure across 6 lands with 120 unique puzzles\n- Step-by-step tutorials, automatic saving for unfinished puzzles, and time-based star ratings\n- One free Lucky Wheel spin each day, plus up to five extra spins by watching videos\n- Earn coins and hints by watching rewarded ads"
 }

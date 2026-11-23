@@ -85,14 +85,8 @@ for (const which of ["last-committed/", "last-published/"]) {
 // 2. A draft of this version (an alpha waiting for you in the panel) is kept; an older one,
 // left by a failed run, would block the new release.
 const draft = await call("GET", "last-uncommitted/");
-if (draft.json.type === "success" && highestCode(draft.json.release) >= code) {
-  console.log(`::notice::A draft of versionCode ${highestCode(draft.json.release)} is already in the Bazaar panel; not sending ${version} again.`);
-  process.exit(0);
-}
 if (draft.json.type === "success") {
-  console.log(`Removing an unfinished draft release (versionCode ${highestCode(draft.json.release) || "none"}).`);
-  const removed = await call("DELETE");
-  if (!removed.ok) fail(`Couldn't remove the draft release: ${removed.json.message ?? removed.status}`);
+  fail(`Bazaar has an existing draft (versionCode ${highestCode(draft.json.release) || "none"}); leaving it in place.`);
 }
 
 // 3. New release.
