@@ -50,6 +50,7 @@ const defaults = () => ({
   powerups: { freeze: START_POWERUPS, peek: START_POWERUPS },
   mis: null, // missions, see game/missions.js
   lastSpin: '', // day of the last free spin of the wheel
+  adSpins: null, // { day, used } for rewarded spins
   lang: null, // 'en' | 'fa', null = the default of this build
 });
 
@@ -146,7 +147,6 @@ export const spendPowerup = (id) => {
   update((s) => ({ powerups: { ...s.powerups, [id]: s.powerups[id] - 1 } }));
   return true;
 };
-export const addPowerup = (id, n = 1) => update((s) => ({ powerups: { ...s.powerups, [id]: (s.powerups[id] || 0) + n } }));
 export function buyPowerup(packId) {
   const patch = purchasePowerupPack(state, packId);
   if (!patch) return false;
@@ -154,9 +154,32 @@ export function buyPowerup(packId) {
   return true;
 }
 
-// ---- free daily gift of the coin shop
-export const spinReady = (s = state) => s.lastSpin !== dayKey();
-export const useFreeSpin = () => update({ lastSpin: dayKey() });
+// ---- lucky wheel
+const DAILY_AD_SPINS = 5;
+
+export const spinReady = (s = state, today = dayKey()) => s.lastSpin !== today;
+
+export function adSpinsRemaining(s = state, today = dayKey()) {
+  return s.adSpins?.day === today ? Math.max(0, DAILY_AD_SPINS - s.adSpins.used) : DAILY_AD_SPINS;
+}
+
+export function redeemWheelSpin(kind, prize) {
+  const today = dayKey();
+  const remaining = adSpinsRemaining(state, today);
+  if (kind === 'free' ? !spinReady(state, today) : remaining === 0) return false;
+
+  const allowance = kind === 'free'
+    ? { lastSpin: today }
+    : { adSpins: { day: today, used: DAILY_AD_SPINS - remaining + 1 } };
+  // Save the allowance and prize together so closing during the animation keeps the prize.
+  update((s) => ({
+    ...allowance,
+    coins: s.coins + (prize.coins || 0),
+    hints: s.hints + (prize.hints || 0),
+    powerups: prize.power ? { ...s.powerups, [prize.power]: (s.powerups[prize.power] || 0) + 1 } : s.powerups,
+  }));
+  return true;
+}
 
 // ---- missions
 /** Make sure today's / this week's missions exist and count today as a visit. Safe to call any time. */
