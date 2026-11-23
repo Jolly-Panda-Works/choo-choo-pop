@@ -16,6 +16,7 @@ const ROW0 = 21; // first row below the top of the list window
 const PITCH = 285;
 const PACK_ICON = { coins_giant: 'coin-mountain', coins_large: 'coin-sack', coins_medium: 'coin-tub', coins_small: 'coins-few' };
 const PACK_BOX = { ...rowRect(26, 34, 200, 200), objectFit: 'contain' };
+const TAGGED_PACK_BOX = { ...rowRect(144, 49, 172, 172), objectFit: 'contain' };
 
 function Row({ i, look, children }) {
   return (
@@ -61,18 +62,19 @@ export default function CoinShop({ onBack }) {
           {COIN_PACKS.map((p, i) => {
             const look = rowLook('coins');
             const icon = PACK_ICON[p.id];
+            const bonusBadge = p.tag ? rowRect(302, 52, 100, 100) : rowRect(218, 52, 115, 115);
             return (
               <Row key={p.id} i={i} look={look}>
-                <img className="v5pic" alt="" draggable="false" src={`${ART}v5/${icon}.webp`} style={PACK_BOX} />
-                <img className="v5pic" alt="" draggable="false" src={`${ART}v5/burst.webp`} style={rowRect(218, 52, 115, 115)} />
-                <div className="ptxt" style={{ ...rowRect(218, 52, 115, 115), ...fs(27), color: '#1f5662', flexDirection: 'column', transform: 'rotate(-12deg)' }}>
+                <img className="v5pic" alt="" draggable="false" src={`${ART}v5/${icon}.webp`} style={p.tag ? TAGGED_PACK_BOX : PACK_BOX} />
+                <img className="v5pic" alt="" draggable="false" src={`${ART}v5/burst.webp`} style={bonusBadge} />
+                <div className="ptxt" style={{ ...bonusBadge, ...fs(27), color: '#1f5662', flexDirection: 'column', transform: 'rotate(-12deg)' }}>
                   <b style={fs(34)}>{t.n(p.extra)}%</b>
                   {t('extra')}
                 </div>
                 {p.tag && (
                   <>
-                    <img className="v5pic row-tag" alt="" draggable="false" src={`${ART}v5/${p.tag === 'bestDeal' ? 'tag-pink' : 'tag-green'}.webp`} style={rowRect(-76, p.tag === 'bestDeal' ? -3 : -3, 193, 273)} />
-                    <div className="ptxt row-tag-text" style={{ ...rowRect(-77, 89, 170, 120), ...fs(36), color: '#fff', whiteSpace: 'normal', textShadow: '0 2px 0 rgba(0,0,0,.25)' }}>
+                    <img className="v5pic row-tag" alt="" draggable="false" src={`${ART}v5/${p.tag === 'bestDeal' ? 'tag-pink' : 'tag-green'}.webp`} style={rowRect(8, 12, 166, 235)} />
+                    <div className="ptxt row-tag-text" style={{ ...rowRect(7, 91, 146, 103), ...fs(31), color: '#fff', whiteSpace: 'normal', textShadow: '0 2px 0 rgba(0,0,0,.25)' }}>
                       {t(p.tag)}
                     </div>
                   </>
