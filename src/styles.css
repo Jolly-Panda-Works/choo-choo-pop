@@ -196,7 +196,7 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
 .stage-scroll { flex: 1; overflow-y: auto; margin: 4px -16px -16px; position: relative; -webkit-overflow-scrolling: touch; }
 /* world map: the map fills the whole screen and the header floats over it; no scrollbar, drag to move */
 .screen.map { padding: 0; }
-.screen.map .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 40; padding: 12px 16px; pointer-events: none; }
+.screen.map .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 40; min-height: 70px; padding: 12px 16px; pointer-events: none; }
 .screen.map .topbar > * { pointer-events: auto; }
 .screen.map .topbar::before { content: ''; position: absolute; z-index: -1; left: -4%; right: -4%; top: 0; height: calc(150px + env(safe-area-inset-top)); pointer-events: none; background: url('/choo-choo-pop-assets/art/map/ui/clouds-band.webp') center / 100% 100% no-repeat; transform: scaleY(-1); -webkit-mask-image: linear-gradient(to bottom, transparent 8%, #000 62%); mask-image: linear-gradient(to bottom, transparent 8%, #000 62%); }
 .screen.map .stage-scroll { position: absolute; inset: 0; margin: 0; scrollbar-width: none; -ms-overflow-style: none; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
@@ -639,9 +639,9 @@ button:active:not(:disabled) { scale: 0.92; }
 /* back (settings on Home) and the coin counter stand in the same spot on every screen */
 .app .back-btn, .app .home-settings:not(.custom) { position: absolute; top: calc(10px + env(safe-area-inset-top)); left: 12px; z-index: 3; width: 52px; height: 52px; }
 .app .chip.coin-chip { position: absolute; top: calc(19px + env(safe-area-inset-top)); right: 12px; z-index: 3; margin: 0; font-size: 20px; }
-/* The stage header is already inside the app's safe-area padding. */
-.app .levels .back-btn { top: 10px; }
-.app .levels .coin-chip { top: 19px; }
+/* Both map headers are already inside the app's safe-area padding. */
+.app :is(.map, .levels) .back-btn { top: 10px; }
+.app :is(.map, .levels) .coin-chip { top: 19px; }
 .app .chip.over-coins { z-index: 6; }
 /* the title sits in the gap between the two */
 .on-game .topbar, .levels .topbar { padding: 0 104px 0 52px; }
