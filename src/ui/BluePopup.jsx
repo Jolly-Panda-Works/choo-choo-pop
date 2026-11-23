@@ -17,7 +17,7 @@ export const rowLook = (frame) => ({
   amount: FRAMES[frame],
   btn: 'orange',
 });
-const TAB_COLORS = { missions: ['#b5e8ae', '#84cf7c'], custom: ['#fcb0c3', '#ee8fa8'] };
+const TAB_COLORS = { shop: ['#ffe59a', '#efbc56'], missions: ['#b5e8ae', '#84cf7c'], custom: ['#fcb0c3', '#ee8fa8'] };
 /** The colours of a frame for its `.tabs`. */
 export const tabColors = (frame) => ({ '--tab': TAB_COLORS[frame][0], '--tab-edge': TAB_COLORS[frame][1], '--tab-d': FRAMES[frame] });
 export const RowBg = ({ look, h = 268 }) => <div className="row-bg" style={{ ...rect(0, 0, 1152, h), background: look.color, borderColor: look.edge }} />;

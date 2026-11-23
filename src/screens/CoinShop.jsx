@@ -3,6 +3,7 @@ import { rowRect, k, fs } from '../ui/v5.jsx';
 import BluePopup, { LIST, ROW_X, inPopup, RowBg, rowLook } from '../ui/BluePopup.jsx';
 import PopList from '../ui/PopList.jsx';
 import { Icon } from '../ui/icons.jsx';
+import AdArtwork from '../ui/AdArtwork.jsx';
 import ParentGate from '../ui/ParentGate.jsx';
 import { useT } from '../i18n.js';
 import { useSave } from '../store.js';
@@ -90,7 +91,7 @@ export default function CoinShop({ onBack }) {
           })}
           {/* remove ads */}
           <Row i={COIN_PACKS.length} look={rowLook('coins')}>
-            <img className="v5pic" alt="" draggable="false" src={`${ART}v5/no-ads.webp`} style={PACK_BOX} />
+            <AdArtwork name="no-ads" style={PACK_BOX} />
             <div className="ptxt" style={{ ...rowRect(300, 44, 450, 64), ...fs(46), color: rowLook('coins').ink }}>{t('removeAds')}</div>
             <div className="ptxt" style={{ ...rowRect(300, 116, 450, 110), ...fs(32), color: rowLook('coins').sub, whiteSpace: 'normal' }}>{save.adsRemoved ? t('adsRemoved') : t('removeAdsInfo')}</div>
             <button className="pbtn" disabled={!store || busy || save.adsRemoved} style={rowRect(772, 81, 334, 141)} onClick={() => setGate(REMOVE_ADS_ID)}>

@@ -3,6 +3,7 @@ import { useT } from '../i18n.js';
 import { sfx } from '../audio.js';
 import { useSave, spinReady, starBalance, addCoins } from '../store.js';
 import { VIDEO_COINS } from '../config.js';
+import AdArtwork from '../ui/AdArtwork.jsx';
 import { ads } from '../services/ads.js';
 import { CoinChip } from '../ui/icons.jsx';
 import Logotype from '../ui/Logotype.jsx';
@@ -102,7 +103,7 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
       </button>
       <CoinChip className="home-coins" amount={t.n(save.coins)} onClick={go(onCoins)} label={t('coins')} />
       <button className="home-free" onClick={freeCoins} aria-label={t('freeCoins')}>
-        <img src={`${V5_ART}icon-free-coins.webp`} alt="" draggable="false" />
+        <AdArtwork name="icon-free-coins" />
       </button>
       {note && <div className="home-toast">{note}</div>}
     </main>

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { k } from '../ui/v5.jsx';
-import BluePopup, { inPopup, rowLook } from '../ui/BluePopup.jsx';
+import BluePopup, { inPopup, rowLook, tabColors } from '../ui/BluePopup.jsx';
 import PopList from '../ui/PopList.jsx';
-import { Bulb, PowerIcon } from '../ui/icons.jsx';
+import AdArtwork from '../ui/AdArtwork.jsx';
+import { Bulb } from '../ui/icons.jsx';
 import { useSave, buyHintPack, addHints, buyPowerup } from '../store.js';
 import { useT } from '../i18n.js';
 import { HINT_PACKS, POWERUP_PACKS } from '../config.js';
@@ -34,7 +35,7 @@ export default function Shop({ onBack }) {
   // one entry per row: { key, icon, name, info, btn: {label, coin?, real?, on?, disabled?, run} }
   const rows = [];
   if (ads.rewardedAvailable())
-    rows.push({ category: 'hints', key: 'vid', icon: <img src={`${ART}v5/icon-free-hint.webp`} alt="" draggable="false" style={{ width: '76%', height: '76%', objectFit: 'contain' }} />, count: 1, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: async () => ((await ads.rewarded()) && (addHints(1), say(t('gotHint')))) } });
+    rows.push({ category: 'hints', key: 'vid', icon: <AdArtwork name="icon-free-hint" style={{ width: '76%' }} />, count: 1, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: async () => ((await ads.rewarded()) && (addHints(1), say(t('gotHint')))) } });
   for (const p of POWERUP_PACKS.filter(p => save.taught[p.power]))
     rows.push({
       category: p.power,
@@ -57,13 +58,16 @@ export default function Shop({ onBack }) {
   return (
     <>
       <BluePopup frame="shop" title={t('shop')} onClose={onBack}>
-        <PopList style={inPopup(160, 520, 1128, 1551)}>
+        <nav className="tabs" style={{ ...inPopup(190, 530, 1040, 88), ...tabColors('shop') }} aria-label={t('shopCategories')}>
+          {categories.map(({ id, label }) => (
+            <button key={id} type="button" className={activeCategory.id === id ? 'on' : ''}
+              aria-pressed={activeCategory.id === id} onClick={() => { sfx.click(); setCategory(id); }}>
+              {label}
+            </button>
+          ))}
+        </nav>
+        <PopList key={activeCategory.id} style={inPopup(160, 634, 1128, 1437)}>
           <div className="shop-products">
-            <nav className="shop-categories" style={{gridTemplateColumns: `repeat(${categories.length}, minmax(0, 1fr))`}} aria-label={t('shopCategories')}>
-              {categories.map(c => <button key={c.id} type="button" aria-pressed={activeCategory.id === c.id} onClick={() => { sfx.click(); setCategory(c.id); }}>
-                {c.id === 'hints' ? <Bulb size={22} /> : <PowerIcon id={c.id} size={22} />}<span>{c.label}</span>
-              </button>)}
-            </nav>
             <section className="shop-category-products" aria-label={activeCategory.label} key={activeCategory.id}>
             <div className="shop-category-header"><h3 className="shop-category-heading">{activeCategory.label}</h3><span className="shop-category-owned">{t('shopOwned', { n: t.n(owned) })}</span></div>
             {rows.filter(r => r.category === activeCategory.id).map((r) => {
