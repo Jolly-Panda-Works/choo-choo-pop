@@ -255,12 +255,8 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   }, []);
 
   const watchForHint = async () => {
-    const ok = await ads.rewarded();
+    await ads.rewarded({ kind: 'hint' }, () => addHints(1));
     setNoHints(false);
-    if (ok) {
-      addHints(1);
-      say(t('gotHint'));
-    }
   };
 
   // an ad may follow a finished level (skippable); never blocks the game

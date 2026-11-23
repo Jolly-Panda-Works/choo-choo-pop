@@ -35,7 +35,7 @@ export default function Shop({ onBack }) {
   // one entry per row: { key, icon, name, info, btn: {label, coin?, real?, on?, disabled?, run} }
   const rows = [];
   if (ads.rewardedAvailable())
-    rows.push({ category: 'hints', key: 'vid', icon: <AdArtwork name="icon-free-hint" style={{ width: '76%' }} />, count: 1, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: async () => ((await ads.rewarded()) && (addHints(1), say(t('gotHint')))) } });
+    rows.push({ category: 'hints', key: 'vid', icon: <AdArtwork name="icon-free-hint" style={{ width: '76%' }} />, count: 1, name: t('freeHint'), info: t('watchShort'), btn: { label: t('free'), run: () => ads.rewarded({ kind: 'hint' }, () => addHints(1)) } });
   for (const p of POWERUP_PACKS.filter(p => save.taught[p.power]))
     rows.push({
       category: p.power,

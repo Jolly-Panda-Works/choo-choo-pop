@@ -403,6 +403,7 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
 @media (prefers-reduced-motion: reduce) { .bob, .game-title .pop, .sp, .start-play { animation: none; } .spin-wheel { transition-duration: 0.3s; } }
 
 /* ---- dev ad placeholder ---- */
+.ad-reward-layer { position: fixed; inset: 0; z-index: 901; }
 .ad-host { position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.82); display: grid; place-items: center; padding: 20px; }
 .ad-card { background: #fff; border-radius: 22px; padding: 22px; width: min(100%, 320px); text-align: center; display: flex; flex-direction: column; gap: 12px; }
 

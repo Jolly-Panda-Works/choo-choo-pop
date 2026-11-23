@@ -15,6 +15,27 @@ import { getState } from '../store.js';
 
 let provider = null;
 const hostListeners = new Set();
+const rewardListeners = new Set();
+const loadingReward = { kind: 'loading' };
+let adReward = null;
+
+export const getAdReward = () => adReward;
+
+export function subscribeAdReward(listener) {
+  rewardListeners.add(listener);
+  return () => rewardListeners.delete(listener);
+}
+
+function setAdReward(reward) {
+  adReward = reward;
+  rewardListeners.forEach((listener) => listener());
+}
+
+export function claimAdReward(reward) {
+  if (!reward || adReward !== reward || reward === loadingReward) return;
+  setAdReward(null);
+  reward.onClaim();
+}
 
 export function registerAdsProvider(p) {
   provider = p;
@@ -54,14 +75,19 @@ export const ads = {
       /* a failed ad must never block the game */
     }
   },
-  /** Resolves true when the player earned the reward. */
-  async rewarded() {
+  /** Offers a claim only after the ad provider confirms completion. */
+  async rewarded(reward, onClaim) {
     const p = active();
-    if (!p) return false;
+    if (!p || adReward) return false;
+    setAdReward(loadingReward);
     try {
-      return !!(await p.showRewarded());
+      if (!(await p.showRewarded())) return false;
+      setAdReward({ ...reward, onClaim });
+      return true;
     } catch (e) {
       return false;
+    } finally {
+      if (adReward === loadingReward) setAdReward(null);
     }
   },
 };

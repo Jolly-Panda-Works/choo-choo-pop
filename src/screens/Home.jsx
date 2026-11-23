@@ -46,11 +46,11 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
   const freeCoins = async () => {
     sfx.click();
     if (ads.rewardedAvailable()) {
-      if (await ads.rewarded()) {
+      const earned = await ads.rewarded({ kind: 'coins', amount: VIDEO_COINS }, () => {
         addCoins(VIDEO_COINS);
         sfx.coins();
-        return;
-      }
+      });
+      if (earned) return;
     }
     setNote(t('noVideo'));
     clearTimeout(timer.current);

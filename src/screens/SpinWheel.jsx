@@ -71,7 +71,9 @@ export default function SpinWheel({ onBack }) {
     if (free) {
       useFreeSpin();
       spin();
-    } else if (video && (await ads.rewarded())) spin();
+    } else if (video) {
+      await ads.rewarded({ kind: 'spin' }, spin);
+    }
   };
 
   return (

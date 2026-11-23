@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSave, update, refreshMissions, currentLang } from './store.js';
 import { useT } from './i18n.js';
 import { levelCount, getLevel } from './game/levels.js';
@@ -6,6 +6,7 @@ import { stageOfLevel, indexInStage } from './game/stages.js';
 import { isTutorial } from './game/tutorial.js';
 import { ART } from './board/sprites.js';
 import { IS_IRANIAN_STORE, MOCK_SERVICES } from './config.js';
+import { getAdReward, subscribeAdReward } from './services/ads.js';
 import { PlatformOverlay } from './services/platform.jsx';
 import Home from './screens/Home.jsx';
 import StageMap from './screens/StageMap.jsx';
@@ -20,6 +21,7 @@ import SpinWheel from './screens/SpinWheel.jsx';
 import Customize from './screens/Customize.jsx';
 import BootScreen from './ui/BootScreen.jsx';
 import AdHost from './ui/AdHost.jsx';
+import AdRewardPopup from './ui/AdRewardPopup.jsx';
 import StartPopup from './ui/StartPopup.jsx';
 import { Icon, IconDefs, CoinChip } from './ui/icons.jsx';
 import HomeScene from './ui/HomeScene.jsx';
@@ -36,6 +38,7 @@ const COIN_LINK = new Set(['shop', 'missions', 'settings', 'custom']);
 export default function App() {
   const save = useSave();
   const t = useT();
+  const adReward = useSyncExternalStore(subscribeAdReward, getAdReward);
   const [booting, setBooting] = useState(true);
   // first launch: the story, then straight into level 1
   const [screen, setScreen] = useState(() => (save.storySeen ? { name: 'home' } : { name: 'story' }));
@@ -152,6 +155,7 @@ export default function App() {
         if (!Capacitor.isNativePlatform()) return;
         const { App: CapApp } = await import('@capacitor/app');
         handle = await CapApp.addListener('backButton', () => {
+          if (getAdReward()) return;
           const s = screenRef.current;
           if (overlayRef.current === 'start') closeStart();
           else if (overlayRef.current) closeOverlay();
@@ -203,7 +207,7 @@ export default function App() {
       {screen.name === 'game' && (
         <Game
           key={screen.level}
-          paused={!!overlay}
+          paused={!!overlay || !!adReward}
           levelNo={screen.level}
           startPicks={screen.picks}
           onMap={() => replace('stage', { stage: stageOf(screen.level) })}
@@ -244,6 +248,7 @@ export default function App() {
       <CloudWipe phase={wipe} />
       {MOCK_SERVICES && <AdHost />}
       <PlatformOverlay />
+      <AdRewardPopup reward={adReward} />
       {booting && <BootScreen onDone={() => setBooting(false)} />}
     </div>
   );
