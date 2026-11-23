@@ -264,13 +264,20 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   };
 
   // an ad may follow a finished level (skippable); never blocks the game
+  const leaving = useRef(false);
   const leave = async (fn) => {
-    sfx.click();
-    if (adDue.current) {
-      adDue.current = false;
-      await ads.interstitial();
+    if (leaving.current) return;
+    leaving.current = true;
+    try {
+      sfx.click();
+      if (adDue.current) {
+        adDue.current = false;
+        await ads.interstitial();
+      }
+      fn();
+    } finally {
+      leaving.current = false;
     }
-    fn();
   };
 
   // leaving a level in play asks first; the Android back button comes here too

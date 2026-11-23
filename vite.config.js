@@ -38,7 +38,7 @@ if (!['bazaar', 'myket', 'debug'].includes(STORE)) throw new Error(`Unknown VITE
 export default defineConfig({
   base: './',
   plugins: [react(), pruneDist()],
-  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
+  define: { __APP_VERSION__: JSON.stringify(process.env.VERSION_NAME || pkg.version) },
   resolve: { alias: { '#store-platform': resolve(`src/services/platform.${STORE}.jsx`) } },
   build: { outDir: 'dist', chunkSizeWarningLimit: 1500 },
 });

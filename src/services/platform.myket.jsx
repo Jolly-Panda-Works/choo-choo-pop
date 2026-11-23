@@ -1,5 +1,6 @@
 // Myket build: the same hooks as platform.bazaar.jsx. Myket has no sign-in, cloud save or in-app update service to plug in.
 import { Icon } from '../ui/icons.jsx';
+import { startTapsellAds } from './tapsellAds.js';
 import { registerBillingProvider, billing } from './billing.js';
 import { Myket, myketAvailable, myketProvider, myketSupported } from './myket.js';
 
@@ -12,6 +13,7 @@ const TEXT = {
 const open = (page) => Myket.open({ page }).catch(() => {});
 
 export function startPlatform() {
+  startTapsellAds();
   // in-app billing needs VITE_MYKET_PUBLIC_KEY, see .env.example
   if (myketSupported()) {
     registerBillingProvider(myketProvider);

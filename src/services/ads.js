@@ -1,4 +1,4 @@
-// Ads: one small interface, so the real ad network can be plugged in later without touching the game.
+// Ad provider shared by the store builds and development mock.
 //
 //   registerAdsProvider({
 //     init(): Promise<void>,

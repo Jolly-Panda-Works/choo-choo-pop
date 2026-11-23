@@ -9,15 +9,12 @@ if(process.env.PUBLISH_STORES==='true') throw Error('Central builds never submit
 const version=process.env.VERSION||JSON.parse(readFileSync('package.json','utf8')).version;
 const code=versionCode(version);
 const isDebug=store==='debug';
-const env={...process.env,VITE_STORE:store,VITE_BAZAAR_RSA_KEY:process.env.BAZAAR_RSA_KEY||'',VITE_MYKET_PUBLIC_KEY:process.env.MYKET_PUBLIC_KEY||'',VITE_BAZAAR_DEVELOPER_ID:process.env.BAZAAR_DEVELOPER_ID||''};
+const env={...process.env,VERSION_NAME:version,VITE_STORE:store,VITE_BAZAAR_RSA_KEY:process.env.BAZAAR_RSA_KEY||'',VITE_MYKET_PUBLIC_KEY:process.env.MYKET_PUBLIC_KEY||'',VITE_BAZAAR_DEVELOPER_ID:process.env.BAZAAR_DEVELOPER_ID||''};
 if(!isDebug && !env[store==='bazaar'?'VITE_BAZAAR_RSA_KEY':'VITE_MYKET_PUBLIC_KEY']) throw Error('Missing store billing public key');
 const keys=['KEYSTORE_BASE64','KEYSTORE_PASSWORD','KEY_ALIAS','KEY_PASSWORD'];
 if(!isDebug && !keys.every(k=>process.env[k])) throw Error('Existing release signing secrets are mandatory');
 const win=process.platform==='win32';
 const run=(cmd,args,opts={})=>execFileSync(cmd,args,{stdio:'inherit',env,...opts});
-// Vite reads package.json for the visible version. This is a build-only update; no source commit is created.
-const pkg=JSON.parse(readFileSync('package.json','utf8')); pkg.version=version;
-writeFileSync('package.json',JSON.stringify(pkg,null,2)+'\n');
 run(win?'npm.cmd':'npm',['run','build'],{shell:win});
 run(win?'npx.cmd':'npx',['cap','sync','android'],{shell:win});
 const flavor=isDebug?'Standalone':store==='bazaar'?'Bazaar':'Myket';

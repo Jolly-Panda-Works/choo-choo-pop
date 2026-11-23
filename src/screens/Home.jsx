@@ -48,8 +48,8 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
       if (await ads.rewarded()) {
         addCoins(VIDEO_COINS);
         sfx.coins();
+        return;
       }
-      return;
     }
     setNote(t('noVideo'));
     clearTimeout(timer.current);

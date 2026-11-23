@@ -11,6 +11,7 @@
 //    The bot's own "chore(release)" commits are ignored.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 
 const parse = (v) => String(v).replace(/^v/, '').split('.').map((n) => parseInt(n, 10) || 0);
 export const cmp = (a, b) => {
@@ -57,7 +58,7 @@ export function nextVersion(kind = 'auto', pkgVersion) {
   return { version: bumpVersion(base, bump), bump, base };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const i = process.argv.indexOf('--bump');
   const kind = i > 0 ? process.argv[i + 1] || 'auto' : 'auto';
   if (!['auto', 'patch', 'minor', 'major'].includes(kind)) {
@@ -67,5 +68,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
   const r = nextVersion(kind, pkg.version);
   console.error(`base ${r.base ?? '(no tag yet)'} + ${r.bump} -> ${r.version}`);
-  console.log(r.version);
+  console.log(process.argv.includes('--print-bump') ? (r.bump === 'none' ? 'patch' : r.bump) : r.version);
 }

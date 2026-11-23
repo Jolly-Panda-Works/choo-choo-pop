@@ -8,6 +8,9 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         // must be registered before super; the plugin of the store this build is for (src/<store>)
         if (StorePlugins.PLUGIN != null) registerPlugin(StorePlugins.PLUGIN);
+        if (StorePlugins.ADS_PLUGIN != null && !getString(R.string.tapsell_app_key).isEmpty()) {
+            registerPlugin(StorePlugins.ADS_PLUGIN);
+        }
         super.onCreate(savedInstanceState);
     }
 }

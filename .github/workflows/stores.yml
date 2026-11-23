@@ -33,9 +33,6 @@ name: Iranian stores
 on:
   push:
     branches: [Iranian-store]
-    paths-ignore:
-      - "docs/**"
-      - "**.md"
   workflow_dispatch:
     inputs:
       notes_fa:
@@ -54,7 +51,7 @@ on:
 
 concurrency:
   group: iranian-stores-${{ github.ref }}
-  cancel-in-progress: true
+  queue: max
 
 permissions:
   contents: write
@@ -122,6 +119,7 @@ jobs:
       FLAVOR: ${{ matrix.flavor }}
       VERSION: ${{ needs.prepare.outputs.version }}
       VERSION_CODE: ${{ needs.prepare.outputs.code }}
+      VERSION_NAME: ${{ needs.prepare.outputs.version }}
       PUBLISH: ${{ needs.prepare.outputs.publish }}
       VITE_STORE: ${{ matrix.store }}
       VITE_BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
@@ -168,6 +166,9 @@ jobs:
         if: env.HAS_KEYSTORE == 'true'
         working-directory: android
         env:
+          TAPSELL_APP_KEY: ${{ secrets.TAPSELL_APP_KEY }}
+          TAPSELL_REWARDED_ZONE: ${{ vars.TAPSELL_REWARDED_ZONE }}
+          TAPSELL_INTERSTITIAL_ZONE: ${{ vars.TAPSELL_INTERSTITIAL_ZONE }}
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}

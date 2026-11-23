@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Modal from '../ui/Modal.jsx';
 import { Icon } from '../ui/icons.jsx';
 import { useT } from '../i18n.js';
+import { startTapsellAds } from './tapsellAds.js';
 import { registerBillingProvider, billing } from './billing.js';
 import { bazaarProvider, bazaarSupported } from './bazaar.js';
 import {
@@ -56,6 +57,7 @@ const TEXT = {
 };
 
 export function startPlatform() {
+  startTapsellAds();
   // in-app billing needs VITE_BAZAAR_RSA_KEY, see .env.example
   if (bazaarSupported()) {
     registerBillingProvider(bazaarProvider);

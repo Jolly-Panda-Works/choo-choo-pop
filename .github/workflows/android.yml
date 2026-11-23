@@ -1,18 +1,8 @@
 name: Build Android
 
-# push to main/master  -> build the game; if everything succeeds: bump the version, tag it and publish a GitHub Release
-# pull_request         -> build + test only (no version bump, no release)
-# manual run           -> same as push; you can pick the bump (auto / patch / minor / major)
-# Changes to the docs and community files alone don't build or release anything.
 on:
   push:
     branches: [main, master]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - "LICENSE"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/dependabot.yml"
   pull_request:
   workflow_dispatch:
     inputs:
@@ -28,15 +18,15 @@ permissions:
 # one release at a time, so two quick pushes never get the same version number
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: false
+  queue: max
 
 jobs:
   # ---- 1. which version is this build? ----------------------------------------------------------
   prepare:
-    if: vars.BUILD_MODE != 'central'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.v.outputs.version }}
+      code: ${{ steps.v.outputs.code }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,8 +36,18 @@ jobs:
           node-version: 22
       - id: v
         run: |
-          BUMP="${{ github.event.inputs.bump || 'auto' }}"
-          VERSION="$(node scripts/next-version.mjs --bump "$BUMP")"
+          version=$(git for-each-ref --format='%(refname:short) %(contents:subject)' 'refs/tags/v*' |
+            awk -v run="android-build-run:$GITHUB_RUN_ID" '$2 == run { sub(/^v/, "", $1); print $1 }')
+          if [[ -z "$version" ]]; then
+            bump="${{ inputs.bump || 'auto' }}"
+            if [[ "$bump" == auto ]]; then
+              bump=$(node scripts/next-version.mjs --bump auto --print-bump)
+            fi
+            version=$(BUMP="$bump" node scripts/version.mjs)
+          fi
+          VERSION="$version"
+          code=$(node --input-type=module -e 'import {versionCode} from "./scripts/version.mjs"; console.log(versionCode(process.argv[1]))' "$VERSION")
+          echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "### Version $VERSION" >> "$GITHUB_STEP_SUMMARY"
 
@@ -55,18 +55,11 @@ jobs:
   build:
     needs: prepare
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        edition: [en]
     env:
-      EDITION: ${{ matrix.edition }}
+      VITE_STORE: debug
+      VERSION_CODE: ${{ needs.prepare.outputs.code }}
       VERSION_NAME: ${{ needs.prepare.outputs.version }}
-      # Optional: add these 4 repo secrets to also get a signed release APK + AAB
-      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -80,69 +73,123 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-36 build-tools;36.0.0
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Install
         run: npm ci
 
-      - name: Test levels (60 levels, solvable + unique + difficulty curve)
-        run: npm run test:levels
-
-      # the app shows this number (vite reads package.json), so set it before building
-      - name: Set version ${{ needs.prepare.outputs.version }}
-        run: npm version "$VERSION_NAME" --no-git-tag-version --allow-same-version
+      - name: Test game
+        run: npm test
 
       - name: Build web
         run: npm run build
 
-      # the android/ project is created here if it is not committed
       - name: Sync Capacitor
-        run: |
-          [ -d android ] || npx cap add android
-          npx cap sync android
-
-      # NOTE: android/app/build.gradle is committed (-PVERSION_CODE / -PVERSION_NAME with safe defaults). Do NOT rewrite it
-      # here: the old scripts/android-edition.mjs replaced the head of the file and broke the tail
-      # ("Could not get unknown property 'edition' ... DefaultDependencyHandler").
-
-      # the game is portrait only
-      - name: Lock portrait orientation
-        run: |
-          M=android/app/src/main/AndroidManifest.xml
-          grep -q screenOrientation $M || sed -i 's#<activity#<activity android:screenOrientation="portrait"#' $M
+        run: npx cap sync android
 
       - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME
+        run: chmod +x gradlew && ./gradlew assembleStandaloneDebug --no-daemon -PVERSION_CODE="$VERSION_CODE" -PVERSION_NAME=$VERSION_NAME
 
       - uses: actions/upload-artifact@v4
         with:
-          name: choo-choo-pop-${{ matrix.edition }}-debug-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: choo-choo-pop-en-debug-apk
+          path: android/app/build/outputs/apk/standalone/debug/*.apk
+          if-no-files-found: error
 
       - name: Build signed release (APK + AAB)
-        if: env.KEYSTORE_BASE64 != ''
+        if: env.HAS_KEYSTORE == 'true'
         working-directory: android
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
-          ./gradlew assembleRelease bundleRelease --no-daemon \
-            -PVERSION_CODE=${{ github.run_number }} -PVERSION_NAME=$VERSION_NAME \
+          ./gradlew assembleStandaloneRelease bundleStandaloneRelease --no-daemon \
+            -PVERSION_CODE="$VERSION_CODE" -PVERSION_NAME=$VERSION_NAME \
             -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
             -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
 
+      - name: Verify Android signatures
+        run: |
+          signer="$ANDROID_HOME/build-tools/36.0.0/apksigner"
+          for apk in android/app/build/outputs/apk/standalone/*/*.apk; do "$signer" verify "$apk"; done
+          for aab in android/app/build/outputs/bundle/standaloneRelease/*.aab; do
+            if [[ -f "$aab" ]]; then LC_ALL=C jarsigner -verify "$aab" | grep -F 'jar verified.'; fi
+          done
+
       - uses: actions/upload-artifact@v4
-        if: env.KEYSTORE_BASE64 != ''
+        if: env.HAS_KEYSTORE == 'true'
         with:
-          name: choo-choo-pop-${{ matrix.edition }}-release
+          name: choo-choo-pop-en-release
           path: |
-            android/app/build/outputs/apk/release/*.apk
-            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/standalone/release/*.apk
+            android/app/build/outputs/bundle/standaloneRelease/*.aab
+
+  stores:
+    name: Android (${{ matrix.store }})
+    needs: prepare
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        store: [bazaar, myket]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-36 build-tools;36.0.0
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - name: Build signed store package
+        env:
+          STORE: ${{ matrix.store }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+          BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
+          BAZAAR_DEVELOPER_ID: ${{ vars.BAZAAR_DEVELOPER_ID }}
+          MYKET_PUBLIC_KEY: ${{ vars.MYKET_PUBLIC_KEY }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          TAPSELL_APP_KEY: ${{ secrets.TAPSELL_APP_KEY }}
+          TAPSELL_REWARDED_ZONE: ${{ vars.TAPSELL_REWARDED_ZONE }}
+          TAPSELL_INTERSTITIAL_ZONE: ${{ vars.TAPSELL_INTERSTITIAL_ZONE }}
+        run: npm run build:android
+      - name: Verify store signatures
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify out/*.apk
+          LC_ALL=C jarsigner -verify out/*.aab | grep -F 'jar verified.'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: choo-choo-pop-store-${{ matrix.store }}
+          path: |
+            out/*.apk
+            out/*.aab
+          if-no-files-found: error
 
   # ---- 3. only when the build is fine: commit the new version, tag it, publish the release ----
   release:
-    needs: [prepare, build]
+    needs: [prepare, build, stores]
     if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     permissions:
@@ -166,45 +213,49 @@ jobs:
       - name: Collect files
         run: |
           mkdir -p out
-          for ed in en; do
-            for f in artifacts/choo-choo-pop-$ed-debug-apk/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION-debug.apk"; done
-            # this artifact has two paths, so upload-artifact keeps their apk/ and bundle/ folders
-            RELEASE=artifacts/choo-choo-pop-$ed-release
-            if ls "$RELEASE"/apk/release/*.apk >/dev/null 2>&1; then
-              for f in "$RELEASE"/apk/release/*.apk; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.apk"; done
-              for f in "$RELEASE"/bundle/release/*.aab; do cp "$f" "out/choo-choo-pop-$ed-v$VERSION.aab"; done
-            fi
-          done
-          ls -la out
+          cp artifacts/choo-choo-pop-en-debug-apk/*.apk "out/choo-choo-pop-v$VERSION-debug.apk"
+          release=artifacts/choo-choo-pop-en-release
+          if [[ -d "$release" ]]; then
+            cp "$release"/apk/standalone/release/*.apk "out/choo-choo-pop-v$VERSION.apk"
+            cp "$release"/bundle/standaloneRelease/*.aab "out/choo-choo-pop-v$VERSION.aab"
+          fi
+          cp artifacts/choo-choo-pop-store-{bazaar,myket}/* out/
 
-      # keeps package.json / package-lock.json in step with the tag. If the branch is protected (or moved on
-      # meanwhile) the push is skipped and the tag is put on the commit that was built instead.
-      - name: Commit the new version
-        id: commit
+      - name: Publish Android release
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npm version "$VERSION" --no-git-tag-version --allow-same-version
-          TARGET="$GITHUB_SHA"
-          if ! git diff --quiet -- package.json package-lock.json; then
+          (cd out && sha256sum *.apk > SHA256SUMS.txt
+            if compgen -G '*.aab' > /dev/null; then sha256sum *.aab >> SHA256SUMS.txt; fi)
+
+          tag="v$VERSION"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
+            test "$(git for-each-ref --format='%(contents:subject)' "refs/tags/$tag")" = "android-build-run:$GITHUB_RUN_ID"
+          else
+            git tag -a "$tag" "$GITHUB_SHA" -m "android-build-run:$GITHUB_RUN_ID"
+            git push origin "refs/tags/$tag"
+          fi
+          if ! gh release view "$tag" --json isDraft > /dev/null 2>&1; then
+            gh release create "$tag" --verify-tag --draft --title "Choo Choo Pop $tag" --generate-notes
+          fi
+          if [[ "$(gh release view "$tag" --json isDraft --jq .isDraft)" == true ]]; then
+            gh release upload "$tag" out/* --clobber
+            gh release edit "$tag" --draft=false --latest
+          fi
+
+      - name: Record the released version
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if [[ "$(gh release view --json tagName --jq .tagName)" != "v$VERSION" ]]; then exit 0; fi
+            git fetch --quiet origin "$GITHUB_REF_NAME"
+            git checkout -B release-metadata "origin/$GITHUB_REF_NAME"
+            npm version "$VERSION" --no-git-tag-version --allow-same-version
             git add package.json package-lock.json
+            git diff --cached --quiet && exit 0
             git commit -m "chore(release): v$VERSION [skip ci]"
-            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
-              TARGET="$(git rev-parse HEAD)"
-            else
-              echo "::warning::Could not push the version commit to ${GITHUB_REF_NAME}; tagging the built commit instead."
-            fi
-          fi
-          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
-
-      - name: Create tag and GitHub Release
-        run: |
-          NOTE="Choo Choo Pop, version $VERSION."
-          if ! ls out/*.aab >/dev/null 2>&1; then
-            NOTE="$NOTE"$'\n\n'"Debug APKs only (no signing secrets configured). Add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD to also get signed APK + AAB."
-          fi
-          gh release create "v$VERSION" out/* \
-            --target "${{ steps.commit.outputs.target }}" \
-            --title "v$VERSION" \
-            --notes "$NOTE" \
-            --generate-notes
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep "$attempt"
+          done
+          echo "::error::Could not record the released version."
+          exit 1

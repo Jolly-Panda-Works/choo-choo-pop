@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
+def tapsell = ['app_key': 'TAPSELL_APP_KEY', 'rewarded_zone': 'TAPSELL_REWARDED_ZONE',
+               'interstitial_zone': 'TAPSELL_INTERSTITIAL_ZONE'].collectEntries { name, variable ->
+    [(name): System.getenv(variable)?.trim() ?: '']
+}
+if (tapsell.values().any { it } && !tapsell.values().every { it ==~ /[a-zA-Z0-9-]{8,128}/ }) {
+    throw new GradleException('Tapsell requires an app key and two valid zone IDs.')
+}
+
 android {
     namespace = "com.jollypanda.choochoopop"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,9 +24,11 @@ android {
         }
         bazaar {
             dimension = 'store'
+            tapsell.each { name, value -> resValue 'string', "tapsell_${name}", value ?: '""' }
         }
         myket {
             dimension = 'store'
+            tapsell.each { name, value -> resValue 'string', "tapsell_${name}", value ?: '""' }
             // read by the manifest of ir.myket:billing
             manifestPlaceholders = [
                 marketApplicationId: 'ir.mservices.market',
@@ -30,9 +40,12 @@ android {
     sourceSets {
         bazaar.java.srcDirs += 'src/bazaar/kotlin'
         myket.java.srcDirs += 'src/myket/kotlin'
+        bazaar.java.srcDirs += 'src/storeAds/java'
+        myket.java.srcDirs += 'src/storeAds/java'
     }
     defaultConfig {
         applicationId "com.jollypanda.choochoopop"
+        tapsell.each { name, value -> resValue 'string', "tapsell_${name}", '""' }
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // "=" is required: without it Groovy reads `versionCode (x).toInteger()` as `versionCode(x).toInteger()`
@@ -47,6 +60,7 @@ android {
     }
     buildTypes {
         debug {
+            tapsell.each { name, value -> resValue 'string', "tapsell_${name}", '""' }
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
         }
@@ -77,6 +91,8 @@ dependencies {
     bazaarImplementation "com.github.cafebazaar.Poolakey:poolakey:2.2.0"
     bazaarImplementation "com.github.cafebazaar.CafeBazaarAuth:auth:1.1.0"
     bazaarImplementation "com.github.cafebazaar:bazaarUpdater:1.2.0"
+    bazaarImplementation "ir.tapsell.sdk:tapsell-sdk-android:4.9.15"
+    myketImplementation "ir.tapsell.sdk:tapsell-sdk-android:4.9.15"
     // Myket: in-app billing
     myketImplementation "ir.myket:billing:2.2"
 }
