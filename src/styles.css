@@ -348,7 +348,19 @@ html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans 
 .story-next { width: min(80vw, 320px); margin-bottom: 14px; }
 
 /* ---- levels of a stage (v4): bubble grid on the home sky scene, like the landscape reference ---- */
-.levels { padding: 12px 12px 14px; }
+.levels { padding: 0 12px 14px; }
+.on-stage .scene-cloud { display: none; }
+.levels .topbar { position: relative; z-index: 2; flex: none; min-height: 62px; margin-inline: -12px; }
+.levels .topbar::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc(-1 * env(safe-area-inset-top)) 0 0;
+  pointer-events: none;
+  background: url('/choo-choo-pop-assets/art/map/ui/clouds-band.webp') center 32.5% / 100% 222.2% no-repeat;
+  transform: scaleY(-1);
+  mask-image: linear-gradient(to bottom, transparent, #000 65%);
+}
 .pager { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 0 2px; }
 .pager-title { display: flex; flex-direction: column; align-items: center; min-width: 0; flex: 0 1 230px; }
 .pager-title h2 { margin: 0; font-size: clamp(24px, 7.6vw, 36px); line-height: 1.1; color: #fff; -webkit-text-stroke: 8px #1c8fa0; paint-order: stroke fill; text-shadow: 0 5px 0 #14707f; white-space: normal; text-align: center; }
@@ -556,17 +568,12 @@ button:active:not(:disabled) { scale: 0.92; }
 /* same map pin as on the stage map (StageMap .map-pin): its tip rests on the roof of the current house */
 .fn-pin { position: absolute; left: calc(50% - var(--nw) * 0.19); bottom: 86%; width: calc(var(--nw) * 0.38); height: auto; z-index: 4; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 5px 4px rgba(10, 70, 90, 0.35)); animation: pin-bob 1.6s ease-in-out infinite; }
 
-/* ---- levels screen: scroll area with cloud edges, no scrollbar, drag to move, houses fly in / out ---- */
+/* ---- levels screen: drag to scroll, houses fly in / out ---- */
 .lv-view { position: relative; flex: 1; min-height: 0; margin: 4px -12px -14px; }
-.lv-view .lv-scroll { position: absolute; inset: 0; margin: 0; padding: 78px 16px 88px; scrollbar-width: none; -ms-overflow-style: none; overscroll-behavior: contain; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.lv-view .lv-scroll { position: absolute; inset: 0; margin: 0; padding: 16px; scrollbar-width: none; -ms-overflow-style: none; overscroll-behavior: contain; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .lv-view .lv-scroll::-webkit-scrollbar { display: none; }
 .lv-view .lv-scroll.dragging { cursor: grabbing; }
-.lv-view .lv-scroll.forest { padding: 78px 4px 88px; }
-/* only the wavy part of art/map/ui/clouds-band.webp (rows 125-440 of 1440x700) is used: it is see-through at the content side and solid at the screen edge */
-.cloud-edge { position: absolute; left: -3%; width: 106%; aspect-ratio: 1440 / 315; z-index: 3; pointer-events: none; background-repeat: no-repeat; background-size: 100% 222.2%; background-position: 0 32.5%; }
-/* the top bank is mirrored, so in its own coordinates the solid side is the bottom: feather it into the header */
-.cloud-edge.top { top: -12px; transform: scaleY(-1); -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); }
-.cloud-edge.bottom { bottom: 0; }
+.lv-view .lv-scroll.forest { padding: 16px 4px; }
 .pager-title { animation: pager-pop 0.4s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
 @keyframes pager-pop { from { opacity: 0; transform: scale(0.85); } }
 
@@ -581,7 +588,7 @@ button:active:not(:disabled) { scale: 0.92; }
 @keyframes ft-fade { from { opacity: 0; } }
 @keyframes ft-fade-out { to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .fn, .fn.current, .ft-rail, .pager-title, .cloud-edge { animation: none !important; }
+  .fn, .fn.current, .ft-rail, .pager-title { animation: none !important; }
   .ft.leaving .fn { opacity: 0; }
 }
 
@@ -602,9 +609,6 @@ button:active:not(:disabled) { scale: 0.92; }
   .cloudwipe.in .cw-fill { animation: cw-fill-in 0.3s linear both; }
   .cloudwipe.out .cw-fill { animation: cw-fill-out 0.4s linear both; }
 }
-
-/* soft top / bottom edge of the levels scroll area: houses and rails fade out before the clipping edge (the cloud banks only cover part of it) */
-.lv-view .lv-scroll { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 clamp(70px, 14%, 150px), #000 calc(100% - clamp(70px, 14%, 150px)), transparent 100%); }
 
 /* small phones (320 px wide): the game's top bar and tool rows still fit */
 @media (max-width: 340px) {

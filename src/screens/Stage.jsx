@@ -11,7 +11,7 @@ import { MAP_ART, UI_ART } from '../board/sprites.js';
 import { sfx } from '../audio.js';
 import { usePandaSrc } from '../ui/Panda.jsx';
 import { BackButton, CoinChip } from '../ui/icons.jsx';
-import { Crown, CloudEdges, useDragScroll } from '../ui/MapKit.jsx';
+import { Crown, useDragScroll } from '../ui/MapKit.jsx';
 import ForestTrack from '../ui/ForestTrack.jsx';
 import { ua, uaDelay } from '../anim/ua.js';
 
@@ -155,7 +155,6 @@ export default function Stage({ stageId, onBack, onPick, onCoins, onStage }) {
         </div>
       </div>
       )}
-      <CloudEdges />
       </div>
 
       {pickedLevel && (

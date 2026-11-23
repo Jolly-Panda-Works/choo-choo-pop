@@ -97,17 +97,6 @@ export function useDragScroll(ref, dep, onGrab) {
   }, [dep]);
 }
 
-/** Two cloud banks that cover the top and the bottom of a scroll area, so content fades softly into the sky. */
-export function CloudEdges() {
-  const style = { backgroundImage: `url(${MAP_ART}ui/clouds-band.webp)` };
-  return (
-    <>
-      <div className="cloud-edge top" style={style} aria-hidden="true" />
-      <div className="cloud-edge bottom" style={style} aria-hidden="true" />
-    </>
-  );
-}
-
 /** Smooth (Catmull-Rom) path through points [[x,y],...] */
 export function smoothPath(pts) {
   if (pts.length < 2) return '';
