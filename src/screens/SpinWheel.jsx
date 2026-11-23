@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { k, fs } from '../ui/v5.jsx';
 import BluePopup, { inPopup } from '../ui/BluePopup.jsx';
 import { PowerIcon, Bulb } from '../ui/icons.jsx';
-import { useSave, adSpinsRemaining, redeemWheelSpin, spinReady } from '../store.js';
+import { useSave, adSpinsRemaining, DAILY_AD_SPINS, redeemWheelSpin, spinReady } from '../store.js';
 import { dayKey } from '../game/missions.js';
 import { useT } from '../i18n.js';
 import { ads } from '../services/ads.js';
@@ -77,7 +77,8 @@ export default function SpinWheel({ onBack, onCoinsInFlight }) {
   };
   const free = spinReady(save, today);
   const remaining = adSpinsRemaining(save, today);
-  const video = !free && remaining > 0 && ads.rewardedAvailable();
+  const hasVideo = ads.rewardedAvailable();
+  const video = !free && remaining > 0 && hasVideo;
   const go = async () => {
     if (busy) return;
     if (spinReady()) {
@@ -102,11 +103,20 @@ export default function SpinWheel({ onBack, onCoinsInFlight }) {
       <img className="v5pic" alt="" draggable="false" src={`${ART}spin/arrow.webp`} style={{ ...inPopup(WHEEL_X + WHEEL / 2 - 60, WHEEL_Y + 8, 120, 170), objectFit: 'contain', transform: 'rotate(180deg)' }} />
       <button className="pbtn" disabled={busy || (!free && !video)} style={inPopup(464, 1680, 520, 218)} onClick={go}>
         <img className="v5pic" alt="" draggable="false" src={`${ART}v5/btn-orange.webp`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-        <span style={{ position: 'absolute', inset: '0 0 ' + k(22), display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', ...fs(free ? 60 : 44) }}>
-          {free ? t('spinFree') : video ? t('spinVideo') : t(remaining ? 'spinVideoUnavailable' : 'spinTomorrow')}
-          {video && <small style={fs(32)}>{t('spinVideoRemaining', { n: t.n(remaining) })}</small>}
+        <span style={{ position: 'absolute', inset: '0 0 ' + k(22), display: 'grid', placeItems: 'center', ...fs(free ? 60 : 44) }}>
+          {t(free ? 'spinFree' : 'spinVideo')}
         </span>
       </button>
+      {(hasVideo || !free || !remaining) && (
+        <div className="ptxt" aria-live="polite" style={{ ...inPopup(220, 1900, 1008, 64), ...fs(40), color: '#5a22ad', gap: k(12) }}>
+          {remaining === 0 ? t('videoQuotaTomorrow') : hasVideo ? (
+            <>
+              <span>{t('videoQuotaRemaining')}</span>
+              <bdi dir="ltr">{t.n(`${remaining}/${DAILY_AD_SPINS}`)}</bdi>
+            </>
+          ) : t('videoUnavailable')}
+        </div>
+      )}
       {note && <div className="pop-toast" style={{ top: k(900) }}>{note}</div>}
     </BluePopup>
   );

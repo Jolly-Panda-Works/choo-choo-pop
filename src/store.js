@@ -155,7 +155,7 @@ export function buyPowerup(packId) {
 }
 
 // ---- lucky wheel
-const DAILY_AD_SPINS = 5;
+export const DAILY_AD_SPINS = 5;
 
 export const spinReady = (s = state, today = dayKey()) => s.lastSpin !== today;
 
