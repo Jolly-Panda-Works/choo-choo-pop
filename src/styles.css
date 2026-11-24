@@ -149,22 +149,37 @@ button:disabled { opacity: 0.5; cursor: default; }
 .modal-panda { position: absolute !important; bottom: calc(100% + 47px); left: 50%; transform: translateX(-50%); z-index: 1; }
 .modal h3 { margin: 0 0 10px; font-size: 28px; line-height: 1.25; color: var(--ink); }
 html:lang(fa) .modal .win-title { font-family: 'Vazirmatn Variable', 'Noto Sans Arabic', system-ui, sans-serif; }
+.modal-back:has(> .modal-station-result) { align-items: safe center; }
 .modal.modal-station-result {
   width: min(100%, 400px);
   border: 0;
   container-type: inline-size;
-  background: url('/choo-choo-pop-assets/art/v5/station-frame.webp') center / 100% 100% no-repeat;
+}
+/* Stretch the middle of the frame while keeping the roof, clock and platform proportional. */
+.modal-station-result::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid transparent;
+  border-image: url('/choo-choo-pop-assets/art/v5/station-frame.webp') 560 0 285 fill / 45.82cqw 0 23.32cqw stretch;
 }
 .modal-station-result .modal-body {
+  position: relative;
   background: none;
-  padding: 31cqw 15cqw 15cqw;
+  padding: 32cqw 21cqw 14cqw;
 }
-.modal-station-result .modal-panda {
-  bottom: calc(100% - 12px);
-}
+.modal-station-result .win-title { font-size: clamp(18px, 7cqw, 28px); }
+.modal-station-result .win-stars img { width: min(15cqw, 58px); height: auto; }
+.modal-station-result .modal-panda { bottom: calc(100% - 12px); }
 .modal-station-result .modal-actions .btn {
-  --cap: 22px;
+  --cap: clamp(14px, 5.5cqw, 22px);
+  font-size: clamp(14px, 5cqw, 20px);
   padding-inline: 4px;
+}
+.modal-station-result .modal-actions .btn.big {
+  --h: clamp(52px, 17.5cqw, 70px);
+  font-size: clamp(16px, 6.5cqw, 26px);
 }
 @media (max-height: 650px) {
   .modal.modal-station-result.has-panda { margin-top: 84px; }

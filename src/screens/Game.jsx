@@ -381,63 +381,67 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       {/* ---- level cleared ---- */}
       {phase === 'won' && (
         <Modal pose="cheer" title={t(stageDone ? 'stageDone' : 'won')} titleClass="win-title" variant="station-result">
-          <Stars n={stars} size={58} className="big win-stars" pop />
-          {timed && <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>}
-          <p className="reward-line big">
-            {reward.coins > 0 ? (
-              <>
-                <Coin size={26} /> +{t.n(reward.coins)}
-              </>
-            ) : (
-              <span className="small">{t('noNewCoins')}</span>
-            )}
-          </p>
-          {lastLevel && <p className="small">{t(demo ? 'demoFinished' : 'allDone')}</p>}
-          {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
-          <div className="modal-actions col">
-            {!lastLevel && (
-              <button
-                className="btn big yellow"
-                onClick={() =>
-                  leave(() => {
-                    setPhase('next');
-                    onNext();
-                  })
-                }
-              >
-                {t('next')}
-              </button>
-            )}
-            {lastLevel && (
-              <button className="btn big yellow" onClick={() => leave(onMap)}>
-                {t('backToMap')}
-              </button>
-            )}
-            <div className="modal-actions">
-              <button
-                className="btn"
-                onClick={() =>
-                  leave(() => {
-                    timer.reset();
-                    setHintsUsed(0);
-                    setMistakes(0);
-                    install({ past: [], present: freshBoard(level), future: [] });
-                    setPeekTrail(null);
-                    setPeekUntil(0);
-                    setPowerUsed(0);
-                    setPhase('play');
-                  })
-                }
-              >
-                {t('replay')}
-              </button>
-              {!lastLevel && (
-                <button className="btn" onClick={() => leave(onMap)}>
-                  {t('map')}
-                </button>
-              )}
-            </div>
-          </div>
+          {(leave) => (
+            <>
+              <Stars n={stars} size={58} className="big win-stars" pop />
+              {timed && <p className="small">{t('solveTime')}: <b dir="ltr">{t.n(formatTime(timer.elapsedMs))}</b></p>}
+              <p className="reward-line big">
+                {reward.coins > 0 ? (
+                  <>
+                    <Coin size={26} /> +{t.n(reward.coins)}
+                  </>
+                ) : (
+                  <span className="small">{t('noNewCoins')}</span>
+                )}
+              </p>
+              {lastLevel && <p className="small">{t(demo ? 'demoFinished' : 'allDone')}</p>}
+              {tutorial && levelNo === TUTORIAL_LEVELS && <p className="small">{t('tutDone')}</p>}
+              <div className="modal-actions col">
+                {!lastLevel && (
+                  <button
+                    className="btn big yellow"
+                    onClick={() =>
+                      leave(() => {
+                        setPhase('next');
+                        onNext();
+                      })
+                    }
+                  >
+                    {t('next')}
+                  </button>
+                )}
+                {lastLevel && (
+                  <button className="btn big yellow" onClick={() => leave(onMap)}>
+                    {t('backToMap')}
+                  </button>
+                )}
+                <div className="modal-actions">
+                  <button
+                    className="btn"
+                    onClick={() =>
+                      leave(() => {
+                        timer.reset();
+                        setHintsUsed(0);
+                        setMistakes(0);
+                        install({ past: [], present: freshBoard(level), future: [] });
+                        setPeekTrail(null);
+                        setPeekUntil(0);
+                        setPowerUsed(0);
+                        setPhase('play');
+                      })
+                    }
+                  >
+                    {t('replay')}
+                  </button>
+                  {!lastLevel && (
+                    <button className="btn" onClick={() => leave(onMap)}>
+                      {t('map')}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </Modal>
       )}
 
