@@ -37,7 +37,7 @@ const rememberGranted = (token) => {
 function grant(productId) {
   if (productId === REMOVE_ADS_ID) update({ adsRemoved: true });
   const pack = COIN_PACKS.find((c) => c.id === productId);
-  if (pack) addCoins(pack.coins);
+  if (pack) addCoins(pack.coins, 'iap');
 }
 export function registerBillingProvider(p) {
   provider = p;

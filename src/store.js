@@ -12,7 +12,8 @@ import {
   IS_IRANIAN_STORE,
 } from './config.js';
 import { dayKey, syncMissions, bumpMissions, earnedReward } from './game/missions.js';
-import { purchasePowerupPack } from './game/powerupPacks.js';
+import { track } from './services/analytics.js';
+import { POWERUP_PACKS, purchasePowerupPack } from './game/powerupPacks.js';
 import { demoLanguage, demoHintSpend, demoSocialReward } from './demo/rules.js';
 import { levelCount } from './game/levels.js';
 
@@ -85,6 +86,27 @@ function persist() {
 }
 
 export const getState = () => state;
+function earned(currency_type, amount, source, balance_after) {
+  if (amount > 0) track('currency_earned', { currency_type, amount, source, balance_after });
+}
+
+function purchased(item_id, item_category, quantity, currency_type, price, balance_after) {
+  track('currency_spent', { currency_type, amount: price, item_id, balance_after });
+  track('item_purchased', { item_id, item_category, quantity, currency_type, price });
+}
+
+function blocked(item_id, price, currency_type, balance) {
+  track('purchase_blocked', { item_id, price, currency_type, balance });
+  return false;
+}
+
+function rewardClaimed(source, reward_id, reward) {
+  const powerup_id = reward.powerup || reward.power;
+  track('reward_claimed', { source, reward_id, coins: reward.coins || 0, hints: reward.hints || 0,
+    ...(powerup_id ? { powerup_id, quantity: 1 } : {}) });
+  earned('coin', reward.coins, source, state.coins);
+}
+
 export function spendDemoHint() {
   const patch = demoHintSpend(state);
   if (!patch) return false;
@@ -95,6 +117,7 @@ export function claimDemoSocial(reward) {
   const patch = demoSocialReward(state, reward);
   if (!patch) return false;
   update(patch);
+  rewardClaimed("demo_social", "telegram", { hints: reward.amount });
   return true;
 }
 export function currentLang() {
@@ -127,6 +150,7 @@ export function useSave() {
  * Returns { first, coins }.
  */
 export function completeLevel(level, stars, difficulty = 1) {
+  const previousStars = state.stars[level] || 0;
   let res = { first: false, coins: 0 };
   update((s) => {
     const prev = s.stars[level] || 0;
@@ -139,6 +163,8 @@ export function completeLevel(level, stars, difficulty = 1) {
       coins: s.coins + coins,
     };
   });
+  earned('coin', res.coins, 'level', state.coins);
+  earned('star', stars - previousStars, 'level', starBalance());
   return res;
 }
 
@@ -149,8 +175,13 @@ export const spendPowerup = (id) => {
 };
 export function buyPowerup(packId) {
   const patch = purchasePowerupPack(state, packId);
-  if (!patch) return false;
+  const pack = POWERUP_PACKS.find(p => p.id === packId);
+  if (!patch) {
+    if (pack && state.taught[pack.power] && state.coins < pack.price) return blocked(packId, pack.price, 'coin', state.coins);
+    return false;
+  }
   update(patch); // deduct coins and grant the pack together in one saved update
+  purchased(packId, 'powerup', pack.count, 'coin', pack.price, state.coins);
   return true;
 }
 
@@ -178,6 +209,7 @@ export function redeemWheelSpin(kind, prize) {
     hints: s.hints + (prize.hints || 0),
     powerups: prize.power ? { ...s.powerups, [prize.power]: (s.powerups[prize.power] || 0) + 1 } : s.powerups,
   }));
+  rewardClaimed('wheel', kind, prize);
   return true;
 }
 
@@ -208,12 +240,16 @@ export function claimMission(list, id) {
     powerups: r.powerup ? { ...s.powerups, [r.powerup]: (s.powerups[r.powerup] || 0) + 1 } : s.powerups,
     mis: { ...s.mis, [list]: s.mis[list].map((x) => (x.id === id ? { ...x, claimed: true } : x)) },
   }));
+  rewardClaimed('mission', id, r);
   return r;
 }
 
 export const spendHint = () => update((s) => ({ hints: Math.max(0, s.hints - 1) }));
 export const addHints = (n) => update((s) => ({ hints: s.hints + n }));
-export const addCoins = (n) => update((s) => ({ coins: s.coins + n }));
+export function addCoins(n, source = 'ad') {
+  update(s => ({ coins: s.coins + n }));
+  earned('coin', n, source, state.coins);
+}
 
 /** Pay with coins. Returns false (and changes nothing) when there are not enough. */
 export function spendCoins(n) {
@@ -223,8 +259,9 @@ export function spendCoins(n) {
 }
 
 export function buyHintPack(pack) {
-  if (!spendCoins(pack.price)) return false;
-  addHints(pack.hints);
+  if (state.coins < pack.price) return blocked(pack.id, pack.price, 'coin', state.coins);
+  update(s => ({ coins: s.coins - pack.price, hints: s.hints + pack.hints }));
+  purchased(pack.id, 'hint', pack.hints, 'coin', pack.price, state.coins);
   return true;
 }
 
@@ -248,8 +285,9 @@ const OWNED = { train: 'ownedTrain', rail: 'ownedRail' };
 const CURRENT = { train: 'trainSkin', rail: 'railSkin' };
 /** Looks are paid with stars earned from stations, never coins. */
 export function buyLook(kind, skin) {
-  if (starBalance() < skin.stars) return false;
+  if (starBalance() < skin.stars) return blocked(skin.id, skin.stars, 'star', starBalance());
   update((s) => ({ starsSpent: (s.starsSpent || 0) + skin.stars, [OWNED[kind]]: [...s[OWNED[kind]], skin.id] }));
+  purchased(skin.id, kind, 1, 'star', skin.stars, starBalance());
   return true;
 }
 export const equipLook = (kind, id) => update({ [CURRENT[kind]]: id });
