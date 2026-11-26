@@ -9,8 +9,15 @@ if (tapsell.values().any { it } && !tapsell.values().every { it ==~ /[a-zA-Z0-9-
     throw new GradleException('Tapsell requires an app key and two valid zone IDs.')
 }
 
+def localSettings = new Properties()
+def localFile = rootProject.file('local.properties')
+if (localFile.isFile()) localFile.withInputStream { localSettings.load(it) }
 def metrixId = System.getenv('METRIX_APP_ID')?.trim()
 def metrixKey = System.getenv('METRIX_API_KEY')?.trim()
+if (!metrixId && !metrixKey) {
+    metrixId = localSettings.getProperty('metrix.appId')?.trim()
+    metrixKey = localSettings.getProperty('metrix.apiKey')?.trim()
+}
 if (!!metrixId != !!metrixKey) throw new GradleException('Set both Metrix SDK credentials.')
 android {
     namespace = "com.jollypanda.choochoopop"
