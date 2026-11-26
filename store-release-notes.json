@@ -1,6 +1,5 @@
 {
-  "$comment": "What's new in Cafe Bazaar and Myket for the next version (required: a build is published only when version matches package.json). Set version to the version being released (package.json) and write fa and en, on the Iranian-store branch. Emptied after each release.",
-  "version": "",
-  "fa": "",
-  "en": ""
+  "version": "1.9.0",
+  "fa": "در این نسخه، آمار استفاده از راهنماها و ابزارها و روند حل مراحل را بررسی می‌کنیم تا بفهمیم کدام پازل‌ها بیش از حد دشوارند و کجا به راهنمای بهتری نیاز دارید.",
+  "en": "We’re measuring puzzle progress and how players use hints and tools to find out which puzzles are too difficult and where clearer guidance would help."
 }

@@ -85,9 +85,7 @@ if (sent) {
 
 // An unfinished bundle, left by a failed run, would mix with this one.
 if (releases.some((r) => r.status === "JustCreated")) {
-  console.log("Removing an unfinished release bundle.");
-  const removed = await call("DELETE");
-  if (!removed.ok) fail(`Couldn't remove the unfinished bundle: ${why(removed)}`);
+  fail("Myket has an existing draft; leaving it in place.");
 }
 
 // 2. New bundle, with the notes.

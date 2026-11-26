@@ -1,279 +1,52 @@
-# Builds for the Iranian stores: Cafe Bazaar and Myket, one APK/AAB each. The Iranian-store branch is main plus
-# the store settings; it never merges back into main.
-# Runs on the Iranian-store branch (and on demand). Step by step setup: docs/BAZAAR.fa.md, docs/MYKET.fa.md.
-#
-# Keep the branch up to date with main (`git checkout Iranian-store && git merge main && git push`);
-# each push builds both stores with the version from package.json. With release notes for that version it also
-# publishes one GitHub pre-release per store, tagged bazaar-vX.Y.Z and myket-vX.Y.Z, and sends the APKs to the
-# stores. One store failing doesn't stop the other.
-#
-# Settings (repository variables): BAZAAR_RSA_KEY and MYKET_PUBLIC_KEY (the in-app billing keys, public),
-# BAZAAR_DEVELOPER_ID (More games). Signing uses the KEYSTORE_* / KEY_* secrets of android.yml.
-#
-# Automatic release in Cafe Bazaar (Pishkhan API): with the secret BAZAAR_PISHKHAN_TOKEN set, every
-# successful build of the branch sends the signed APK to Bazaar.
-#   BAZAAR_CHANNEL: "alpha" (default): the APK is uploaded as a draft; in the panel pick the alpha group and
-#     send it for review (the API can't choose the group). "public": sent for review for everyone.
-#     Run workflow can pick the channel for one build.
-#   BAZAAR_AUTO_PUBLISH: "false" (default): you publish in the panel; "true": published once approved.
-#
-# Automatic release in Myket: with the secret MYKET_ACCESS_TOKEN (and the variable MYKET_PUBLIC_KEY) set, every
-# successful build sends the signed APK to Myket for review.
-#   MYKET_AUTO_PUBLISH: "false" (default): you publish in the panel; "true": published once approved.
-#
-# Release notes decide whether a build is published (checked before anything is built):
-#   - a push: store-release-notes.json with "version" = the version being built and "fa" / "en"
-#     filled in. Edit it on the Iranian-store branch (after merging main), commit, push. Once both stores have the
-#     release the file is emptied (a [skip ci] commit), so the next version needs its own.
-#     File empty, or written for another version: the build runs, nothing is published.
-#   - Run workflow: the two notes fields of the form (they take the place of the file).
-
-name: Iranian stores
+name: Send approved Choo Choo Pop 1.9.0 to stores
 
 on:
-  push:
-    branches: [Iranian-store]
   workflow_dispatch:
-    inputs:
-      notes_fa:
-        description: "What's new, in Persian (required; \\n for a new line)"
-        type: string
-        required: true
-      notes_en:
-        description: "What's new, in English (required; \\n for a new line)"
-        type: string
-        required: true
-      channel:
-        description: "Cafe Bazaar release (alpha: a draft for your alpha group; public: sent for review)"
-        type: choice
-        options: [default, alpha, public]
-        default: default
-
-concurrency:
-  group: iranian-stores-${{ github.ref }}
-  queue: max
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: approved-choo-choo-pop-1-9-0
+  cancel-in-progress: false
 
 jobs:
-  # ---- 1. what is being released, and is it fine to release it? ----------------------------------
-  prepare:
-    if: vars.BUILD_MODE != 'central'
-    name: Version, notes, tests
+  submit:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      code: ${{ steps.version.outputs.code }}
-      publish: ${{ steps.notes.outputs.publish }}
-      source: ${{ steps.notes.outputs.source }}
-      notes: ${{ steps.notes.outputs.notes }}
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Version
-        id: version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          IFS=. read -r MA MI PA <<< "${VERSION%%-*}"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "code=$((MA * 1000000 + MI * 1000 + PA))" >> "$GITHUB_OUTPUT"
-          echo "Store builds $VERSION"
-
-      # Before anything is built: no release without notes for this version.
-      - name: Release notes
-        id: notes
-        env:
-          NOTES_FA: ${{ inputs.notes_fa }}
-          NOTES_EN: ${{ inputs.notes_en }}
-        run: |
-          node scripts/store-notes.mjs check "$RUNNER_TEMP/store-notes.json"
-          if [ -f "$RUNNER_TEMP/store-notes.json" ]; then
-            echo "notes=$(base64 -w 0 "$RUNNER_TEMP/store-notes.json")" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Install
-        run: npm ci
-
-      - name: Test levels
-        run: npm run test:levels
-
-  # ---- 2. one build per store --------------------------------------------------------------------
-  build:
-    name: Android (${{ matrix.title }})
-    needs: prepare
-    runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { store: bazaar, flavor: Bazaar, title: Cafe Bazaar }
-          - { store: myket, flavor: Myket, title: Myket }
-    env:
-      STORE: ${{ matrix.store }}
-      FLAVOR: ${{ matrix.flavor }}
-      VERSION: ${{ needs.prepare.outputs.version }}
-      VERSION_CODE: ${{ needs.prepare.outputs.code }}
-      VERSION_NAME: ${{ needs.prepare.outputs.version }}
-      PUBLISH: ${{ needs.prepare.outputs.publish }}
-      VITE_STORE: ${{ matrix.store }}
-      VITE_BAZAAR_RSA_KEY: ${{ vars.BAZAAR_RSA_KEY }}
-      VITE_BAZAAR_DEVELOPER_ID: ${{ vars.BAZAAR_DEVELOPER_ID }}
-      VITE_MYKET_PUBLIC_KEY: ${{ vars.MYKET_PUBLIC_KEY }}
-      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
-      HAS_PISHKHAN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN != '' }}
-      HAS_MYKET: ${{ secrets.MYKET_ACCESS_TOKEN != '' }}
+          - store: bazaar
+            script: pishkhan-release.mjs
+            digest: b6559f65a3992a93bec3f2eeff2535a3033aec9c91e4bd41a65f20361d5a5843
+          - store: myket
+            script: myket-release.mjs
+            digest: 806b8d01a4eef067838840a4153f016dfec083c80305fb3d0cc223369e34e198
     steps:
       - uses: actions/checkout@v5
-
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
-
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: 21
-
-      - uses: gradle/actions/setup-gradle@v4
-
-      - name: Release notes
-        if: env.PUBLISH == 'true'
-        env:
-          NOTES: ${{ needs.prepare.outputs.notes }}
-        run: printf '%s' "$NOTES" | base64 --decode > "$RUNNER_TEMP/store-notes.json"
-
-      - name: Install
-        run: npm ci
-
-      - name: Build web
-        run: npm run build
-
-      - name: Sync Capacitor
-        run: npx cap sync android
-
-      - name: Build debug APK
-        working-directory: android
-        run: chmod +x gradlew && ./gradlew "assemble${FLAVOR}Debug" --no-daemon -PVERSION_CODE=$VERSION_CODE -PVERSION_NAME=$VERSION
-
-      - name: Build signed release (APK + AAB)
-        if: env.HAS_KEYSTORE == 'true'
-        working-directory: android
-        env:
-          METRIX_APP_ID: ${{ secrets.METRIX_APP_ID }}
-          METRIX_API_KEY: ${{ secrets.METRIX_API_KEY }}
-          TAPSELL_APP_KEY: ${{ secrets.TAPSELL_APP_KEY }}
-          TAPSELL_REWARDED_ZONE: ${{ secrets.TAPSELL_REWARDED_ZONE || vars.TAPSELL_REWARDED_ZONE }}
-          TAPSELL_INTERSTITIAL_ZONE: ${{ secrets.TAPSELL_INTERSTITIAL_ZONE || vars.TAPSELL_INTERSTITIAL_ZONE }}
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > "$RUNNER_TEMP/release.keystore"
-          ./gradlew "assemble${FLAVOR}Release" "bundle${FLAVOR}Release" --no-daemon \
-            -PVERSION_CODE=$VERSION_CODE -PVERSION_NAME=$VERSION \
-            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/release.keystore" \
-            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
-            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
-            -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
-
-      - name: Collect outputs
-        run: |
-          mkdir -p out
-          OUTPUTS=android/app/build/outputs
-          cp "$OUTPUTS/apk/$STORE/debug/app-$STORE-debug.apk" "out/ChooChooPop-$VERSION-$FLAVOR-debug.apk"
-          if [ "$HAS_KEYSTORE" = "true" ]; then
-            cp "$OUTPUTS/apk/$STORE/release/app-$STORE-release.apk" "out/ChooChooPop-$VERSION-$FLAVOR.apk"
-            cp "$OUTPUTS/bundle/${STORE}Release/app-$STORE-release.aab" "out/ChooChooPop-$VERSION-$FLAVOR.aab"
-          fi
-          (cd out && sha256sum * > SHA256SUMS.txt)
-          ls -la out
-
-      - uses: actions/upload-artifact@v4
-        # The release below has the files; this copy is optional (it must not stop the release).
-        continue-on-error: true
-        with:
-          name: choo-choo-pop-${{ matrix.store }}
-          path: out/*
-          retention-days: 1
-
-      # Only the Iranian-store branch publishes, and only with notes for this version;
-      # anything else is a test build (its files are in the run's artifact).
-      - name: Publish release
-        if: github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true'
+      - name: Download and verify the approved release APK
         env:
           GH_TOKEN: ${{ github.token }}
-          TITLE: ${{ matrix.title }}
+          STORE: ${{ matrix.store }}
+          EXPECTED_SHA256: ${{ matrix.digest }}
         run: |
-          TAG="$STORE-v$VERSION"
-          NOTES="$TITLE build of Choo Choo Pop $VERSION.
-
-          ### What's new
-          $(node -p "require(process.env.RUNNER_TEMP + '/store-notes.json').en")
-
-          $(node -p "require(process.env.RUNNER_TEMP + '/store-notes.json').fa")"
-          shopt -s nullglob
-          ANDROID_FILES=(out/*.apk out/*.aab)
-          if gh release view "$TAG" > /dev/null 2>&1; then
-            gh release upload "$TAG" "${ANDROID_FILES[@]}" --clobber
-          else
-            gh release create "$TAG" "${ANDROID_FILES[@]}" --target "$GITHUB_SHA" --title "Choo Choo Pop $VERSION ($TITLE)" --notes "$NOTES" --prerelease --latest=false
-          fi
-
-      # Cafe Bazaar: send the signed APK (only this branch, and only with the API token;
-      # skipped when Bazaar already has this versionCode).
-      - name: Release in Cafe Bazaar
-        if: matrix.store == 'bazaar' && github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true' && env.HAS_KEYSTORE == 'true' && env.HAS_PISHKHAN == 'true'
+          apk="choochoopop-v1.9.0-$STORE.apk"
+          gh release download v1.9.0 --repo "$GITHUB_REPOSITORY" --pattern "$apk"
+          printf '%s  %s\n' "$EXPECTED_SHA256" "$apk" | sha256sum --check
+      - name: Submit for public review with automatic publication
         env:
-          BAZAAR_PISHKHAN_TOKEN: ${{ secrets.BAZAAR_PISHKHAN_TOKEN }}
-          BAZAAR_AUTO_PUBLISH: ${{ vars.BAZAAR_AUTO_PUBLISH || 'false' }}
-          BAZAAR_CHANNEL: ${{ (inputs.channel != '' && inputs.channel != 'default') && inputs.channel || vars.BAZAAR_CHANNEL || 'alpha' }}
-        run: node scripts/pishkhan-release.mjs "out/ChooChooPop-$VERSION-Bazaar.apk" --version "$VERSION" --code "$VERSION_CODE" --changelog "$RUNNER_TEMP/store-notes.json"
-
-      # Myket: the same, and never without the billing key: that build can't sell anything.
-      - name: Release in Myket
-        if: matrix.store == 'myket' && github.ref == 'refs/heads/Iranian-store' && env.PUBLISH == 'true' && env.HAS_KEYSTORE == 'true' && env.HAS_MYKET == 'true'
-        env:
-          MYKET_ACCESS_TOKEN: ${{ secrets.MYKET_ACCESS_TOKEN }}
-          MYKET_AUTO_PUBLISH: ${{ vars.MYKET_AUTO_PUBLISH || 'false' }}
-        run: |
-          if [ -z "$VITE_MYKET_PUBLIC_KEY" ]; then echo "::error::Set the variable MYKET_PUBLIC_KEY first: this build has no in-app billing."; exit 1; fi
-          node scripts/myket-release.mjs "out/ChooChooPop-$VERSION-Myket.apk" --version "$VERSION" --code "$VERSION_CODE" --changelog "$RUNNER_TEMP/store-notes.json"
-
-  # ---- 3. both stores have it: the notes in the file are used up ---------------------------------
-  finish:
-    name: Empty the release notes
-    needs: [prepare, build]
-    if: github.ref == 'refs/heads/Iranian-store' && needs.prepare.outputs.source == 'file' && needs.build.result == 'success'
-    runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ needs.prepare.outputs.version }}
-      ALL_STORES: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.BAZAAR_PISHKHAN_TOKEN != '' && secrets.MYKET_ACCESS_TOKEN != '' }}
-    steps:
-      - uses: actions/checkout@v5
-        if: env.ALL_STORES == 'true'
-
-      - uses: actions/setup-node@v5
-        if: env.ALL_STORES == 'true'
-        with:
-          node-version: 22
-
-      - name: Empty the release notes for the next version
-        if: env.ALL_STORES == 'true'
-        run: |
-          node scripts/store-notes.mjs clear
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -qm "chore(stores): release notes for v$VERSION used [skip ci]" -- store-release-notes.json
-          for attempt in 1 2 3; do
-            if git push --quiet origin HEAD:Iranian-store; then break; fi
-            if [ $attempt = 3 ]; then echo "::warning::Couldn't empty the release notes on Iranian-store; empty them by hand."; exit 0; fi
-            git pull --rebase --quiet origin Iranian-store
-          done
+          STORE: ${{ matrix.store }}
+          SUBMISSION_SCRIPT: ${{ matrix.script }}
+          BAZAAR_PISHKHAN_TOKEN: ${{ matrix.store == 'bazaar' && secrets.BAZAAR_PISHKHAN_TOKEN || '' }}
+          MYKET_ACCESS_TOKEN: ${{ matrix.store == 'myket' && secrets.MYKET_ACCESS_TOKEN || '' }}
+          BAZAAR_CHANNEL: public
+          BAZAAR_AUTO_PUBLISH: 'true'
+          MYKET_AUTO_PUBLISH: 'true'
+        run: node "scripts/$SUBMISSION_SCRIPT" "choochoopop-v1.9.0-$STORE.apk" --version 1.9.0 --code 1009000 --changelog store-release-notes.json
