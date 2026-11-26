@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { track, firstPlay } from '../services/analytics.js';
+import { getState, update, totalStars } from '../store.js';
 import BoardCanvas from '../board/BoardCanvas.jsx';
 import { loadSprites, loadLook, holdSprites, UI_ART } from '../board/sprites.js';
 import Panda from '../ui/Panda.jsx';
@@ -27,6 +29,29 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const t = useT();
   const [ready, setReady] = useState(false);
   const restored = useRef(restoreDraft(level, save.drafts?.[levelNo]));
+  const [attempt] = useState(() => {
+    const previous = save.attempts?.[levelNo] || 0;
+    const draft = restored.current;
+    return {
+      number: draft ? draft.analytics?.number || previous || 1 : previous + 1,
+      moves: draft?.analytics?.moves || 0, undos: draft?.analytics?.undos || 0,
+      hints: draft?.analytics?.hints ?? draft?.hintsUsed ?? 0,
+      ms: draft?.analytics?.ms ?? draft?.elapsedMs ?? 0, since: null,
+    };
+  });
+  const activeMs = () => attempt.ms + (attempt.since === null ? 0 : performance.now() - attempt.since);
+  const snapshot = () => ({ ...attempt, ms: activeMs(), since: null });
+  const report = (name, extra) => track(name, {
+    level_id: levelNo, stage_id: stageOfLevel(levelNo), difficulty: level.difficulty,
+    attempt_no: attempt.number, active_seconds: Math.round(activeMs() / 1000),
+    moves_count: attempt.moves, undo_count: attempt.undos, hints_used: attempt.hints, ...extra,
+  });
+  const rememberAttempt = () => update(s => ({ attempts: { ...s.attempts, [levelNo]: attempt.number } }));
+  useEffect(() => {
+    rememberAttempt();
+    if (restored.current) report('level_resumed', { saved_active_seconds: Math.round(attempt.ms / 1000) });
+    else report('level_started', { start_reason: save.stars[levelNo] ? 'replay' : 'new' });
+  }, []);
   const [history, setHistory] = useState(() => restored.current || { past: [], present: freshBoard(level), future: [] });
   const historyRef = useRef(history);
   const paths = history.present.paths;
@@ -36,8 +61,11 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const [lessonIndex, setLessonIndex] = useState(0);
   const lesson = lessons[lessonIndex];
   const lessonOpen = !!lesson;
+  const lessonFields = { lesson_id: lesson?.id, step: lessonIndex + 1 };
+  useEffect(() => { if (lesson) report('tutorial_step', { ...lessonFields, action: 'shown' }); }, [lesson]);
   const nextLesson = () => {
     sfx.click();
+    report('tutorial_step', { ...lessonFields, action: 'completed' });
     if (lesson.power) markTaught(lesson.power); else markUiTaught(lesson.id);
     setLessonIndex(i => i + 1);
   };
@@ -74,6 +102,35 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const targets = useMemo(() => timeTargets(level), [level]);
   const timed = !demo && levelNo >= TIMER_FIRST_LEVEL;
   const timer = usePlayTimer(timed && ready && !paused && playing && !lessonOpen && !askLeave && !noHints && !noPower, restored.current?.elapsedMs, restored.current?.freezeRemainingMs);
+  const pauseReason = paused ? 'overlay' : lessonOpen ? 'lesson' : askLeave ? 'exit_prompt' : noHints || noPower ? 'inventory' : null;
+  const wasActive = useRef(false);
+  const lastPause = useRef(null);
+  useEffect(() => {
+    const landscape = window.matchMedia('(orientation: landscape) and (max-height: 600px)');
+    const sync = () => {
+      const reason = document.hidden ? 'background' : landscape.matches ? 'orientation' : pauseReason;
+      if (ready && playing && !reason) {
+        firstPlay(levelNo, !!restored.current);
+        if (attempt.since === null) attempt.since = performance.now();
+        if (lastPause.current) report('game_resumed', { reason: lastPause.current });
+        lastPause.current = null;
+        wasActive.current = true;
+      } else {
+        if (attempt.since !== null) { attempt.ms = activeMs(); attempt.since = null; }
+        if (playing && wasActive.current && reason && !lastPause.current) {
+          lastPause.current = reason;
+          report('game_paused', { reason });
+        }
+      }
+    };
+    sync();
+    document.addEventListener('visibilitychange', sync);
+    landscape.addEventListener('change', sync);
+    return () => {
+      document.removeEventListener('visibilitychange', sync);
+      landscape.removeEventListener('change', sync);
+    };
+  }, [ready, playing, pauseReason]);
   const liveStars = timed ? timedStars(timer.elapsedMs, targets) : 3;
 
   // after a moment without a move the finger shows what to do next (the tutorial coach, or the idle hint of a station)
@@ -99,11 +156,14 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
     setHistory(h);
   }, []);
   const commit = useCallback((next, nextNotes = historyRef.current.present.notes) => {
-    install(pushBoard(historyRef.current, { paths: next, notes: nextNotes }));
+    const previous = historyRef.current;
+    const changed = pushBoard(previous, { paths: next, notes: nextNotes });
+    if (changed !== previous) attempt.moves++;
+    install(changed);
   }, [install]);
   useEffect(() => {
     if (phase === 'won' || phase === 'next') { clearDraft(levelNo); return; }
-    saveDraft(levelNo, { ...history, signature: boardSignature(level), hintsUsed, mistakes, powerUsed, elapsedMs: timer.read(), freezeRemainingMs: timer.readFreeze() });
+    saveDraft(levelNo, { ...history, signature: boardSignature(level), analytics: snapshot(), hintsUsed, mistakes, powerUsed, elapsedMs: timer.read(), freezeRemainingMs: timer.readFreeze() });
   }, [history, hintsUsed, mistakes, powerUsed, phase, levelNo, level, Math.floor(timer.elapsedMs / 1000), Math.ceil(timer.freezeRemainingMs / 1000)]);
   // Flush the final fraction of a second on navigation or app suspension.
   const draftRef = useRef(null);
@@ -112,7 +172,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
     const flush = () => {
       const d = draftRef.current;
       if (d.phase === 'won' || d.phase === 'next') return;
-      saveDraft(levelNo, { ...d.history, signature: boardSignature(level), hintsUsed: d.hintsUsed, mistakes: d.mistakes, powerUsed: d.powerUsed, elapsedMs: d.read(), freezeRemainingMs: d.readFreeze() });
+      saveDraft(levelNo, { ...d.history, signature: boardSignature(level), analytics: snapshot(), hintsUsed: d.hintsUsed, mistakes: d.mistakes, powerUsed: d.powerUsed, elapsedMs: d.read(), freezeRemainingMs: d.readFreeze() });
     };
     window.addEventListener('pagehide', flush);
     return () => { window.removeEventListener('pagehide', flush); flush(); };
@@ -149,11 +209,19 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.reachedExit, result.solved]);
 
+  const completed = useRef(false);
   const onRunDone = useCallback(() => {
+    if (completed.current) return;
+    completed.current = true;
     setPhase('won');
     if (stageDone) sfx.levelUp();
     else sfx.win();
     const res = completeLevel(levelNo, stars, level.difficulty);
+    report('level_completed', { stars, is_first_completion: res.first });
+    const count = demo ? 10 : levelCount;
+    if (res.first && Object.keys(getState().stars).length === count) {
+      report(demo ? 'demo_completed' : 'game_completed', { levels_completed: count, total_stars: totalStars() });
+    }
     setReward(res);
     if (demo && levelNo === 10) onDemoComplete?.();
     adDue.current = tickAdCounter(levelNo);
@@ -170,12 +238,18 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const undo = () => {
     if (!playing) return;
     sfx.undo();
+    if (historyRef.current.past.length) attempt.undos++;
     install(undoBoard(historyRef.current));
   };
   const redo = () => { if (playing) { sfx.click(); install(redoBoard(historyRef.current)); } };
   const restart = () => {
     if (!playing) return;
     sfx.click();
+    report('level_restarted');
+    Object.assign(attempt, { number: attempt.number + 1, moves: 0, hints: 0, undos: 0, ms: 0,
+      since: attempt.since === null ? null : performance.now() });
+    rememberAttempt();
+    report('level_started', { start_reason: 'restart' });
     install({ past: [], present: freshBoard(level), future: [] });
     timer.reset();
   };
@@ -192,15 +266,18 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       spendHint(); // hints are free while learning
       setHintsUsed((n) => n + 1);
     }
+    attempt.hints++;
+    report('hint_used', { item_id: 'hint', use_context: 'board' });
     commit(applyHint(level, paths));
   };
 
   // ---- power-ups (lands 4-6)
-  const usePower = (id, free = false) => {
+  const usePower = (id, free = false, context = 'board') => {
     if (!playing || !powerAvailable(id, levelNo, save.taught)) return false;
     if (id === 'freeze') {
       if (!timed || timer.readFreeze() > 0) return false;
       if (!free && !spendPowerup(id)) return setNoPower(id), false;
+      report('powerup_used', { item_id: id, use_context: context });
       timer.freeze(FREEZE_MS);
       sfx.hint(); setPowerUsed(n => n + 1); trackMission('powerup');
       return true;
@@ -208,6 +285,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
     const trail = peekSegment(level, pathRef.current);
     if (!trail || peekUntil > performance.now()) return false;
     if (!free && !spendPowerup(id)) return setNoPower(id), false;
+    report('powerup_used', { item_id: id, use_context: context });
     setPeekTrail(trail);
     setPeekUntil(performance.now() + PEEK_MS);
     sfx.hint();
@@ -226,6 +304,8 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
           if (save.hints > 0) {
             spendHint();
             setHintsUsed((n) => n + 1);
+            attempt.hints++;
+            report('hint_used', { item_id: 'hint', use_context: 'start' });
             commit(applyHint(level, pathRef.current));
           }
         } else {
@@ -241,7 +321,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
     if (!playing || !pendingPick.current.length) return;
     const list = pendingPick.current;
     pendingPick.current = [];
-    list.forEach((id) => usePower(id));
+    list.forEach((id) => usePower(id, false, 'start'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickTick, playing]);
 
@@ -423,7 +503,12 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
                         timer.reset();
                         setHintsUsed(0);
                         setMistakes(0);
-                        install({ past: [], present: freshBoard(level), future: [] });
+                        report('level_restarted');
+    Object.assign(attempt, { number: attempt.number + 1, moves: 0, hints: 0, undos: 0, ms: 0,
+      since: attempt.since === null ? null : performance.now() });
+    rememberAttempt();
+    report('level_started', { start_reason: 'restart' });
+    install({ past: [], present: freshBoard(level), future: [] });
                         setPeekTrail(null);
                         setPeekUntil(0);
                         setPowerUsed(0);
@@ -455,7 +540,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
                 <button className="btn big green one-line" onClick={() => (sfx.click(), leave(() => setAskLeave(false)))}>
                   {t('stayHere')}
                 </button>
-                <button className="btn red" onClick={() => (sfx.click(), onMap())}>
+                <button className="btn red" onClick={() => (sfx.click(), report('level_exited'), onMap())}>
                   {t('leaveLevel')}
                 </button>
               </div>
