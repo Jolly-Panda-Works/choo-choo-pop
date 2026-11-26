@@ -7,7 +7,10 @@ export function startAnalytics(readLanguage) {
   language = readLanguage;
   if (MOCK_SERVICES) return;
   if (Capacitor.isNativePlatform()) {
-    if (Capacitor.isPluginAvailable('MetrixEvents')) client = Promise.resolve(registerPlugin('MetrixEvents'));
+    if (Capacitor.isPluginAvailable('MetrixEvents')) {
+      const native = registerPlugin('MetrixEvents');
+      client = Promise.resolve({ event: args => native.event(args), revenue: args => native.revenue(args) });
+    }
   } else {
     const { VITE_METRIX_APP_ID: id, VITE_METRIX_API_KEY: key } = import.meta.env;
     if (!id || !key) return;

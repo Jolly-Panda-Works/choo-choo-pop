@@ -13,9 +13,16 @@
 // successful purchase; "remove ads" sets save.adsRemoved.
 // Without a provider (and with mock services off) nothing can be bought - production never hands out free coins.
 import { COIN_PACKS, REMOVE_ADS_ID, MOCK_SERVICES } from '../config.js';
-import { addCoins, update } from '../store.js';
+import { priceInRials } from './storePrice.js';
+import { revenue, track } from './analytics.js';
+import { addCoins, getState, update } from '../store.js';
 
 let provider = null;
+let prices = {};
+function reportSale(productId, amount, result) {
+  track('iap_result', { product_id: productId, store: __STORE__, result });
+  if (amount) revenue(amount);
+}
 // tokens already granted on this device, so a purchase whose consume failed is never granted twice
 const GRANTED_KEY = 'ccp.grantedTokens';
 const grantedTokens = () => {
@@ -59,7 +66,8 @@ export const billing = {
   available: () => !!active(),
   async prices() {
     try {
-      return (await active()?.getPrices?.()) || {};
+      prices = (await active()?.getPrices?.()) || {};
+      return prices;
     } catch (e) {
       return {};
     }
@@ -68,16 +76,28 @@ export const billing = {
   async buy(productId) {
     const p = active();
     if (!p) return false;
+    const amount = priceInRials(prices[productId]);
+    if (p !== mock) {
+      track('iap_started', { product_id: productId, store: __STORE__ });
+      update(s => ({ purchaseQuotes: { ...s.purchaseQuotes, [productId]: amount } }));
+    }
     let r = false;
     try {
       r = await p.purchase(productId);
     } catch (e) {
-      r = false;
+      if (p !== mock) reportSale(productId, null, 'failed');
+      return false;
     }
-    if (!r) return false;
+    if (!r) {
+      if (p !== mock) reportSale(productId, null, 'cancelled');
+      return false;
+    }
     const token = typeof r === 'object' ? r.token : undefined;
-    if (token) rememberGranted(token);
-    grant(productId);
+    if (!token || !grantedTokens().has(token)) {
+      if (token) rememberGranted(token);
+      grant(productId);
+      if (p !== mock) reportSale(productId, amount, 'success');
+    }
     try {
       await p.finish?.(productId, token); // e.g. consume the coin pack; a failure is retried by recover()
     } catch (e) {
@@ -91,11 +111,11 @@ export const billing = {
     if (!p?.pending) return 0;
     let n = 0;
     try {
-      const done = grantedTokens();
       for (const { productId, token } of (await p.pending()) || []) {
-        if (!done.has(token)) {
+        if (!grantedTokens().has(token)) {
           rememberGranted(token);
           grant(productId);
+          reportSale(productId, getState().purchaseQuotes?.[productId], 'recovered');
           n++;
         }
         try {
