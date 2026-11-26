@@ -28,10 +28,10 @@ jobs:
       version: ${{ steps.v.outputs.version }}
       code: ${{ steps.v.outputs.code }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # full history + tags, needed to find the last release
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - id: v
@@ -61,22 +61,22 @@ jobs:
       VERSION_NAME: ${{ needs.prepare.outputs.version }}
       HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
         with:
           packages: platform-tools platforms;android-36 build-tools;36.0.0
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Install
         run: npm ci
@@ -94,7 +94,7 @@ jobs:
         working-directory: android
         run: chmod +x gradlew && ./gradlew assembleStandaloneDebug --no-daemon -PVERSION_CODE="$VERSION_CODE" -PVERSION_NAME=$VERSION_NAME
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: choo-choo-pop-en-debug-apk
           path: android/app/build/outputs/apk/standalone/debug/*.apk
@@ -125,7 +125,7 @@ jobs:
             if [[ -f "$aab" ]]; then LC_ALL=C jarsigner -verify "$aab" | grep -F 'jar verified.'; fi
           done
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: env.HAS_KEYSTORE == 'true'
         with:
           name: choo-choo-pop-en-release
@@ -144,21 +144,21 @@ jobs:
       matrix:
         store: [bazaar, myket]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
         with:
           packages: platform-tools platforms;android-36 build-tools;36.0.0
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       - run: npm ci
       - name: Build signed store package
         env:
@@ -181,7 +181,7 @@ jobs:
         run: |
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify out/*.apk
           LC_ALL=C jarsigner -verify out/*.aab | grep -F 'jar verified.'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: choo-choo-pop-store-${{ matrix.store }}
           path: |
@@ -200,15 +200,15 @@ jobs:
       VERSION: ${{ needs.prepare.outputs.version }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
 
