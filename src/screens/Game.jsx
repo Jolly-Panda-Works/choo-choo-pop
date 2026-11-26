@@ -62,7 +62,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   const lesson = lessons[lessonIndex];
   const lessonOpen = !!lesson;
   const lessonFields = { lesson_id: lesson?.id, step: lessonIndex + 1 };
-  useEffect(() => { if (lesson) report('tutorial_step', { ...lessonFields, action: 'shown' }); }, [lesson]);
+  useEffect(() => { if (ready && lesson) report('tutorial_step', { ...lessonFields, action: 'shown' }); }, [lesson, ready]);
   const nextLesson = () => {
     sfx.click();
     report('tutorial_step', { ...lessonFields, action: 'completed' });
@@ -174,8 +174,14 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       if (d.phase === 'won' || d.phase === 'next') return;
       saveDraft(levelNo, { ...d.history, signature: boardSignature(level), analytics: snapshot(), hintsUsed: d.hintsUsed, mistakes: d.mistakes, powerUsed: d.powerUsed, elapsedMs: d.read(), freezeRemainingMs: d.readFreeze() });
     };
+    const onVisibility = () => { if (document.hidden) flush(); };
+    document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('pagehide', flush);
-    return () => { window.removeEventListener('pagehide', flush); flush(); };
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', flush);
+      flush();
+    };
   }, [levelNo, level]);
   const onNote = cell => {
     if (!playing || level.blockSet.has(cell) || paths.flat().includes(cell) || level.fixed.some(f => f.cell === cell)) return;

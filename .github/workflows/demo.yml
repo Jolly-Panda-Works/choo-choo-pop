@@ -18,3 +18,6 @@ jobs:
       - run: npm test
       - run: node scripts/test-demo.mjs
       - run: npm run build:demo
+        env:
+          VITE_METRIX_APP_ID: ${{ secrets.VITE_METRIX_APP_ID }}
+          VITE_METRIX_API_KEY: ${{ secrets.VITE_METRIX_API_KEY }}
