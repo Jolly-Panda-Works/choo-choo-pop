@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { screenViewed } from '../services/analytics.js';
+import { screenViewed, track } from '../services/analytics.js';
 import Game from '../screens/Game.jsx';
 import Logotype from '../ui/Logotype.jsx';
 import HomeScene from '../ui/HomeScene.jsx';
@@ -45,7 +45,8 @@ export default function DemoApp() {
  const puzzle=useMemo(()=>level ? hydrateLevel(DEMO_LEVELS[level-1],DEMO_LEVELS[level-1].sourceId) : null,[level]);
  useEffect(()=>{ document.documentElement.lang=t.lang; document.documentElement.dir=t.dir; document.documentElement.classList.toggle('ed-fa',t.lang==='fa'); document.title='Choo Choo Pop · '+t('demoTitle'); },[t.lang,t.dir]);
  const selectLevel=n=>{if(n>=1 && n<=10 && n<=demoUnlocked(getState().stars)) setLevel(n);};
- const download=()=>window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+ const clicked = placement => track('download_clicked', { placement, destination_store: 'website', level_id: level || 0 });
+ const download = () => { clicked('game'); window.open(downloadUrl, '_blank', 'noopener,noreferrer'); };
  const openTelegram=()=>{
    update({demoSocialPending:'telegram'});
    fetch('/api/social/telegram/prepare',{method:'POST'}).catch(()=>{});
@@ -54,7 +55,7 @@ export default function DemoApp() {
    <IconDefs />
    <div className="rotate-hint">{t('portraitOnly')}</div>
    {!level && <HomeScene decor />}
-   {finished ? <main className="demo-ending"><Panda pose="cheer" size={180}/><h1>{fa?'آفرین! دمو را تمام کردی!':'You finished the demo!'}</h1><p>{t('demoFinished')}</p><a className="btn big yellow" href={downloadUrl} target="_blank" rel="noopener noreferrer">{fa?'ادامهٔ بازی در اپ':'Keep playing in the app'}</a><button className="btn" onClick={()=>{setFinished(false);setLevel(null);}}>{t('backToMap')}</button></main> : level ? <Game key={level} demo paused={noHints} onDemoNoHints={()=>setNoHints(true)} onDemoComplete={()=>setFinished(true)} levelNo={level} levelOverride={puzzle} onMap={()=>setLevel(null)} onNext={()=>selectLevel(Math.min(10,level+1))} onShop={download} onCoins={download} /> :
+   {finished ? <main className="demo-ending"><Panda pose="cheer" size={180}/><h1>{fa?'آفرین! دمو را تمام کردی!':'You finished the demo!'}</h1><p>{t('demoFinished')}</p><a className="btn big yellow" onClick={() => clicked('ending')} href={downloadUrl} target="_blank" rel="noopener noreferrer">{fa?'ادامهٔ بازی در اپ':'Keep playing in the app'}</a><button className="btn" onClick={()=>{setFinished(false);setLevel(null);}}>{t('backToMap')}</button></main> : level ? <Game key={level} demo paused={noHints} onDemoNoHints={()=>setNoHints(true)} onDemoComplete={()=>setFinished(true)} levelNo={level} levelOverride={puzzle} onMap={()=>setLevel(null)} onNext={()=>selectLevel(Math.min(10,level+1))} onShop={download} onCoins={download} /> :
     <main className="demo-menu">
      <Logotype />
      <h1>{t('demoTitle')}</h1><p>{t('demoDescription')}</p>
@@ -66,7 +67,7 @@ export default function DemoApp() {
        </button>;
      })}</div>
     </main>}
-   <a className="demo-download" href={downloadUrl} target="_blank" rel="noopener noreferrer" aria-label={t('downloadApp')}><img src={appLogo} alt="Choo Choo Pop" /><span><small>{t('downloadApp')}</small><strong>Android APK</strong></span></a>
+   <a className="demo-download" onClick={() => clicked('map')} href={downloadUrl} target="_blank" rel="noopener noreferrer" aria-label={t('downloadApp')}><img src={appLogo} alt="Choo Choo Pop" /><span><small>{t('downloadApp')}</small><strong>Android APK</strong></span></a>
    {noHints && <div className="pop-back"><section className="demo-reward-popup" role="dialog" aria-modal="true" aria-labelledby="demo-reward-title">
      <img className="demo-reward-frame" src={ART+'v5/frame-missions.webp'} alt="" draggable="false" />
      <button className="demo-reward-close" aria-label={fa?'بستن':'Close'} onClick={()=>setNoHints(false)} />
@@ -76,7 +77,7 @@ export default function DemoApp() {
        <span className="demo-hint-gift">+{t.n(2)} <img src={ART+'ui/bulb.png'} alt="" />{t('hint')}</span>
        {save.demoSocialClaimed.includes('telegram') ? <p className="small">{fa?'پاداش تلگرام دریافت شده':'Telegram reward claimed'}</p> : <div className="demo-telegram-entry"><a className="btn green demo-telegram-single" href={DEMO_SOCIALS[0].url} onClick={openTelegram} target="_blank" rel="noopener noreferrer"><img src={ART+'ui/social-telegram-v1.png'} width="32" height="32" alt="" /><span>{fa?'تلگرام':'Telegram'}</span></a><span className="demo-auto-status" aria-live="polite">{save.demoSocialPending==='telegram' ? (rewardStatus==='expired' ? (fa?'مهلت تمام شد؛ تلگرام را دوباره باز کن':'Time expired · open Telegram again') : (fa?'بررسی خودکار پس از بازگشت':'Checking automatically on return')) : ''}</span></div>}
        <span className="demo-reward-or">{fa?'یا':'Or'}</span>
-       <a className="btn big yellow demo-continue-download" href={downloadUrl} target="_blank" rel="noopener noreferrer"><strong>{fa?'دانلود بازی':'Download game'}</strong></a>
+       <a className="btn big yellow demo-continue-download" onClick={() => clicked('hint_limit')} href={downloadUrl} target="_blank" rel="noopener noreferrer"><strong>{fa?'دانلود بازی':'Download game'}</strong></a>
      </div>
    </section></div>}
  </div>;

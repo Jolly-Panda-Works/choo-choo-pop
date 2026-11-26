@@ -335,7 +335,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
   }, []);
 
   const watchForHint = async () => {
-    await ads.rewarded({ kind: 'hint' }, () => addHints(1));
+    await ads.rewarded({ placement: 'game', level_id: levelNo, kind: 'hint' }, () => addHints(1));
     setNoHints(false);
   };
 
@@ -348,7 +348,7 @@ export default function Game({ demo = false, onDemoNoHints, onDemoComplete, leve
       sfx.click();
       if (adDue.current) {
         adDue.current = false;
-        await ads.interstitial();
+        await ads.interstitial(levelNo);
       }
       fn();
     } finally {

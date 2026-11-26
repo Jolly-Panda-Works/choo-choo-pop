@@ -11,6 +11,7 @@
 // "remove ads"); the rewarded ad is always optional ("get 1 hint").
 // Without a registered provider (and with mock services off) nothing is ever shown.
 import { MOCK_SERVICES } from '../config.js';
+import { track } from './analytics.js';
 import { getState } from '../store.js';
 
 let provider = null;
@@ -35,6 +36,8 @@ export function claimAdReward(reward) {
   if (!reward || adReward !== reward || reward === loadingReward) return;
   setAdReward(null);
   reward.onClaim();
+  if (reward.kind !== 'spin') track('reward_claimed', { source: 'ad', reward_id: reward.kind,
+    coins: reward.kind === 'coins' ? reward.amount : 0, hints: reward.kind === 'hint' ? 1 : 0 });
 }
 
 export function registerAdsProvider(p) {
@@ -66,25 +69,39 @@ export const ads = {
     return !!p && !!p.isRewardedReady?.();
   },
   /** Skippable ad between levels. Always resolves (even if the ad failed). */
-  async interstitial() {
+  async interstitial(level_id) {
     const p = active();
-    if (!p || getState().adsRemoved) return;
+    if (getState().adsRemoved) return;
+    const fields = { ad_format: 'interstitial', placement: 'after_level', level_id };
+    track('ad_requested', fields);
+    if (!p) return track('ad_result', { ...fields, result: 'unavailable' });
     try {
-      await p.showInterstitial();
+      const shown = await p.showInterstitial();
+      track('ad_result', { ...fields, result: shown === false ? 'unavailable' : 'closed' });
     } catch (e) {
+      track('ad_result', { ...fields, result: e?.code === 'NO_FILL' ? 'unavailable' : 'failed' });
       /* a failed ad must never block the game */
     }
   },
   /** Offers a claim only after the ad provider confirms completion. */
   async rewarded(reward, onClaim) {
     const p = active();
-    if (!p || adReward) return false;
+    if (adReward) return false;
+    const fields = { ad_format: 'rewarded', placement: reward.placement, level_id: reward.level_id };
+    track('ad_requested', fields);
+    if (!p) {
+      track('ad_result', { ...fields, result: 'unavailable' });
+      return false;
+    }
     setAdReward(loadingReward);
     try {
-      if (!(await p.showRewarded())) return false;
+      const earned = await p.showRewarded();
+      track('ad_result', { ...fields, result: earned ? 'earned' : 'closed_without_reward' });
+      if (!earned) return false;
       setAdReward({ ...reward, onClaim });
       return true;
     } catch (e) {
+      track('ad_result', { ...fields, result: e?.code === 'NO_FILL' ? 'unavailable' : 'failed' });
       return false;
     } finally {
       if (adReward === loadingReward) setAdReward(null);

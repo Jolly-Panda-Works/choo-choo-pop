@@ -84,7 +84,7 @@ export default function SpinWheel({ onBack, onCoinsInFlight }) {
     if (spinReady()) {
       spin('free');
     } else if (adSpinsRemaining() > 0 && ads.rewardedAvailable()) {
-      await ads.rewarded({ kind: 'spin' }, () => spin('ad'));
+      await ads.rewarded({ placement: 'spinwheel', kind: 'spin' }, () => spin('ad'));
     }
   };
 

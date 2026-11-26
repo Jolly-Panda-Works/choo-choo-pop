@@ -14,7 +14,7 @@ export function startTapsellAds() {
     try {
       await nativeAds.prepare({ placement });
       const result = await nativeAds.show({ placement });
-      return result.rewarded === true;
+      return placement === 'interstitial' || result.rewarded === true;
     } finally {
       busy = false;
     }

@@ -51,7 +51,7 @@ export default function Home({ onPlay, onMap, onCoins, onShop, onSettings, onMis
   const freeCoins = async () => {
     sfx.click();
     if (ads.rewardedAvailable()) {
-      const earned = await ads.rewarded({ kind: 'coins', amount: VIDEO_COINS }, () => {
+      const earned = await ads.rewarded({ placement: 'home', kind: 'coins', amount: VIDEO_COINS }, () => {
         addCoins(VIDEO_COINS);
         sfx.coins();
         say(t('coinRewardAdded', { n: t.n(VIDEO_COINS) }));

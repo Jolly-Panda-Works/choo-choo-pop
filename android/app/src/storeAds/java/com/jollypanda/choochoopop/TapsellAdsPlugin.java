@@ -44,7 +44,7 @@ public class TapsellAdsPlugin extends Plugin {
         main.post(() -> {
             AtomicBoolean pending = new AtomicBoolean(true);
             Runnable timeout = () -> {
-                if (pending.getAndSet(false)) call.reject("No ad right now. Try again later.");
+                if (pending.getAndSet(false)) call.reject("No ad right now. Try again later.", "NO_FILL");
             };
             main.postDelayed(timeout, 6000);
             Tapsell.requestAd(getActivity(), zoneId, new TapsellAdRequestOptions(), new TapsellAdRequestListener() {
@@ -53,7 +53,7 @@ public class TapsellAdsPlugin extends Plugin {
                         if (!pending.getAndSet(false)) return;
                         main.removeCallbacks(timeout);
                         if (adId == null) {
-                            call.reject("No ad right now. Try again later.");
+                            call.reject("No ad right now. Try again later.", "NO_FILL");
                             return;
                         }
                         prepared.put(placement, adId);
@@ -74,7 +74,7 @@ public class TapsellAdsPlugin extends Plugin {
         main.post(() -> {
             String adId = prepared.remove(placement);
             if (adId == null || zoneId == null || showing) {
-                call.reject("No ad is ready.");
+                call.reject("No ad is ready.", "NO_FILL");
                 return;
             }
             showing = true;
