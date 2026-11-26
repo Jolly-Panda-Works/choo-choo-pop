@@ -11,6 +11,12 @@ public class MainActivity extends BridgeActivity {
         if (StorePlugins.ADS_PLUGIN != null && !getString(R.string.tapsell_app_key).isEmpty()) {
             registerPlugin(StorePlugins.ADS_PLUGIN);
         }
+        try {
+            registerPlugin(Class.forName("com.jollypanda.choochoopop.MetrixEvents")
+                    .asSubclass(com.getcapacitor.Plugin.class));
+        } catch (ClassNotFoundException ignored) {
+            // Only configured release builds include the SDK.
+        }
         super.onCreate(savedInstanceState);
     }
 }

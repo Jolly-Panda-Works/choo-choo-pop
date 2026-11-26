@@ -7,7 +7,12 @@ import './anim/ua.js';
 import { startPlatform } from './services/platform.jsx';
 import { loadSounds, setupMusic } from './audio.js';
 
+import { currentLang } from './store.js';
+import { startAnalytics, sessionVisibility } from './services/analytics.js';
+
 async function start() {
+  startAnalytics(currentLang);
+  document.addEventListener('visibilitychange', sessionVisibility);
   if (!IS_WEB_DEMO) startPlatform();
   loadSounds();
   setupMusic();

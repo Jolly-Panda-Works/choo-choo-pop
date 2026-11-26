@@ -39,6 +39,7 @@ export default defineConfig({
   base: './',
   plugins: [react(), pruneDist()],
   define: {
+    __STORE__: JSON.stringify(STORE),
     __APP_VERSION__: JSON.stringify(process.env.VERSION_NAME || pkg.version),
     __IS_IRANIAN_STORE__: STORE === 'bazaar' || STORE === 'myket',
   },

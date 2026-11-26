@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { screenViewed } from '../services/analytics.js';
 import Game from '../screens/Game.jsx';
 import Logotype from '../ui/Logotype.jsx';
 import HomeScene from '../ui/HomeScene.jsx';
@@ -37,6 +38,7 @@ export default function DemoApp() {
    check();const timer=setInterval(check,12000);window.addEventListener('focus',check);document.addEventListener('visibilitychange',check);
    return()=>{active=false;clearInterval(timer);window.removeEventListener('focus',check);document.removeEventListener('visibilitychange',check);};
  },[noHints,save.demoSocialPending,save.demoSocialClaimed]);
+ useEffect(() => screenViewed(noHints ? 'demo_hints' : finished ? 'demo_ending' : level ? 'game' : 'demo_map'), [level, finished, noHints]);
  const fa=t.lang==='fa';
  const unlocked=demoUnlocked(save.stars);
  const downloadUrl=demoDownloadUrl(t.lang);

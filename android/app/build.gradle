@@ -9,6 +9,9 @@ if (tapsell.values().any { it } && !tapsell.values().every { it ==~ /[a-zA-Z0-9-
     throw new GradleException('Tapsell requires an app key and two valid zone IDs.')
 }
 
+def metrixId = System.getenv('METRIX_APP_ID')?.trim()
+def metrixKey = System.getenv('METRIX_API_KEY')?.trim()
+if (!!metrixId != !!metrixKey) throw new GradleException('Set both Metrix SDK credentials.')
 android {
     namespace = "com.jollypanda.choochoopop"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -38,6 +41,10 @@ android {
         }
     }
     sourceSets {
+        if (metrixId) {
+            release.java.srcDirs += 'src/metrix/java'
+            release.manifest.srcFile 'src/metrix/AndroidManifest.xml'
+        }
         bazaar.java.srcDirs += 'src/bazaar/kotlin'
         myket.java.srcDirs += 'src/myket/kotlin'
         bazaar.java.srcDirs += 'src/storeAds/java'
@@ -65,6 +72,7 @@ android {
             versionNameSuffix '-debug'
         }
         release {
+            manifestPlaceholders += [metrixAppId: metrixId ?: '', metrixApiKey: metrixKey ?: '']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -78,6 +86,7 @@ repositories {
 }
 
 dependencies {
+    if (metrixId) releaseImplementation 'ir.metrix.analytics:metrix:2.10.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"

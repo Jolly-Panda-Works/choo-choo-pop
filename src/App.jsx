@@ -8,6 +8,7 @@ import { ART } from './board/sprites.js';
 import { IS_IRANIAN_STORE, MOCK_SERVICES } from './config.js';
 import { getAdReward, subscribeAdReward } from './services/ads.js';
 import { PlatformOverlay } from './services/platform.jsx';
+import { screenViewed } from './services/analytics.js';
 import Home from './screens/Home.jsx';
 import StageMap from './screens/StageMap.jsx';
 import Stage from './screens/Stage.jsx';
@@ -50,6 +51,7 @@ export default function App() {
   // shop and coin popups open ON the current screen (no screen change) and close back to it
   const [overlay, setOverlay] = useState(null);
   const [wheelCoinsInFlight, setWheelCoinsInFlight] = useState(0);
+  useEffect(() => { if (!booting) screenViewed(overlay || screen.name); }, [overlay, screen.name, booting]);
   const overlayRef = useRef(null);
   overlayRef.current = overlay;
   // the start popup of a station opens on the screen that asked for it; the game loads only after Play
